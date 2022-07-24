@@ -4,6 +4,7 @@ class Database {
   }
   set(key, value) {
     this.data[key] = value;
+    return value;
   }
   get(key) {
     return this.data[key];

@@ -18,7 +18,6 @@ import Block from "../components/Blocks";
 import Module from "../module/main";
 
 const Compiler = new CodeCompiler();
-DB.set("init", true);
 
 function Flow() {
   const initialEdges = [];
@@ -29,9 +28,6 @@ function Flow() {
   function addNode(options) {
     let randId = Module.randomString(16);
     options["id"] = randId;
-    options["$cinfo"] = {
-      type: "slash_command",
-    };
     options["color"] = options.color || "picton";
     options[
       "className"
@@ -40,12 +36,14 @@ function Flow() {
       return [...nodes, options];
     });
   }
+
   const onNodesChange = useCallback(
     (changes) => setNodes((nds) => applyNodeChanges(changes, nds)),
     [setNodes]
   );
 
   const onNodesClick = useCallback((node) => {
+    node.target.setAttribute("type", "slash_command");
     setRightPanelData(node);
   });
 
@@ -102,6 +100,7 @@ function Flow() {
                       type: "input",
                       color: "cinna",
                       data: {
+                        myCustomProps: "test",
                         label: "onSlashCommand",
                       },
                       position: { x: 250, y: 250 },
@@ -167,6 +166,7 @@ function Flow() {
                   color="emerald"
                   onClick={() =>
                     addNode({
+                      type: "output",
                       color: "emerald",
                       data: { label: "console.log()" },
                       position: { x: 250, y: 250 },
@@ -179,7 +179,25 @@ function Flow() {
                   color="emerald"
                   onClick={() =>
                     addNode({
+                      type: "output",
                       color: "emerald",
+                      data: { label: "console.log()" },
+                      position: { x: 250, y: 250 },
+                    })
+                  }
+                />
+              </div>
+            </section>
+            <section>
+              <h3 className="mb-1">Database - SQLite3</h3>
+              <div className="space-y-2">
+                <Block
+                  text="Run Query"
+                  desc="Run a MySQL Query."
+                  color="amethyst"
+                  onClick={() =>
+                    addNode({
+                      color: "amethyst",
                       data: { label: "console.log()" },
                       position: { x: 250, y: 250 },
                     })
@@ -216,4 +234,3 @@ function Flow() {
 }
 
 export default Flow;
-export { Flow };
