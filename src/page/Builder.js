@@ -1,17 +1,24 @@
 import React, { useCallback, useState } from "react";
 import ReactFlow, {
+  Controls,
+  Background,
   addEdge,
+  MiniMap,
   applyEdgeChanges,
   applyNodeChanges,
 } from "react-flow-renderer";
 
+import DB from "../module/database";
 import CodeCompiler from "../compiler/main";
+
+import ConnectionLine from "../components/ConnectionLine";
 import RightPane from "../components/RightPane";
 import Header from "../components//Header";
 import Block from "../components/Blocks";
 import Module from "../module/main";
 
 const Compiler = new CodeCompiler();
+DB.set("init", true);
 
 function Flow() {
   const initialEdges = [];
@@ -20,27 +27,26 @@ function Flow() {
   const [edges, setEdges] = useState(initialEdges);
 
   function addNode(options) {
-    console.log(this);
     let randId = Module.randomString(16);
     options["id"] = randId;
+    options["$cinfo"] = {
+      type: "slash_command",
+    };
     options["color"] = options.color || "picton";
     options[
       "className"
-    ] = `bg-gradient-to-r bg-shark-600 border-${options.color} border border-dashed text-gray-200 uppercase font-bold text-xs`;
+    ] = `bg-gradient-to-r bg-shark-600 border-${options.color} border border-dashed text-gray-200  font-bold text-xs`;
     setNodes((nodes) => {
       return [...nodes, options];
     });
   }
-
   const onNodesChange = useCallback(
     (changes) => setNodes((nds) => applyNodeChanges(changes, nds)),
     [setNodes]
   );
 
   const onNodesClick = useCallback((node) => {
-    console.log(node);
-    console.log(nodes);
-    FireRightPanel({ id: node.target.dataset.id, $cinfo: node.target.$cinfo });
+    setRightPanelData(node);
   });
 
   const onEdgesChange = useCallback(
@@ -50,7 +56,6 @@ function Flow() {
 
   const onConnect = useCallback(
     (connection) => {
-      console.log(connection);
       setEdges((eds) => addEdge(connection, eds));
     },
     [setEdges]
@@ -63,16 +68,10 @@ function Flow() {
       nodes: nodes,
       edges: edges,
     });
-    console.log(res);
-  }
-
-  function FireRightPanel(options) {
-    setRightPanelData(options);
   }
 
   return (
     <>
-      <Header />
       <div className="grid grid-cols-12">
         <div className="col-span-2">
           <div className="space-y-3 w-full p-3 h-screen border-r border-scorpion ">
@@ -103,7 +102,7 @@ function Flow() {
                       type: "input",
                       color: "cinna",
                       data: {
-                        label: "onMessage",
+                        label: "onSlashCommand",
                       },
                       position: { x: 250, y: 250 },
                     })
@@ -159,6 +158,35 @@ function Flow() {
                 />
               </div>
             </section>
+            <section>
+              <h3 className="mb-1">Process</h3>
+              <div className="space-y-2">
+                <Block
+                  text="Console Log"
+                  desc="Log something to the node console."
+                  color="emerald"
+                  onClick={() =>
+                    addNode({
+                      color: "emerald",
+                      data: { label: "console.log()" },
+                      position: { x: 250, y: 250 },
+                    })
+                  }
+                />
+                <Block
+                  text="Console Warn"
+                  desc="Log a warning into the node console."
+                  color="emerald"
+                  onClick={() =>
+                    addNode({
+                      color: "emerald",
+                      data: { label: "console.log()" },
+                      position: { x: 250, y: 250 },
+                    })
+                  }
+                />
+              </div>
+            </section>
           </div>
         </div>
         <div className="h-screen w-full col-span-8">
@@ -169,17 +197,23 @@ function Flow() {
               onNodeClick={onNodesClick}
               onConnect={onConnect}
               onNodesChange={onNodesChange}
+              connectionLineComponent={ConnectionLine}
               onEdgesChange={onEdgesChange}
               fitView
-            />
+            >
+              <Background variant="dots" gap={20} size={1} />
+              <MiniMap className="bg-shark-300" maskColor="#383D41" />
+            </ReactFlow>
           </div>
         </div>
         <div className="col-span-2">
           <RightPane options={RightPanelData} />
         </div>
       </div>
+      <Header />
     </>
   );
 }
 
 export default Flow;
+export { Flow };

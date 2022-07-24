@@ -4,7 +4,6 @@ class Compiler {
     this.options = options;
   }
   compile(data, options) {
-    console.log(data);
     return true;
   }
 }

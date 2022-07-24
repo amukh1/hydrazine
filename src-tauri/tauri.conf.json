@@ -7,7 +7,7 @@
     "distDir": "../build"
   },
   "package": {
-    "productName": "hydrazine",
+    "productName": "Hydrazine",
     "version": "0.0.1"
   },
   "tauri": {
@@ -61,7 +61,7 @@
         "height": 800,
         "resizable": true,
         "title": "Hydrazine",
-        "width": 1080
+        "width": 1280
       }
     ]
   }

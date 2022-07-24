@@ -12,19 +12,24 @@ const Block = (props) => {
         <h1 className="">Hydrazine</h1>
       </div>
       <div className="text-foam-300 flex space-x-8 justify-center font-medium col-span-8 px-2 uppercase">
-        <h2>Github</h2>
-        <h2>Discord</h2>
+        <a href="https://github.com/jareer12/hydrazine" target={"_blank"}>
+          Github
+        </a>
+        <a>Discord</a>
       </div>
       <div className="text-white flex items-center justify-center text-center font-medium col-span-2 px-2">
-        <h1>
+        <a
+          href="https://github.com/jareer12/hydrazine/releases"
+          target={"_blank"}
+        >
           {/* {dateState.toLocaleString("en-US", {
             second: "numeric",
             hour: "numeric",
             minute: "numeric",
             hour12: true,
           })} */}
-          v0.0.1 - Source Code
-        </h1>
+          v0.0.1 - Realeases
+        </a>
       </div>
     </div>
   );
