@@ -1,0 +1,68 @@
+{
+  "$schema": "../node_modules/@tauri-apps/cli/schema.json",
+  "build": {
+    "beforeBuildCommand": "npm run build",
+    "beforeDevCommand": "npm run start",
+    "devPath": "http://localhost:3000",
+    "distDir": "../build"
+  },
+  "package": {
+    "productName": "hydrazine",
+    "version": "0.0.1"
+  },
+  "tauri": {
+    "allowlist": {
+      "all": true
+    },
+    "bundle": {
+      "active": true,
+      "category": "DeveloperTool",
+      "copyright": "Jareer Abdullah",
+      "deb": {
+        "depends": []
+      },
+      "externalBin": [],
+      "icon": [
+        "icons/icon.ico",
+        "icons/32x32.png",
+        "icons/64x64.png",
+        "icons/128x128.png",
+        "icons/256x256.png",
+        "icons/512x512.png",
+        "icons/1024x1024.png"
+      ],
+      "identifier": "site.jubot",
+      "longDescription": "Fast and efficient tool to create Discord bots without any coding.",
+      "macOS": {
+        "entitlements": null,
+        "exceptionDomain": "",
+        "frameworks": [],
+        "providerShortName": null,
+        "signingIdentity": null
+      },
+      "resources": [],
+      "shortDescription": "Discord bots building made easy.",
+      "targets": "all",
+      "windows": {
+        "certificateThumbprint": null,
+        "digestAlgorithm": "sha256",
+        "timestampUrl": null
+      }
+    },
+    "security": {
+      "csp": null
+    },
+    "updater": {
+      "active": false
+    },
+    "windows": [
+      {
+        "fullscreen": false,
+        "height": 800,
+        "resizable": true,
+        "title": "Hydrazine",
+        "width": 1080
+      }
+    ]
+  }
+}

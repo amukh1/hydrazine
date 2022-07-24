@@ -1,0 +1,49 @@
+{
+  "name": "hydrazine",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "@tauri-apps/api": "^1.0.2",
+    "@testing-library/jest-dom": "^5.16.4",
+    "@testing-library/react": "^13.3.0",
+    "@testing-library/user-event": "^13.5.0",
+    "crypto-js": "^4.1.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-flow-renderer": "^10.3.11",
+    "react-scripts": "5.0.1",
+    "web-vitals": "^2.1.4"
+  },
+  "scripts": {
+    "start": "cross-env BROWSER=none react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "css": "npx tailwindcss -i ./src/scss/build.scss -o ./src/scss/tailwinds.scss --watch --minify",
+    "tauri": "tauri"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^1.0.4",
+    "cross-env": "^7.0.3",
+    "flow-bin": "^0.183.0",
+    "sass": "^1.54.0"
+  }
+}
