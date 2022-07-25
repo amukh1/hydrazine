@@ -1,5 +1,6 @@
-import config from '../template/template'
 import { ActivityOptions, Client, GatewayIntentBits } from 'discord.js'
+import config from '../template/template'
+
 const client = new Client({ intents: [GatewayIntentBits.Guilds] })
 const ConfiVariables = config.$CONFIGS
 
@@ -16,11 +17,15 @@ client.on('ready', () => {
   console.log(`Logged in as ${client.user?.tag}!`)
 })
 
-client.on('messageCreate', async (message) => {
-  console.log(message)
-})
-
-console.log(null)
+for (let i = 0; i < config.$cinfo.$listeners.length; i++) {
+  const event = config.$cinfo.$listeners[i]
+  switch (event.$type) {
+    case 'text_command':
+      client.on('messageCreate', async (message) => {
+        console.log(message)
+      })
+  }
+}
 
 client.login('token').then((token) => {
   const PRESENCE: any = config.$GLOBAL?.$PRESENCE

@@ -22,10 +22,10 @@ export default {
      **/
     $listeners: [
       {
+        $type: 'text_command',
         $checkpoints: [
           {
             $name: 'help',
-            $type: 'text_command',
             $params: {},
             $conditions: {
               $equals: {

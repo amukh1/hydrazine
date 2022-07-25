@@ -9,7 +9,7 @@ import ReactFlow, {
 } from "react-flow-renderer";
 
 import ConnectionLine from "../components/ConnectionLine";
-import Header from "../components//Header";
+import Header from "../components/Header";
 import Block from "../components/Blocks";
 import Module from "../module/main";
 
@@ -122,8 +122,44 @@ function Flow() {
               <h3 className="mb-1">Event Listeners</h3>
               <div className="space-y-2 ">
                 <Block
+                  text="On Start"
+                  desc="Run this in the very beginning of the script."
+                  color="cinna"
+                  onClick={() =>
+                    addNode({
+                      type: "input",
+                      color: "cinna",
+                      data: {
+                        label: "onStart",
+                      },
+                      $cinfo: {
+                        $action: "on_start",
+                      },
+                      position: { x: 250, y: 250 },
+                    })
+                  }
+                />
+                <Block
+                  text="On Client Ready"
+                  desc="Fire an event when the Discord bot has started."
+                  color="cinna"
+                  onClick={() =>
+                    addNode({
+                      type: "input",
+                      color: "cinna",
+                      data: {
+                        label: "onClientReady",
+                      },
+                      $cinfo: {
+                        $action: "on_client_ready",
+                      },
+                      position: { x: 250, y: 250 },
+                    })
+                  }
+                />
+                <Block
                   text="On Message"
-                  desc="Fire and event when a message is sent."
+                  desc="Fire an event when a message is sent."
                   color="cinna"
                   onClick={() =>
                     addNode({
@@ -139,6 +175,7 @@ function Flow() {
                     })
                   }
                 />
+
                 <Block
                   text="On Slash Command"
                   desc="Listen for slash(/) commands."
