@@ -1,11 +1,10 @@
-import React, { useCallback, useState, useEffect } from "react";
+import Hydrogen from "../compiler/main";
+import React, { useCallback, useState } from "react";
 import ReactFlow, {
+  Background,
   addEdge,
   MiniMap,
-  Background,
-  useReactFlow,
   applyEdgeChanges,
-  ReactFlowProvider,
   applyNodeChanges,
 } from "react-flow-renderer";
 
@@ -23,15 +22,19 @@ const nodeColor = (node) => {
     case "output":
       return "#4598E4";
     default:
-      return "#eee";
+      return "#4A58D4";
   }
 };
 
 function Flow() {
   const initialEdges = [];
   const initialNodes = [];
+
   const [nodes, setNodes] = useState(initialNodes);
   const [edges, setEdges] = useState(initialEdges);
+
+  const [rightUniqueId, setRightUniqueId] = useState(null);
+  const [rightLabel, setRightLabel] = useState(null);
 
   function addNode(options) {
     let randId = Module.randomString(16);
@@ -43,13 +46,16 @@ function Flow() {
     setNodes((nodes) => {
       return [...nodes, options];
     });
+    console.log(nodes);
   }
 
-  const [rightUniqueId, setRightUniqueId] = useState(null);
-  const [rightLabel, setRightLabel] = useState(null);
-
   function getNodeById(id) {
-    return nodes.find((node) => node.id === id);
+    for (let i = 0; i < nodes.length; i++) {
+      const node = nodes[i];
+      if (node.id === id) {
+        return node;
+      }
+    }
   }
 
   function getNodeIndexById(id) {
@@ -64,6 +70,9 @@ function Flow() {
   function FireRightPanel(node) {
     let data = getNodeById(node.target.dataset.id);
 
+    console.log(nodes);
+    console.log(data);
+
     setRightUniqueId(data.id);
     setRightLabel(data.data.label);
   }
@@ -73,12 +82,9 @@ function Flow() {
     [setNodes]
   );
 
-  const onNodesClick = useCallback(
-    (node) => {
-      FireRightPanel(node);
-    },
-    [setNodes]
-  );
+  const onNodesClick = useCallback((node) => {
+    FireRightPanel(node);
+  });
 
   const onEdgesChange = useCallback(
     (changes) => setEdges((eds) => applyEdgeChanges(changes, eds)),
@@ -92,26 +98,34 @@ function Flow() {
     [setEdges]
   );
 
-  useEffect(() => {
-    setNodes((nds) =>
-      nds.map((node) => {
-        if (node.id === "1") {
-          node.data = {
-            ...node.data,
-            label: rightLabel,
-          };
-        }
-        return node;
-      })
-    );
-  }, [rightLabel, setNodes]);
+  function exportCode() {
+    console.log(nodes);
+    console.log(edges);
+
+    const output = Hydrogen.compile({
+      nodes: nodes,
+      edges: edges,
+    });
+
+    console.log(output);
+  }
 
   return (
     <>
       <Header />
       <div className="grid grid-cols-12">
-        <div className="col-span-2">
-          <div className="space-y-3 h-screen  p-3 overflow-visible border-r border-scorpion ">
+        <div className="col-span-2 overflow-auto">
+          <div className="space-y-3 h-screen overflow-auto  p-3 border-r border-scorpion ">
+            <section className="">
+              <div className="space-y-2 ">
+                <button
+                  onClick={exportCode}
+                  className="shadow-sm shadow-picton-300/500 bg-picton rounded-lg font-bold w-full p-3  text-white"
+                >
+                  Export
+                </button>
+              </div>
+            </section>
             <section className="">
               <h3 className="mb-1">Event Listeners</h3>
               <div className="space-y-2 ">
@@ -250,44 +264,40 @@ function Flow() {
           className={`w-full ${rightUniqueId ? `col-span-8` : `col-span-10`}`}
         >
           <div style={{ height: "100%" }}>
-            <ReactFlowProvider>
-              <ReactFlow
-                nodes={nodes}
-                edges={edges}
-                defaultNodes={[]}
-                onConnect={onConnect}
-                onNodeClick={onNodesClick}
-                onNodesChange={onNodesChange}
-                onEdgesChange={onEdgesChange}
-                connectionLineComponent={ConnectionLine}
-                fitView
-              >
-                <Background variant="dots" gap={20} size={1} />
-                <MiniMap
-                  nodeColor={nodeColor}
-                  nodeStrokeWidth={3}
-                  className="bg-shark-300 rounded-lg shadow-lg border-dashed border-space-600 border-2 shadow-shark-600"
-                  maskColor="#383D41"
-                />
-              </ReactFlow>
-            </ReactFlowProvider>
+            <ReactFlow
+              nodes={nodes}
+              edges={edges}
+              onConnect={onConnect}
+              onNodeClick={onNodesClick}
+              onNodesChange={onNodesChange}
+              onEdgesChange={onEdgesChange}
+              connectionLineComponent={ConnectionLine}
+              fitView
+            >
+              <Background variant="dots" gap={20} size={1} />
+              <MiniMap
+                nodeColor={nodeColor}
+                nodeStrokeWidth={3}
+                className="bg-shark-300 rounded-lg shadow-lg border-dashed border-space-600 border-2 shadow-shark-600"
+                maskColor="#383D41"
+              />
+            </ReactFlow>
           </div>
         </div>
         {rightUniqueId ? (
-          <div className="col-span-2">
-            <div className="w-full">
-              <div className="w-full p-3 border-l border-scorpion">
-                <h1 className="text-xs font-bold uppercase text-gray-400 tracking-wider">
-                  BUILDER
-                </h1>
-                <h1 className="font-semibold text-xl text-gray-100">{""}</h1>
-                <div className="mt-5 space-y-3">
+          <div className="col-span-2 flex flex-wrap w-full">
+            <div className="w-full flex flex-wrap">
+              <div className="w-full grid-cols-1 grid p-3 border-l flex flex-wrap border-scorpion">
+                <div className="space-y-3">
+                  <h1 className="text-xs font-bold uppercase text-gray-400 tracking-wider">
+                    BUILDER
+                  </h1>
                   {rightUniqueId ? (
                     <div>
                       <h3 className="font-semibold">Unique Key</h3>
                       <input
                         disabled
-                        className="p-3 opacity-90 bg-shark-400 border-space-700 border-2 rounded-lg w-full"
+                        className="p-3  opacity-90 bg-shark-400 border-space-700 border-2 rounded-lg w-full"
                         value={rightUniqueId}
                       ></input>
                     </div>

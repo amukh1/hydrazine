@@ -1,11 +1,18 @@
-class Compiler {
+class Hydrogen {
   options;
   constructor(options) {
     this.options = options;
   }
   compile(data, options) {
-    return true;
+    let final = {};
+
+    const nodes = data?.nodes;
+    const edges = data?.edges;
+
+    return {
+      code: final,
+    };
   }
 }
 
-export default Compiler;
+export default new Hydrogen();
