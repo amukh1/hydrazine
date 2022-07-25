@@ -11,7 +11,10 @@ export default {
   },
   $GLOBAL: {
     $PREFIX: 'h!',
-    $PRESENCE: 'Created With Hydrazine.',
+    $PRESENCE: {
+      name: 'Created With Hydrazine.',
+      type: 'WATCHING',
+    },
   },
   $cinfo: {
     /**

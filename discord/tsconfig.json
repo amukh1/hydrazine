@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+        "target": "ES6",
+        "module": "Node16",
+        "esModuleInterop": true,
+        "moduleResolution": "node",
+        "sourceMap": false,
+        "outDir": "dist"
+    },
+    "lib": [
+        "es2015"
+    ]
+}

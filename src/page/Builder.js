@@ -1,4 +1,4 @@
-import Hydrogen from "../compiler/main";
+import Hydrogen from "../compiler/main.ts";
 import React, { useCallback, useState } from "react";
 import ReactFlow, {
   Background,
@@ -46,7 +46,6 @@ function Flow() {
     setNodes((nodes) => {
       return [...nodes, options];
     });
-    console.log(nodes);
   }
 
   function getNodeById(id) {
@@ -70,9 +69,6 @@ function Flow() {
   function FireRightPanel(node) {
     let data = getNodeById(node.target.dataset.id);
 
-    console.log(nodes);
-    console.log(data);
-
     setRightUniqueId(data.id);
     setRightLabel(data.data.label);
   }
@@ -82,9 +78,9 @@ function Flow() {
     [setNodes]
   );
 
-  const onNodesClick = useCallback((node) => {
+  const onNodesClick = (node) => {
     FireRightPanel(node);
-  });
+  };
 
   const onEdgesChange = useCallback(
     (changes) => setEdges((eds) => applyEdgeChanges(changes, eds)),
@@ -99,14 +95,10 @@ function Flow() {
   );
 
   function exportCode() {
-    console.log(nodes);
-    console.log(edges);
-
     const output = Hydrogen.compile({
       nodes: nodes,
       edges: edges,
     });
-
     console.log(output);
   }
 
@@ -140,6 +132,9 @@ function Flow() {
                       data: {
                         label: "onMessage",
                       },
+                      $cinfo: {
+                        $action: "on_message_listener",
+                      },
                       position: { x: 250, y: 250 },
                     })
                   }
@@ -153,8 +148,11 @@ function Flow() {
                       type: "input",
                       color: "cinna",
                       data: {
-                        myCustomProps: "test",
                         label: "onSlashCommand",
+                      },
+                      $cinfo: {
+                        $action: "on_slash_command",
+                        $value: "help",
                       },
                       position: { x: 250, y: 250 },
                     })
@@ -221,6 +219,10 @@ function Flow() {
                     addNode({
                       type: "output",
                       color: "emerald",
+                      $cinfo: {
+                        $action: "console_log",
+                        $fields: [{ value: "", type: "string" }],
+                      },
                       data: { label: "console.log()" },
                       position: { x: 250, y: 250 },
                     })
@@ -251,6 +253,12 @@ function Flow() {
                   onClick={() =>
                     addNode({
                       color: "amethyst",
+                      $cinfo: {
+                        $action: "run_sqlite_query",
+                        $fields: {
+                          query: "",
+                        },
+                      },
                       data: { label: "console.log()" },
                       position: { x: 250, y: 250 },
                     })
@@ -310,7 +318,6 @@ function Flow() {
                       <input
                         onChange={(e) => {
                           setRightLabel(e.target.value);
-                          console.log(nodes);
 
                           const node = getNodeById(rightUniqueId);
                           const newNode = node;
