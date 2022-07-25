@@ -1,22 +1,19 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, useEffect } from "react";
 import ReactFlow, {
-  Controls,
-  Background,
   addEdge,
   MiniMap,
+  Background,
+  useReactFlow,
   applyEdgeChanges,
+  ReactFlowProvider,
   applyNodeChanges,
 } from "react-flow-renderer";
-
-import DB from "../module/database";
-import CodeCompiler from "../compiler/main";
 
 import ConnectionLine from "../components/ConnectionLine";
 import Header from "../components//Header";
 import Block from "../components/Blocks";
 import Module from "../module/main";
 
-const Compiler = new CodeCompiler();
 const nodeColor = (node) => {
   switch (node.type) {
     case "input":
@@ -76,18 +73,17 @@ function Flow() {
     [setNodes]
   );
 
-  const onNodesClick = useCallback((node) => {
-    FireRightPanel(node);
-  });
+  const onNodesClick = useCallback(
+    (node) => {
+      FireRightPanel(node);
+    },
+    [setNodes]
+  );
 
   const onEdgesChange = useCallback(
     (changes) => setEdges((eds) => applyEdgeChanges(changes, eds)),
     [setEdges]
   );
-
-  const onNodeMouseEnter = useCallback((node) => {
-    FireRightPanel(node);
-  });
 
   const onConnect = useCallback(
     (connection) => {
@@ -96,15 +92,23 @@ function Flow() {
     [setEdges]
   );
 
-  function CompileCode() {
-    const res = Compiler.compile({
-      nodes: nodes,
-      edges: edges,
-    });
-  }
+  useEffect(() => {
+    setNodes((nds) =>
+      nds.map((node) => {
+        if (node.id === "1") {
+          node.data = {
+            ...node.data,
+            label: rightLabel,
+          };
+        }
+        return node;
+      })
+    );
+  }, [rightLabel, setNodes]);
 
   return (
     <>
+      <Header />
       <div className="grid grid-cols-12">
         <div className="col-span-2">
           <div className="space-y-3 h-screen  p-3 overflow-visible border-r border-scorpion ">
@@ -246,25 +250,27 @@ function Flow() {
           className={`w-full ${rightUniqueId ? `col-span-8` : `col-span-10`}`}
         >
           <div style={{ height: "100%" }}>
-            <ReactFlow
-              nodes={nodes}
-              edges={edges}
-              onConnect={onConnect}
-              onNodeClick={onNodesClick}
-              onNodesChange={onNodesChange}
-              onEdgesChange={onEdgesChange}
-              onNodeMouseEnter={onNodeMouseEnter}
-              connectionLineComponent={ConnectionLine}
-              fitView
-            >
-              <Background variant="dots" gap={20} size={1} />
-              <MiniMap
-                nodeColor={nodeColor}
-                nodeStrokeWidth={3}
-                className="bg-shark-300 rounded-lg shadow-lg border-dashed border-space-600 border-2 shadow-shark-600"
-                maskColor="#383D41"
-              />
-            </ReactFlow>
+            <ReactFlowProvider>
+              <ReactFlow
+                nodes={nodes}
+                edges={edges}
+                defaultNodes={[]}
+                onConnect={onConnect}
+                onNodeClick={onNodesClick}
+                onNodesChange={onNodesChange}
+                onEdgesChange={onEdgesChange}
+                connectionLineComponent={ConnectionLine}
+                fitView
+              >
+                <Background variant="dots" gap={20} size={1} />
+                <MiniMap
+                  nodeColor={nodeColor}
+                  nodeStrokeWidth={3}
+                  className="bg-shark-300 rounded-lg shadow-lg border-dashed border-space-600 border-2 shadow-shark-600"
+                  maskColor="#383D41"
+                />
+              </ReactFlow>
+            </ReactFlowProvider>
           </div>
         </div>
         {rightUniqueId ? (
@@ -326,7 +332,6 @@ function Flow() {
           false
         )}
       </div>
-      <Header />
     </>
   );
 }
