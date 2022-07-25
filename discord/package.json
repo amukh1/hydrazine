@@ -1,0 +1,17 @@
+{
+  "name": "discord",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {},
+  "keywords": [],
+  "author": {
+    "name": "Jareer Abdullah",
+    "github": "github.com/jareer12"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^14.0.3",
+    "ts-node": "^10.9.1"
+  }
+}

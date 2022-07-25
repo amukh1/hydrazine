@@ -12,12 +12,23 @@ import DB from "../module/database";
 import CodeCompiler from "../compiler/main";
 
 import ConnectionLine from "../components/ConnectionLine";
-import RightPane from "../components/RightPane";
 import Header from "../components//Header";
 import Block from "../components/Blocks";
 import Module from "../module/main";
 
 const Compiler = new CodeCompiler();
+const nodeColor = (node) => {
+  switch (node.type) {
+    case "input":
+      return "#E34949";
+    case "default":
+      return "#00ff00";
+    case "output":
+      return "#4598E4";
+    default:
+      return "#eee";
+  }
+};
 
 function Flow() {
   const initialEdges = [];
@@ -31,10 +42,33 @@ function Flow() {
     options["color"] = options.color || "picton";
     options[
       "className"
-    ] = `bg-gradient-to-r bg-shark-600 border-${options.color} border border-dashed text-gray-200  font-bold text-xs`;
+    ] = `bg-gradient-to-r bg-shark-600 border-${options.color} border border-dashed text-gray-200 font-bold text-xs`;
     setNodes((nodes) => {
       return [...nodes, options];
     });
+  }
+
+  const [rightUniqueId, setRightUniqueId] = useState(null);
+  const [rightLabel, setRightLabel] = useState(null);
+
+  function getNodeById(id) {
+    return nodes.find((node) => node.id === id);
+  }
+
+  function getNodeIndexById(id) {
+    for (let i = 0; i < nodes.length; i++) {
+      const node = nodes[i];
+      if (node.id === id) {
+        return i;
+      }
+    }
+  }
+
+  function FireRightPanel(node) {
+    let data = getNodeById(node.target.dataset.id);
+
+    setRightUniqueId(data.id);
+    setRightLabel(data.data.label);
   }
 
   const onNodesChange = useCallback(
@@ -43,8 +77,7 @@ function Flow() {
   );
 
   const onNodesClick = useCallback((node) => {
-    node.target.setAttribute("type", "slash_command");
-    setRightPanelData(node);
+    FireRightPanel(node);
   });
 
   const onEdgesChange = useCallback(
@@ -52,14 +85,16 @@ function Flow() {
     [setEdges]
   );
 
+  const onNodeMouseEnter = useCallback((node) => {
+    FireRightPanel(node);
+  });
+
   const onConnect = useCallback(
     (connection) => {
       setEdges((eds) => addEdge(connection, eds));
     },
     [setEdges]
   );
-
-  const [RightPanelData, setRightPanelData] = useState(null);
 
   function CompileCode() {
     const res = Compiler.compile({
@@ -72,10 +107,10 @@ function Flow() {
     <>
       <div className="grid grid-cols-12">
         <div className="col-span-2">
-          <div className="space-y-3 w-full p-3 h-screen border-r border-scorpion ">
-            <section>
+          <div className="space-y-3 h-screen  p-3 overflow-visible border-r border-scorpion ">
+            <section className="">
               <h3 className="mb-1">Event Listeners</h3>
-              <div className="space-y-2">
+              <div className="space-y-2 ">
                 <Block
                   text="On Message"
                   desc="Fire and event when a message is sent."
@@ -207,26 +242,89 @@ function Flow() {
             </section>
           </div>
         </div>
-        <div className="h-screen w-full col-span-8">
-          <div style={{ height: "100vh" }}>
+        <div
+          className={`w-full ${rightUniqueId ? `col-span-8` : `col-span-10`}`}
+        >
+          <div style={{ height: "100%" }}>
             <ReactFlow
               nodes={nodes}
               edges={edges}
-              onNodeClick={onNodesClick}
               onConnect={onConnect}
+              onNodeClick={onNodesClick}
               onNodesChange={onNodesChange}
-              connectionLineComponent={ConnectionLine}
               onEdgesChange={onEdgesChange}
+              onNodeMouseEnter={onNodeMouseEnter}
+              connectionLineComponent={ConnectionLine}
               fitView
             >
               <Background variant="dots" gap={20} size={1} />
-              <MiniMap className="bg-shark-300" maskColor="#383D41" />
+              <MiniMap
+                nodeColor={nodeColor}
+                nodeStrokeWidth={3}
+                className="bg-shark-300 rounded-lg shadow-lg border-dashed border-space-600 border-2 shadow-shark-600"
+                maskColor="#383D41"
+              />
             </ReactFlow>
           </div>
         </div>
-        <div className="col-span-2">
-          <RightPane options={RightPanelData} />
-        </div>
+        {rightUniqueId ? (
+          <div className="col-span-2">
+            <div className="w-full">
+              <div className="w-full p-3 border-l border-scorpion">
+                <h1 className="text-xs font-bold uppercase text-gray-400 tracking-wider">
+                  BUILDER
+                </h1>
+                <h1 className="font-semibold text-xl text-gray-100">{""}</h1>
+                <div className="mt-5 space-y-3">
+                  {rightUniqueId ? (
+                    <div>
+                      <h3 className="font-semibold">Unique Key</h3>
+                      <input
+                        disabled
+                        className="p-3 opacity-90 bg-shark-400 border-space-700 border-2 rounded-lg w-full"
+                        value={rightUniqueId}
+                      ></input>
+                    </div>
+                  ) : (
+                    false
+                  )}
+                  {rightLabel ? (
+                    <div>
+                      <h3 className="font-semibold">Label</h3>
+                      <input
+                        onChange={(e) => {
+                          setRightLabel(e.target.value);
+                          console.log(nodes);
+
+                          const node = getNodeById(rightUniqueId);
+                          const newNode = node;
+
+                          const nodeIndex = getNodeIndexById(rightUniqueId);
+                          const newNodes = [...nodes];
+                          newNodes.pop(nodeIndex);
+
+                          newNode.id = rightUniqueId;
+                          newNode.data.label = e.target.value;
+                          newNodes.push({
+                            ...newNode,
+                          });
+
+                          setNodes(newNodes);
+                        }}
+                        className="p-3 opacity-90 bg-shark-400 border-space-700 border-2 rounded-lg w-full"
+                        value={rightLabel}
+                      ></input>
+                    </div>
+                  ) : (
+                    false
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : (
+          false
+        )}
       </div>
       <Header />
     </>

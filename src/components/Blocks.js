@@ -2,7 +2,7 @@ const Block = (props) => {
   return (
     <div
       onClick={props.onClick}
-      className="w-full hover:scale-105 duration-300 bg-space cursor-pointer rounded p-3 grid-cols-4 grid gap-1"
+      className="hover:scale-105 duration-300 bg-space cursor-pointer rounded p-3 grid-cols-4 grid gap-1"
     >
       <div
         className={`bg-gradient-to-r h-16 from-${props.color}-500 to-${props.color}-300 rounded`}
