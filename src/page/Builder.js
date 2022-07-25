@@ -13,18 +13,12 @@ import Header from "../components/Header";
 import Block from "../components/Blocks";
 import Module from "../module/main";
 
-const nodeColor = (node) => {
-  switch (node.type) {
-    case "input":
-      return "#E34949";
-    case "default":
-      return "#00ff00";
-    case "output":
-      return "#4598E4";
-    default:
-      return "#4A58D4";
-  }
-};
+function hexToRGBA(hex, alpha) {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+}
 
 function Flow() {
   const initialEdges = [];
@@ -35,6 +29,7 @@ function Flow() {
 
   const [rightUniqueId, setRightUniqueId] = useState(null);
   const [rightLabel, setRightLabel] = useState(null);
+  const [rightNode, setRightNode] = useState(null);
 
   function addNode(options) {
     let randId = Module.randomString(16);
@@ -69,6 +64,7 @@ function Flow() {
   function FireRightPanel(node) {
     let data = getNodeById(node.target.dataset.id);
 
+    setRightNode(data);
     setRightUniqueId(data.id);
     setRightLabel(data.data.label);
   }
@@ -101,6 +97,23 @@ function Flow() {
     });
     console.log(output);
   }
+
+  const nodeColor = (node) => {
+    switch (node.color) {
+      case "cinna":
+        return "#E76464";
+      case "emerald":
+        return "#6FDD7C";
+      case "amethyst":
+        return "#B46FDD";
+      case "picton":
+        return "#60A7E8";
+      case "royal":
+        return hexToRGBA("#FE8C52", 0.7);
+      default:
+        return "#32373C";
+    }
+  };
 
   return (
     <>
@@ -334,15 +347,20 @@ function Flow() {
             <div className="w-full flex flex-wrap">
               <div className="w-full grid-cols-1 grid p-3 border-l flex flex-wrap border-scorpion">
                 <div className="space-y-3">
-                  <h1 className="text-xs font-bold uppercase text-gray-400 tracking-wider">
-                    BUILDER
-                  </h1>
+                  <div>
+                    <h3 className="text-xs font-bold uppercase text-gray-400 tracking-wider">
+                      BUILDER
+                    </h3>
+                    <h1 className="text-lg font-bold text-gray-100 tracking-wider">
+                      {rightLabel}
+                    </h1>
+                  </div>
                   {rightUniqueId ? (
                     <div>
                       <h3 className="font-semibold">Unique Key</h3>
                       <input
                         disabled
-                        className="p-3  opacity-90 bg-shark-400 border-space-700 border-2 rounded-lg w-full"
+                        className={`p-3 opacity-90 bg-shark-400 border-dashed border-${rightNode.color} shadow-sm border-2 rounded-lg w-full`}
                         value={rightUniqueId}
                       ></input>
                     </div>
@@ -371,7 +389,7 @@ function Flow() {
 
                           setNodes(newNodes);
                         }}
-                        className="p-3 opacity-90 bg-shark-400 border-space-700 border-2 rounded-lg w-full"
+                        className={`p-3 opacity-90 bg-shark-400 border-dashed border-${rightNode.color} shadow-sm border-2 rounded-lg w-full`}
                         value={rightLabel}
                       ></input>
                     </div>

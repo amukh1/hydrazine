@@ -25,6 +25,7 @@ export default {
         $type: 'text_command',
         $checkpoints: [
           {
+            $unique_id: '0',
             $name: 'help',
             $params: {},
             $conditions: {
