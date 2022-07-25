@@ -9,6 +9,8 @@ Build Discord bots without any coding/programming experience.
  
 ## Roadmap
 
+
 - [ ] Write understandable template JSON.
+- [ ] Write a script to convert UI to JSON.
 - [ ] Write Discord bot code.
 - [ ] Create a Interactive UI.
