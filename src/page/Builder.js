@@ -336,8 +336,10 @@ function Flow() {
               <MiniMap
                 nodeColor={nodeColor}
                 nodeStrokeWidth={3}
-                className="bg-shark-300 rounded-lg shadow-lg border-dashed border-space-600 border-2 shadow-shark-600"
-                maskColor="#383D41"
+                className={`bg-shark-500 rounded-lg shadow-lg border-dashed border-${
+                  rightNode?.color || "none"
+                } border-2 shadow-shark-600`}
+                maskColor="#2A2E31"
               />
             </ReactFlow>
           </div>
@@ -345,7 +347,7 @@ function Flow() {
         {rightUniqueId ? (
           <div className="col-span-2 flex flex-wrap w-full">
             <div className="w-full flex flex-wrap">
-              <div className="w-full grid-cols-1 grid p-3 border-l flex flex-wrap border-scorpion">
+              <div className="w-full grid-cols-1 grid p-3 border-l  flex-wrap border-scorpion">
                 <div className="space-y-3">
                   <div>
                     <h3 className="text-xs font-bold uppercase text-gray-400 tracking-wider">
