@@ -1,5 +1,5 @@
 import Hydrogen from "../compiler/main.ts";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import ReactFlow, {
   Background,
   addEdge,
@@ -13,12 +13,8 @@ import Header from "../components/Header";
 import Block from "../components/Blocks";
 import Module from "../module/main";
 
-function hexToRGBA(hex, alpha) {
-  const r = parseInt(hex.slice(1, 3), 16);
-  const g = parseInt(hex.slice(3, 5), 16);
-  const b = parseInt(hex.slice(5, 7), 16);
-  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
-}
+import("../scss/tailwinds.scss");
+import("../scss/index.scss");
 
 function Flow() {
   const initialEdges = [];
@@ -28,8 +24,7 @@ function Flow() {
   const [edges, setEdges] = useState(initialEdges);
 
   const [rightUniqueId, setRightUniqueId] = useState(null);
-  const [rightLabel, setRightLabel] = useState(null);
-  const [rightNode, setRightNode] = useState(null);
+  const rightNode = getNodeById(rightUniqueId);
 
   function addNode(options) {
     let randId = Module.randomString(16);
@@ -52,6 +47,13 @@ function Flow() {
     }
   }
 
+  function hexToRGBA(hex, alpha) {
+    const r = parseInt(hex.slice(1, 3), 16);
+    const g = parseInt(hex.slice(3, 5), 16);
+    const b = parseInt(hex.slice(5, 7), 16);
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+  }
+
   function getNodeIndexById(id) {
     for (let i = 0; i < nodes.length; i++) {
       const node = nodes[i];
@@ -63,10 +65,7 @@ function Flow() {
 
   function FireRightPanel(node) {
     let data = getNodeById(node.target.dataset.id);
-
-    setRightNode(data);
     setRightUniqueId(data.id);
-    setRightLabel(data.data.label);
   }
 
   const onNodesChange = useCallback(
@@ -121,16 +120,6 @@ function Flow() {
       <div className="grid grid-cols-12">
         <div className="col-span-2 overflow-auto">
           <div className="space-y-3 h-screen overflow-auto  p-3 border-r border-scorpion ">
-            <section className="">
-              <div className="space-y-2 ">
-                <button
-                  onClick={exportCode}
-                  className="shadow-sm shadow-picton-300/500 bg-picton rounded-lg font-bold w-full p-3  text-white"
-                >
-                  Export
-                </button>
-              </div>
-            </section>
             <section className="">
               <h3 className="mb-1">Event Listeners</h3>
               <div className="space-y-2 ">
@@ -334,12 +323,12 @@ function Flow() {
             >
               <Background variant="dots" gap={20} size={1} />
               <MiniMap
-                nodeColor={nodeColor}
-                nodeStrokeWidth={3}
-                className={`bg-shark-500 rounded-lg shadow-lg border-dashed border-${
-                  rightNode?.color || "none"
-                } border-2 shadow-shark-600`}
                 maskColor="#2A2E31"
+                nodeStrokeWidth={3}
+                nodeColor={nodeColor}
+                className={`bg-shark-500 rounded-lg shadow-lg border-dashed border-${
+                  rightNode?.color || "shark-700"
+                } border-2 shadow-shark-600`}
               />
             </ReactFlow>
           </div>
@@ -349,12 +338,26 @@ function Flow() {
             <div className="w-full flex flex-wrap">
               <div className="w-full grid-cols-1 grid p-3 border-l  flex-wrap border-scorpion">
                 <div className="space-y-3">
+                  <section className="">
+                    <div className="space-y-2 ">
+                      <button
+                        onClick={exportCode}
+                        className={`shadow shadow-${
+                          rightNode.color || "shark-400"
+                        } bg-${
+                          rightNode.color || "shark-400"
+                        } rounded-lg font-bold w-full p-3  text-white`}
+                      >
+                        Export
+                      </button>
+                    </div>
+                  </section>
                   <div>
                     <h3 className="text-xs font-bold uppercase text-gray-400 tracking-wider">
                       BUILDER
                     </h3>
                     <h1 className="text-lg font-bold text-gray-100 tracking-wider">
-                      {rightLabel}
+                      {rightNode.data.label}
                     </h1>
                   </div>
                   {rightUniqueId ? (
@@ -369,30 +372,36 @@ function Flow() {
                   ) : (
                     false
                   )}
-                  {rightLabel ? (
+                  {rightNode.data.label ? (
                     <div>
                       <h3 className="font-semibold">Label</h3>
                       <input
                         onChange={(e) => {
-                          setRightLabel(e.target.value);
-
                           const node = getNodeById(rightUniqueId);
                           const newNode = node;
 
                           const nodeIndex = getNodeIndexById(rightUniqueId);
                           const newNodes = [...nodes];
-                          newNodes.pop(nodeIndex);
 
-                          newNode.id = rightUniqueId;
                           newNode.data.label = e.target.value;
                           newNodes.push({
                             ...newNode,
                           });
 
-                          setNodes(newNodes);
+                          const final = [];
+                          const ids = [];
+                          for (let i = 0; i < newNodes.length; i++) {
+                            const node = newNodes[i];
+                            if (!ids.includes(node.id)) {
+                              final.push(node);
+                              ids.push(node.id);
+                            }
+                          }
+
+                          setNodes(final);
                         }}
                         className={`p-3 opacity-90 bg-shark-400 border-dashed border-${rightNode.color} shadow-sm border-2 rounded-lg w-full`}
-                        value={rightLabel}
+                        value={rightNode.data.label}
                       ></input>
                     </div>
                   ) : (

@@ -1,7 +1,13 @@
 let code = "";
 
 const fs = require("fs");
-const classes = ["from-{color}-500", "to-{color}-300", "border-{color}"];
+const classes = [
+  "from-{color}-500",
+  "to-{color}-300",
+  "border-{color}",
+  "shadow-{color}",
+  "bg-{color}",
+];
 const colors = ["shamrock", "cinna", "royal", "picton", "emerald", "amethyst"];
 const extras = [
   "bg-gradient-to-r bg-shark-600 border border-dashed text-gray-200 font-bold text-xs space-700",
