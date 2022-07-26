@@ -1,17 +1,18 @@
-import Hydrogen from "../compiler/main.ts";
-import React, { useCallback, useMemo, useState } from "react";
 import ReactFlow, {
-  Background,
-  addEdge,
   MiniMap,
+  addEdge,
+  Background,
   applyEdgeChanges,
   applyNodeChanges,
 } from "react-flow-renderer";
+import React, { useEffect, useCallback, useMemo, useState } from "react";
 
 import ConnectionLine from "../components/ConnectionLine";
 import Header from "../components/Header";
 import Block from "../components/Blocks";
-import Module from "../module/main";
+
+import Hydrogen from "../compiler/main.ts";
+import Module from "../module/main.ts";
 
 import("../scss/tailwinds.scss");
 import("../scss/index.scss");
@@ -23,7 +24,7 @@ function Flow() {
   const [nodes, setNodes] = useState(initialNodes);
   const [edges, setEdges] = useState(initialEdges);
 
-  const [rightUniqueId, setRightUniqueId] = useState(null);
+  const [rightUniqueId, setRightUniqueId] = useState("");
   const rightNode = getNodeById(rightUniqueId);
 
   function addNode(options) {
@@ -106,11 +107,10 @@ function Flow() {
   };
 
   const [fields, setFields] = useState([]);
-  function buildFields() {
-    let node = getNodeById(rightUniqueId);
-
-    let fields = node?.$cinfo?.$fields || [];
-    let final = [];
+  function updateFieldComponent() {
+    const node = getNodeById(rightUniqueId);
+    const fields = node?.$cinfo?.$fields || [];
+    const final = [];
 
     for (let i = 0; i < fields.length; i++) {
       const field = fields[i];
@@ -119,13 +119,14 @@ function Flow() {
           <h3 className="font-semibold">{field.$name}</h3>
           <input
             onChange={(e) => {
-              const node = getNodeById(rightUniqueId);
+              // const node = getNodeById(rightUniqueId);
               const newNodes = [...nodes];
               const newNode = node;
               const final = [];
               const ids = [];
 
-              //       newNode.data[field.$name] = e.target.value; // Set the node's innerText to label value
+              // newNode.data[field.$name] = e.target.value; // Set the node's innerText to label value
+              newNode.$cinfo.$fields[i].$value = e.target.value;
               newNodes.push(newNode);
 
               for (let i = newNodes.length - 1; i >= 0; i--) {
@@ -136,10 +137,13 @@ function Flow() {
                 }
               }
 
+              console.log(newNode);
+              console.log(final);
               setNodes(final);
             }}
             className={`p-3 opacity-90 bg-shark-400 border-dashed border-${node.color} shadow-sm border-2 rounded-lg w-full`}
             value={field.$value}
+            placeholder={field.$placeholder}
           ></input>
         </div>
       );
@@ -149,16 +153,14 @@ function Flow() {
     return final;
   }
 
-  console.log(rightNode);
-
   const onNodesClick = (node) => {
     let data = getNodeById(node.target.dataset.id);
-
     setRightUniqueId(data.id);
-    buildFields();
   };
 
-  console.log(fields);
+  useEffect(() => {
+    updateFieldComponent(rightUniqueId);
+  }, [rightUniqueId]);
 
   return (
     <>
@@ -185,12 +187,14 @@ function Flow() {
                           {
                             $type: "string",
                             $name: "value",
-                            $value: null,
+                            $placeholder: "Some Random Value",
+                            $value: "",
                           },
                           {
                             $type: "string",
-                            $name: "code",
-                            $value: "console.log(1)",
+                            $name: "Print",
+                            $placeholder: "Print on Start",
+                            $value: "$BOTNAME has started",
                           },
                         ],
                         $action: "on_start",
@@ -318,7 +322,14 @@ function Flow() {
                       color: "emerald",
                       $cinfo: {
                         $action: "console_log",
-                        $fields: [{ value: "", type: "string" }],
+                        $fields: [
+                          {
+                            $type: "string",
+                            $name: "Message",
+                            $placeholder: "$BOTNAME has started",
+                            $value: "",
+                          },
+                        ],
                       },
                       data: { label: "console.log()" },
                       position: { x: 250, y: 250 },
@@ -380,14 +391,14 @@ function Flow() {
               fitView
             >
               <Background variant="dots" gap={20} size={1} />
-              <MiniMap
+              {/* <MiniMap
                 maskColor="#2A2E31"
                 nodeStrokeWidth={3}
                 nodeColor={nodeColor}
                 className={`bg-shark-500 rounded-lg shadow-lg border-dashed border-${
                   rightNode?.color || "shark-700"
                 } border-2 shadow-shark-600`}
-              />
+              /> */}
             </ReactFlow>
           </div>
         </div>
@@ -420,7 +431,9 @@ function Flow() {
                       <h3 className="font-semibold">Unique Key</h3>
                       <input
                         disabled
-                        className={`p-3 opacity-90 bg-shark-400 border-dashed border-${rightNode.color} shadow-sm border-2 rounded-lg w-full`}
+                        className={`p-3 opacity-90 bg-shark-400 border-dashed border-${
+                          rightNode.color || "shark-700"
+                        } shadow-sm border-2 rounded-lg w-full`}
                         value={rightUniqueId}
                       ></input>
                     </div>

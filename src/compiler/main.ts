@@ -1,10 +1,12 @@
 class Hydrogen {
   options: any
+
   constructor(options: any = {}) {
     this.options = options
   }
+
   compile(data: any, options: any) {
-    let final = {
+    const final: any = {
       $cinfo: {
         $listeners: [],
         $actions: [],
