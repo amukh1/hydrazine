@@ -3,7 +3,11 @@ import { Field } from '../types'
 class Hydrogen {
   options: any
 
-  constructor(options: any = {}) {
+  constructor(
+    options: {
+      verbose?: boolean
+    } = {},
+  ) {
     this.options = options
   }
 
@@ -23,7 +27,7 @@ class Hydrogen {
     console.log(nodes)
     console.log(edges)
 
-    function getNodeById(id) {
+    function getNodeById(id: string) {
       for (let i = 0; i < nodes.length; i++) {
         const node = nodes[i]
         if (node.id === id) {
@@ -43,18 +47,23 @@ class Hydrogen {
 
       switch (source.$cinfo.$action) {
         case 'on_start': {
-          if (target.$cinfo) {
-            final.$cinfo.$onInitListeners.push({
-              $type: 'process',
-              $actions: ((target.$cinfo || {}).$fields || []).map(
-                (field: Field) => {
-                  return {
-                    $type: target.$cinfo.$action,
-                    $value: field.$value,
-                  }
-                },
-              ),
-            })
+          if (target) {
+            if (target.$cinfo) {
+              if (Array.isArray(target.$cinfo.$fields)) {
+                console.log(target.$cinfo.$fields)
+                final.$cinfo.$onInitListeners.push({
+                  $type: 'process',
+                  $actions: ((target.$cinfo || {}).$fields || []).map(
+                    (field: Field) => {
+                      return {
+                        $type: target.$cinfo.$action,
+                        $value: field.$value,
+                      }
+                    },
+                  ),
+                })
+              }
+            }
           }
         }
         case 'on_message': {
@@ -63,7 +72,7 @@ class Hydrogen {
             $conditions: {
               $equals: edges.map((edge) => {
                 const tinySource = getNodeById(edge.target)
-                switch (tinySource.$cinfo.$action) {
+                switch ((tinySource?.$cinfo || {}).$action || null) {
                   case 'if_statement': {
                     return {
                       $match: tinySource.$cinfo.$fields[0].$match,
@@ -74,14 +83,14 @@ class Hydrogen {
                 }
               }),
             },
-            $actions: ((target.$cinfo || {}).$fields || []).map(
-              (field: Field) => {
-                return {
-                  $type: target.$cinfo.$action,
-                  $value: field.$value,
-                }
-              },
-            ),
+            $actions: Array.isArray(target.$cinfo.$fields)
+              ? ((target.$cinfo || {}).$fields || []).map((field: Field) => {
+                  return {
+                    $type: target.$cinfo.$action,
+                    $value: field.$value,
+                  }
+                })
+              : [],
           })
         }
       }
