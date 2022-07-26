@@ -282,7 +282,7 @@ function Flow() {
                         label: "onMessage",
                       },
                       $cinfo: {
-                        $action: "on_message_listener",
+                        $action: "on_message",
                       },
                       position: { x: 250, y: 250 },
                     })
@@ -352,6 +352,13 @@ function Flow() {
                     addNode({
                       color: "royal",
                       data: { label: "If <condition>" },
+                      $cinfo: {
+                        $action: "if_statement",
+                        $statement: {
+                          $match: "",
+                          $with: ""
+                        }
+                      },
                       position: { x: 250, y: 250 },
                     })
                   }

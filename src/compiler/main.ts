@@ -1,3 +1,5 @@
+import { Field } from '../types'
+
 class Hydrogen {
   options: any
 
@@ -9,6 +11,7 @@ class Hydrogen {
     const start = performance.now()
     const final: any = {
       $cinfo: {
+        $onInitListeners: [],
         $listeners: [],
         $actions: [],
       },
@@ -37,6 +40,67 @@ class Hydrogen {
       console.log(target)
       console.log(source)
       console.log(edge)
+
+      switch (source.$cinfo.$action) {
+        case 'on_start': {
+          if (target.$cinfo) {
+            final.$cinfo.$onInitListeners.push({
+              $type: 'process',
+              $actions: ((target.$cinfo || {}).$fields || []).map(
+                (field: Field) => {
+                  return {
+                    $type: target.$cinfo.$action,
+                    $value: field.$value,
+                  }
+                },
+              ),
+            })
+          }
+        }
+        case 'on_message': {
+          final.$cinfo.$listeners.push({
+            $type: 'text_command',
+            $conditions: {
+              $equals: edges.map((edge) => {
+                console.log(edge)
+                const tinySource = getNodeById(edge.target)
+                console.log(tinySource)
+                switch (tinySource.$cinfo.$action) {
+                  case 'if_statement': {
+                    return {
+                      $match: tinySource.$cinfo.$statement.$match,
+                      $with: tinySource.$cinfo.$statement.$with,
+                      caseSensitive: false,
+                    }
+                  }
+                }
+              }),
+            },
+            $actions: ((target.$cinfo || {}).$fields || []).map(
+              (field: Field) => {
+                return {
+                  $type: target.$cinfo.$action,
+                  $name: field.$value,
+                  $conditions: {
+                    $equals: edges.map((edge) => {
+                      const tinySource = getNodeById(edge.source)
+                      switch (tinySource.$cinfo.$action) {
+                        case 'if_statement': {
+                          return {
+                            $match: tinySource.$cinfo.$statement.$match,
+                            $with: tinySource.$cinfo.$statement.$with,
+                            caseSensitive: false,
+                          }
+                        }
+                      }
+                    }),
+                  },
+                }
+              },
+            ),
+          })
+        }
+      }
     }
 
     for (let i = 0; i < nodes.length; i++) {
@@ -78,6 +142,7 @@ class Hydrogen {
       )
     }
 
+    console.log(final)
     return final
   }
 }

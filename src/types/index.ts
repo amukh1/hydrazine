@@ -13,7 +13,7 @@ export interface TypeNode {
 }
 
 export interface CompilerInfo {
-  $fields: Fields[]
+  $fields: Field[]
   $listeners: Listeners[]
 }
 
@@ -34,7 +34,7 @@ export interface Checkpoints {
   }
 }
 
-export interface Fields {
+export interface Field {
   $type: string
   $name: string
   $placeholder?: string
