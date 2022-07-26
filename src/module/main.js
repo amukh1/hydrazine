@@ -1,5 +1,3 @@
-var SHA256 = require("crypto-js/sha256");
-
 class Master {
   randomString(strLength, charSet) {
     var result = [];

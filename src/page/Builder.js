@@ -54,28 +54,19 @@ function Flow() {
     return `rgba(${r}, ${g}, ${b}, ${alpha})`;
   }
 
-  function getNodeIndexById(id) {
-    for (let i = 0; i < nodes.length; i++) {
-      const node = nodes[i];
-      if (node.id === id) {
-        return i;
-      }
-    }
-  }
-
-  function FireRightPanel(node) {
-    let data = getNodeById(node.target.dataset.id);
-    setRightUniqueId(data.id);
-  }
+  // function getNodeIndexById(id) {
+  //   for (let i = 0; i < nodes.length; i++) {
+  //     const node = nodes[i];
+  //     if (node.id === id) {
+  //       return i;
+  //     }
+  //   }
+  // }
 
   const onNodesChange = useCallback(
     (changes) => setNodes((nds) => applyNodeChanges(changes, nds)),
     [setNodes]
   );
-
-  const onNodesClick = (node) => {
-    FireRightPanel(node);
-  };
 
   const onEdgesChange = useCallback(
     (changes) => setEdges((eds) => applyEdgeChanges(changes, eds)),
@@ -114,6 +105,61 @@ function Flow() {
     }
   };
 
+  const [fields, setFields] = useState([]);
+  function buildFields() {
+    let node = getNodeById(rightUniqueId);
+
+    let fields = node?.$cinfo?.$fields || [];
+    let final = [];
+
+    for (let i = 0; i < fields.length; i++) {
+      const field = fields[i];
+      final.push(
+        <div>
+          <h3 className="font-semibold">{field.$name}</h3>
+          <input
+            onChange={(e) => {
+              const node = getNodeById(rightUniqueId);
+              const newNodes = [...nodes];
+              const newNode = node;
+              const final = [];
+              const ids = [];
+
+              //       newNode.data[field.$name] = e.target.value; // Set the node's innerText to label value
+              newNodes.push(newNode);
+
+              for (let i = newNodes.length - 1; i >= 0; i--) {
+                const node = newNodes[i];
+                if (!ids.includes(node.id)) {
+                  final.push(node);
+                  ids.push(node.id);
+                }
+              }
+
+              setNodes(final);
+            }}
+            className={`p-3 opacity-90 bg-shark-400 border-dashed border-${node.color} shadow-sm border-2 rounded-lg w-full`}
+            value={field.$value}
+          ></input>
+        </div>
+      );
+    }
+
+    setFields(final);
+    return final;
+  }
+
+  console.log(rightNode);
+
+  const onNodesClick = (node) => {
+    let data = getNodeById(node.target.dataset.id);
+
+    setRightUniqueId(data.id);
+    buildFields();
+  };
+
+  console.log(fields);
+
   return (
     <>
       <Header />
@@ -135,6 +181,18 @@ function Flow() {
                         label: "onStart",
                       },
                       $cinfo: {
+                        $fields: [
+                          {
+                            $type: "string",
+                            $name: "value",
+                            $value: null,
+                          },
+                          {
+                            $type: "string",
+                            $name: "code",
+                            $value: "console.log(1)",
+                          },
+                        ],
                         $action: "on_start",
                       },
                       position: { x: 250, y: 250 },
@@ -338,28 +396,25 @@ function Flow() {
             <div className="w-full flex flex-wrap">
               <div className="w-full grid-cols-1 grid p-3 border-l  flex-wrap border-scorpion">
                 <div className="space-y-3">
+                  <div>
+                    <h3 className="text-xs font-bold uppercase text-gray-400 tracking-wider">
+                      BUILDER
+                    </h3>
+                  </div>
                   <section className="">
-                    <div className="space-y-2 ">
+                    <div className="space-y-2">
                       <button
                         onClick={exportCode}
                         className={`shadow shadow-${
                           rightNode.color || "shark-400"
                         } bg-${
                           rightNode.color || "shark-400"
-                        } rounded-lg font-bold w-full p-3  text-white`}
+                        } rounded-lg font-bold w-full p-3 text-white`}
                       >
                         Export
                       </button>
                     </div>
                   </section>
-                  <div>
-                    <h3 className="text-xs font-bold uppercase text-gray-400 tracking-wider">
-                      BUILDER
-                    </h3>
-                    <h1 className="text-lg font-bold text-gray-100 tracking-wider">
-                      {rightNode.data.label}
-                    </h1>
-                  </div>
                   {rightUniqueId ? (
                     <div>
                       <h3 className="font-semibold">Unique Key</h3>
@@ -372,41 +427,9 @@ function Flow() {
                   ) : (
                     false
                   )}
-                  {rightNode.data.label ? (
-                    <div>
-                      <h3 className="font-semibold">Label</h3>
-                      <input
-                        onChange={(e) => {
-                          const node = getNodeById(rightUniqueId);
-                          const newNode = node;
-
-                          const nodeIndex = getNodeIndexById(rightUniqueId);
-                          const newNodes = [...nodes];
-
-                          newNode.data.label = e.target.value;
-                          newNodes.push({
-                            ...newNode,
-                          });
-
-                          const final = [];
-                          const ids = [];
-                          for (let i = 0; i < newNodes.length; i++) {
-                            const node = newNodes[i];
-                            if (!ids.includes(node.id)) {
-                              final.push(node);
-                              ids.push(node.id);
-                            }
-                          }
-
-                          setNodes(final);
-                        }}
-                        className={`p-3 opacity-90 bg-shark-400 border-dashed border-${rightNode.color} shadow-sm border-2 rounded-lg w-full`}
-                        value={rightNode.data.label}
-                      ></input>
-                    </div>
-                  ) : (
-                    false
-                  )}
+                  {fields.map((item, index) => {
+                    return <div key={index}>{item}</div>;
+                  })}
                 </div>
               </div>
             </div>
