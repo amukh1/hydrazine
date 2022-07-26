@@ -11,10 +11,10 @@ import React, { useEffect, useCallback, useState } from "react";
 
 import ConnectionLine from "../components/ConnectionLine.tsx";
 import Block from "../components/Blocks.tsx";
-import Header from "../components/Header";
+import Header from "../components/Header.tsx";
 import Hydrogen from "../compiler/main.ts";
-import Module from "../module/main.ts";
 import Export from "../module/export.ts"
+import Module from "../module/main.ts";
 
 import("../scss/tailwinds.scss");
 import("../scss/index.scss");
@@ -27,7 +27,7 @@ function Flow() {
   const [edges, setEdges] = useState(initialEdges);
 
   const [rightUniqueId, setRightUniqueId] = useState("");
-  const rightNode: TypeNode = getNodeById(rightUniqueId);
+  // const rightNode: TypeNode = getNodeById(rightUniqueId);
 
   function addNode(options) {
     let randId = Module.randomString(16);
@@ -93,7 +93,7 @@ function Flow() {
     fetch(DiscordFile)
       .then(r => r.text())
       .then(text => {
-        const compiled = Export(undefined,
+        const compiled = Export("hydrazine.zip",
           [
             { content: JSON.stringify(output, null, 4), name: "./template/template.ts" },
             { content: text, name: "./src/index.ts" }
@@ -131,7 +131,7 @@ function Flow() {
       const field = nodeFields[i];
       final.push(
         <>
-          <div>
+          <div className="mt-2">
             <h3 className="font-semibold">{field.$name}</h3>
             <input
               onChange={(e) => {
@@ -156,7 +156,7 @@ function Flow() {
                 console.log(e.target.value);
                 setNodes(unique);
               }}
-              className={`p-3 opacity-90 bg-shark-400 border-dashed border-${node.color} shadow-sm border-2 rounded-lg w-full`}
+              className={`p-3 opacity-90 bg-shark-400 border-dashed border-picton  shadow-sm border-2 rounded-lg w-full`}
               value={field.$value}
               placeholder={field.$placeholder}
             ></input>
@@ -177,7 +177,7 @@ function Flow() {
   };
 
   useEffect(() => {
-    updateFieldComponent(rightUniqueId);
+    updateFieldComponent();
   }, [rightUniqueId]);
 
   return (
@@ -185,7 +185,7 @@ function Flow() {
       <Header />
       <div className="grid grid-cols-12">
         <div className="col-span-2 overflow-auto">
-          <div className="space-y-3 h-screen overflow-auto  p-3 border-r border-scorpion ">
+          <div className="space-y-3 h-screen overflow-auto  p-3 border-r border-shark-400">
             <section className="">
               <h3 className="mb-1">Event Listeners</h3>
               <div className="space-y-2 ">
@@ -415,8 +415,7 @@ function Flow() {
                 nodeBorderRadius={10}
                 nodeColor={nodeColor}
                 nodeStrokeColor={nodeColor}
-                className={`bg-shark-500 rounded-lg shadow-lg border-dashed border-${rightNode?.color || "shark-700"
-                  } border-2 shadow-shark-600`}
+                className={`bg-shark-500 rounded-lg shadow-lg  border-shark-400 border-2 shadow-shark-600`}
               />
             </ReactFlow>
           </div>
@@ -424,7 +423,7 @@ function Flow() {
         {rightUniqueId ? (
           <div className="col-span-2 flex flex-wrap w-full">
             <div className="w-full flex flex-wrap">
-              <div className="w-full grid-cols-1 grid p-3 border-l  flex-wrap border-scorpion">
+              <div className="w-full grid-cols-1 grid p-3 border-l  flex-wrap border-shark-400">
                 <div className="">
                   <section className="mb-3">
                     <h3 className="text-xs font-bold uppercase text-gray-400 tracking-wider">
@@ -433,9 +432,7 @@ function Flow() {
                     <div className="space-y-2 mt-1">
                       <button
                         onClick={exportCode}
-                        className={`shadow shadow-${rightNode.color || "shark-400"
-                          } bg-${rightNode.color || "shark-400"
-                          } rounded-lg font-bold w-full p-3 text-white`}
+                        className={`shadow shadow-picton bg-picton rounded-lg font-bold w-full p-3 text-white`}
                       >
                         Export
                       </button>
@@ -446,8 +443,7 @@ function Flow() {
                       <h3 className="font-semibold">Unique Key</h3>
                       <input
                         disabled
-                        className={`p-3 opacity-90 bg-shark-400 border-dashed border-${rightNode.color || "shark-700"
-                          } shadow-sm border-2 rounded-lg w-full`}
+                        className={`p-3 opacity-90 bg-shark-400 border-dashed border-picton shadow-sm border-2 rounded-lg w-full`}
                         value={rightUniqueId}
                       ></input>
                     </div>

@@ -20,6 +20,17 @@ export default {
     /**
      * @param {$MSGCONTENT} - Contents of the message sent by a user.
      **/
+    $onInitListeners: [
+      {
+        $type: 'process',
+        $actions: [
+          {
+            $type: 'console_log',
+            $value: 'Process Started $DATE_LOCASETIMESTRING',
+          },
+        ],
+      },
+    ],
     $listeners: [
       {
         $type: 'text_command',
