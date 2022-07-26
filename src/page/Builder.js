@@ -5,7 +5,7 @@ import ReactFlow, {
   applyEdgeChanges,
   applyNodeChanges,
 } from "react-flow-renderer";
-import React, { useEffect, useCallback, useMemo, useState } from "react";
+import React, { useEffect, useCallback, useState } from "react";
 
 import ConnectionLine from "../components/ConnectionLine";
 import Header from "../components/Header";
@@ -100,7 +100,7 @@ function Flow() {
       case "picton":
         return "#60A7E8";
       case "royal":
-        return hexToRGBA("#FE8C52", 0.7);
+        return hexToRGBA("#FE8C52", 1);
       default:
         return "#32373C";
     }
@@ -109,11 +109,11 @@ function Flow() {
   const [fields, setFields] = useState([]);
   function updateFieldComponent() {
     const node = getNodeById(rightUniqueId);
-    const fields = node?.$cinfo?.$fields || [];
+    const nodeFields = node?.$cinfo?.$fields || [];
     const final = [];
 
-    for (let i = 0; i < fields.length; i++) {
-      const field = fields[i];
+    for (let i = 0; i < nodeFields.length; i++) {
+      const field = nodeFields[i];
       final.push(
         <div>
           <h3 className="font-semibold">{field.$name}</h3>
@@ -121,8 +121,8 @@ function Flow() {
             onChange={(e) => {
               // const node = getNodeById(rightUniqueId);
               const newNodes = [...nodes];
-              const newNode = node;
-              const final = [];
+              const newNode = { ...node };
+              const unique = [];
               const ids = [];
 
               // newNode.data[field.$name] = e.target.value; // Set the node's innerText to label value
@@ -132,14 +132,13 @@ function Flow() {
               for (let i = newNodes.length - 1; i >= 0; i--) {
                 const node = newNodes[i];
                 if (!ids.includes(node.id)) {
-                  final.push(node);
+                  unique.push(node);
                   ids.push(node.id);
                 }
               }
 
-              console.log(newNode);
-              console.log(final);
-              setNodes(final);
+              console.log(e.target.value);
+              setNodes(unique);
             }}
             className={`p-3 opacity-90 bg-shark-400 border-dashed border-${node.color} shadow-sm border-2 rounded-lg w-full`}
             value={field.$value}
@@ -150,7 +149,6 @@ function Flow() {
     }
 
     setFields(final);
-    return final;
   }
 
   const onNodesClick = (node) => {
@@ -391,14 +389,16 @@ function Flow() {
               fitView
             >
               <Background variant="dots" gap={20} size={1} />
-              {/* <MiniMap
+              <MiniMap
                 maskColor="#2A2E31"
-                nodeStrokeWidth={3}
+                nodeStrokeWidth={0}
+                nodeBorderRadius={10}
                 nodeColor={nodeColor}
+                nodeStrokeColor={nodeColor}
                 className={`bg-shark-500 rounded-lg shadow-lg border-dashed border-${
                   rightNode?.color || "shark-700"
                 } border-2 shadow-shark-600`}
-              /> */}
+              />
             </ReactFlow>
           </div>
         </div>

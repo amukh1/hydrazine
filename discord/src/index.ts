@@ -1,3 +1,5 @@
+import formatMessage from '../module/formatMessage'
+
 import { ActivityOptions, Client, GatewayIntentBits } from 'discord.js'
 import config from '../template/template'
 
@@ -19,10 +21,20 @@ client.on('ready', () => {
 
 for (let i = 0; i < config.$cinfo.$listeners.length; i++) {
   const event = config.$cinfo.$listeners[i]
+  const checkpoints = event.$checkpoints
+
   switch (event.$type) {
     case 'text_command':
       client.on('messageCreate', async (message) => {
-        console.log(message)
+        for (let i = 0; i < checkpoints.length; i++) {
+          const checkpoint = checkpoints[i]
+          const conditions = checkpoint.$conditions
+
+          const equals = Object.keys(conditions.$equals)
+          const cleanMsg = formatMessage(message, {
+            $MSGCONTENT: message.content,
+          })
+        }
       })
   }
 }

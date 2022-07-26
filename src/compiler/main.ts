@@ -6,6 +6,7 @@ class Hydrogen {
   }
 
   compile(data: any, options: any) {
+    const start = performance.now()
     const final: any = {
       $cinfo: {
         $listeners: [],
@@ -16,6 +17,9 @@ class Hydrogen {
     const nodes = data?.nodes
     const edges = data?.edges
 
+    console.log(nodes)
+    console.log(edges)
+
     function getNodeById(id) {
       for (let i = 0; i < nodes.length; i++) {
         const node = nodes[i]
@@ -24,15 +28,20 @@ class Hydrogen {
         }
       }
     }
-    console.log(nodes)
-    console.log(edges)
+
+    for (let i = 0; i < edges.length; i++) {
+      const edge = edges[i]
+      const source = getNodeById(edge.source)
+      const target = getNodeById(edge.target)
+
+      console.log(target)
+      console.log(source)
+      console.log(edge)
+    }
 
     for (let i = 0; i < nodes.length; i++) {
       const node = nodes[i]
       const action = node.$cinfo?.$action
-
-      console.log(node)
-      console.log(action)
 
       switch (action) {
         case 'on_slash_command': {
@@ -61,17 +70,12 @@ class Hydrogen {
       }
     }
 
-    for (let i = 0; i < edges.length; i++) {
-      const edge = edges[i]
-      const source = getNodeById(edge.source)
-      const target = getNodeById(edge.target)
-
-      console.log(target)
-      console.log(source)
-      console.log(edge)
-
-      switch (edge) {
-      }
+    if (options?.verbose) {
+      console.log(
+        `Compiled Within ${(performance.now() - start).toFixed(
+          3,
+        )} MilliSeconds(s)`,
+      )
     }
 
     return final
