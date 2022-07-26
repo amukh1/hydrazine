@@ -1,3 +1,5 @@
+export interface NodeElement {}
+
 export interface TypeNode {
   id: string
   color: string
@@ -29,5 +31,6 @@ export interface Checkpoints {
 export interface Fields {
   $type: string
   $name: string
+  $placeholder?: string
   $value?: string
 }

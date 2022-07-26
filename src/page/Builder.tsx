@@ -44,8 +44,6 @@ function Flow() {
       const node: TypeNode = nodes[i];
       if (node.id === id) {
         return node;
-      } else {
-        return false
       }
     }
     return false
@@ -126,8 +124,8 @@ function Flow() {
                 // const node = getNodeById(rightUniqueId);
                 const newNodes: TypeNode[] = [...nodes];
                 const newNode: TypeNode = node;
-                const unique = [];
-                const ids = [];
+                const ids: string[] = [];
+                const unique: TypeNode[] = [];
 
                 // newNode.data[field.$name] = e.target.value; // Set the node's innerText to label value
                 newNode.$cinfo.$fields[i].$value = e.target.value;
@@ -157,8 +155,11 @@ function Flow() {
   }
 
   const onNodesClick = (node: TypeNode) => {
+
     let data = getNodeById(node.target.dataset.id);
-    setRightUniqueId(data.id);
+    console.log(data.id)
+    setRightUniqueId(data?.id);
+
   };
 
   useEffect(() => {
