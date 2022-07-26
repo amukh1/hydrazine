@@ -1,6 +1,7 @@
 import Builder from "./page/Builder.js";
 import React, { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
+import reportWebVitals from "./reportWebVitals.ts";
 
 document.addEventListener("DOMContentLoaded", function (event) {
   const root = createRoot(document.getElementById("root"));
@@ -10,3 +11,5 @@ document.addEventListener("DOMContentLoaded", function (event) {
     </StrictMode>
   );
 });
+
+reportWebVitals();
