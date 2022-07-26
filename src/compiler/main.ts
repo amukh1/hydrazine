@@ -62,14 +62,12 @@ class Hydrogen {
             $type: 'text_command',
             $conditions: {
               $equals: edges.map((edge) => {
-                console.log(edge)
                 const tinySource = getNodeById(edge.target)
-                console.log(tinySource)
                 switch (tinySource.$cinfo.$action) {
                   case 'if_statement': {
                     return {
-                      $match: tinySource.$cinfo.$statement.$match,
-                      $with: tinySource.$cinfo.$statement.$with,
+                      $match: tinySource.$cinfo.$fields[0].$match,
+                      $with: tinySource.$cinfo.$fields[0].$with,
                       caseSensitive: false,
                     }
                   }
@@ -80,21 +78,7 @@ class Hydrogen {
               (field: Field) => {
                 return {
                   $type: target.$cinfo.$action,
-                  $name: field.$value,
-                  $conditions: {
-                    $equals: edges.map((edge) => {
-                      const tinySource = getNodeById(edge.source)
-                      switch (tinySource.$cinfo.$action) {
-                        case 'if_statement': {
-                          return {
-                            $match: tinySource.$cinfo.$statement.$match,
-                            $with: tinySource.$cinfo.$statement.$with,
-                            caseSensitive: false,
-                          }
-                        }
-                      }
-                    }),
-                  },
+                  $value: field.$value,
                 }
               },
             ),

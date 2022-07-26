@@ -95,7 +95,7 @@ function Flow() {
     const output = Hydrogen.compile({
       nodes: nodes,
       edges: edges,
-    });
+    }, { verbose: true });
 
     fetch(DiscordFile)
       .then(r => r.text())
@@ -354,10 +354,10 @@ function Flow() {
                       data: { label: "If <condition>" },
                       $cinfo: {
                         $action: "if_statement",
-                        $statement: {
+                        $fields: [{
                           $match: "",
                           $with: ""
-                        }
+                        }]
                       },
                       position: { x: 250, y: 250 },
                     })
@@ -485,29 +485,25 @@ function Flow() {
                   })}
                   <div className="space-y-2 w-full mt-3">
                     <button
+                      onClick={saveLocalCopy}
+                      className={`shadow shadow-shark-400 bg-shark-400 rounded-lg font-bold w-full p-3 text-white`}
+                    >
+                      Save Local Copy
+                    </button>                      <input type="file" onChange={localFileChange} style={{ "display": "none" }} ref={fileInput} />
+                    <button
+                      onClick={localClick}
+                      className={`shadow shadow-shark-400 bg-shark-400 rounded-lg font-bold w-full p-3 text-white`}
+                    >
+                      Load Local Copy
+                    </button>
+                    <button
                       onClick={exportCode}
                       className={`shadow shadow-picton bg-picton rounded-lg font-bold w-full p-3 text-white`}
                     >
                       Export
                     </button>
-                    <button
-                      onClick={saveLocalCopy}
-                      className={`shadow shadow-shark-400 bg-shark-400 rounded-lg font-bold w-full p-3 text-white`}
-                    >
-                      Save Local Copy
-                    </button>
-                    <div className='mt-5' >
-                      <input type="file" onChange={localFileChange} style={{ "display": "none" }} ref={fileInput} />
-                      <button
-                        onClick={localClick}
-                        className={`shadow shadow-shark-400 bg-shark-400 rounded-lg font-bold w-full p-3 text-white`}
-                      >
-                        Load Local Copy
-                      </button>
-                    </div>
                   </div>
                 </div>
-
               </div>
 
             </div>
