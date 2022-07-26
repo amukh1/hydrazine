@@ -1,3 +1,4 @@
+import { TypeNode } from "../types/index"
 import ReactFlow, {
   MiniMap,
   addEdge,
@@ -25,7 +26,7 @@ function Flow() {
   const [edges, setEdges] = useState(initialEdges);
 
   const [rightUniqueId, setRightUniqueId] = useState("");
-  const rightNode = getNodeById(rightUniqueId);
+  const rightNode: TypeNode = getNodeById(rightUniqueId);
 
   function addNode(options) {
     let randId = Module.randomString(16);
@@ -34,21 +35,24 @@ function Flow() {
     options[
       "className"
     ] = `bg-gradient-to-r bg-shark-600 border-${options.color} border border-dashed text-gray-200 font-bold text-xs`;
-    setNodes((nodes) => {
+    setNodes((nodes: any) => {
       return [...nodes, options];
     });
   }
 
-  function getNodeById(id) {
+  function getNodeById(id: string): TypeNode | any {
     for (let i = 0; i < nodes.length; i++) {
-      const node = nodes[i];
+      const node: TypeNode = nodes[i];
       if (node.id === id) {
         return node;
+      } else {
+        return false
       }
     }
+    return false
   }
 
-  function hexToRGBA(hex, alpha) {
+  function hexToRGBA(hex: string, alpha: number) {
     const r = parseInt(hex.slice(1, 3), 16);
     const g = parseInt(hex.slice(3, 5), 16);
     const b = parseInt(hex.slice(5, 7), 16);
@@ -65,7 +69,7 @@ function Flow() {
   // }
 
   const onNodesChange = useCallback(
-    (changes) => setNodes((nds) => applyNodeChanges(changes, nds)),
+    (changes) => setNodes((nds: any) => applyNodeChanges(changes, nds)),
     [setNodes]
   );
 
@@ -108,50 +112,52 @@ function Flow() {
 
   const [fields, setFields] = useState([]);
   function updateFieldComponent() {
-    const node = getNodeById(rightUniqueId);
+    const node: TypeNode = getNodeById(rightUniqueId);
     const nodeFields = node?.$cinfo?.$fields || [];
-    const final = [];
+    const final: any = [];
 
     for (let i = 0; i < nodeFields.length; i++) {
       const field = nodeFields[i];
       final.push(
-        <div>
-          <h3 className="font-semibold">{field.$name}</h3>
-          <input
-            onChange={(e) => {
-              // const node = getNodeById(rightUniqueId);
-              const newNodes = [...nodes];
-              const newNode = { ...node };
-              const unique = [];
-              const ids = [];
+        <>
+          <div>
+            <h3 className="font-semibold">{field.$name}</h3>
+            <input
+              onChange={(e) => {
+                // const node = getNodeById(rightUniqueId);
+                const newNodes: TypeNode[] = [...nodes];
+                const newNode: TypeNode = node;
+                const unique = [];
+                const ids = [];
 
-              // newNode.data[field.$name] = e.target.value; // Set the node's innerText to label value
-              newNode.$cinfo.$fields[i].$value = e.target.value;
-              newNodes.push(newNode);
+                // newNode.data[field.$name] = e.target.value; // Set the node's innerText to label value
+                newNode.$cinfo.$fields[i].$value = e.target.value;
+                newNodes.push(newNode);
 
-              for (let i = newNodes.length - 1; i >= 0; i--) {
-                const node = newNodes[i];
-                if (!ids.includes(node.id)) {
-                  unique.push(node);
-                  ids.push(node.id);
+                for (let i = newNodes.length - 1; i >= 0; i--) {
+                  const node: TypeNode = newNodes[i];
+                  if (!ids.includes(node.id)) {
+                    unique.push(node);
+                    ids.push(node.id);
+                  }
                 }
-              }
 
-              console.log(e.target.value);
-              setNodes(unique);
-            }}
-            className={`p-3 opacity-90 bg-shark-400 border-dashed border-${node.color} shadow-sm border-2 rounded-lg w-full`}
-            value={field.$value}
-            placeholder={field.$placeholder}
-          ></input>
-        </div>
+                console.log(e.target.value);
+                setNodes(unique);
+              }}
+              className={`p-3 opacity-90 bg-shark-400 border-dashed border-${node.color} shadow-sm border-2 rounded-lg w-full`}
+              value={field.$value}
+              placeholder={field.$placeholder}
+            ></input>
+          </div>
+        </>
       );
     }
 
     setFields(final);
   }
 
-  const onNodesClick = (node) => {
+  const onNodesClick = (node: TypeNode) => {
     let data = getNodeById(node.target.dataset.id);
     setRightUniqueId(data.id);
   };
@@ -395,9 +401,8 @@ function Flow() {
                 nodeBorderRadius={10}
                 nodeColor={nodeColor}
                 nodeStrokeColor={nodeColor}
-                className={`bg-shark-500 rounded-lg shadow-lg border-dashed border-${
-                  rightNode?.color || "shark-700"
-                } border-2 shadow-shark-600`}
+                className={`bg-shark-500 rounded-lg shadow-lg border-dashed border-${rightNode?.color || "shark-700"
+                  } border-2 shadow-shark-600`}
               />
             </ReactFlow>
           </div>
@@ -416,11 +421,9 @@ function Flow() {
                     <div className="space-y-2">
                       <button
                         onClick={exportCode}
-                        className={`shadow shadow-${
-                          rightNode.color || "shark-400"
-                        } bg-${
-                          rightNode.color || "shark-400"
-                        } rounded-lg font-bold w-full p-3 text-white`}
+                        className={`shadow shadow-${rightNode.color || "shark-400"
+                          } bg-${rightNode.color || "shark-400"
+                          } rounded-lg font-bold w-full p-3 text-white`}
                       >
                         Export
                       </button>
@@ -431,9 +434,8 @@ function Flow() {
                       <h3 className="font-semibold">Unique Key</h3>
                       <input
                         disabled
-                        className={`p-3 opacity-90 bg-shark-400 border-dashed border-${
-                          rightNode.color || "shark-700"
-                        } shadow-sm border-2 rounded-lg w-full`}
+                        className={`p-3 opacity-90 bg-shark-400 border-dashed border-${rightNode.color || "shark-700"
+                          } shadow-sm border-2 rounded-lg w-full`}
                         value={rightUniqueId}
                       ></input>
                     </div>

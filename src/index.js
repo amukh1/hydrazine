@@ -1,4 +1,4 @@
-import Builder from "./page/Builder.js";
+import Builder from "./page/Builder.tsx";
 import React, { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import reportWebVitals from "./reportWebVitals.ts";
