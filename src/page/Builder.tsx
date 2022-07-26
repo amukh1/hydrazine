@@ -494,7 +494,7 @@ function Flow() {
                       onClick={localClick}
                       className={`shadow shadow-shark-400 bg-shark-400 rounded-lg font-bold w-full p-3 text-white`}
                     >
-                      Load Local Copy
+                      Load Project
                     </button>
                     <button
                       onClick={exportCode}
