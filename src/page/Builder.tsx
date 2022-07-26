@@ -1,5 +1,5 @@
 import DiscordFile from "../resources/discordBotIndex.txt";
-import { TypeNode } from "../types/index"
+import { NodeElement, TypeNode } from "../types/index"
 import ReactFlow, {
   MiniMap,
   addEdge,
@@ -7,14 +7,17 @@ import ReactFlow, {
   applyEdgeChanges,
   applyNodeChanges,
 } from "react-flow-renderer";
-import React, { useEffect, useCallback, useState } from "react";
+import React, { useRef, useEffect, useCallback, useState } from "react";
 
 import ConnectionLine from "../components/ConnectionLine.tsx";
 import Block from "../components/Blocks.tsx";
 import Header from "../components/Header.tsx";
+
+import ExportZip from "../module/export_zip.ts"
+import ExportFile from "../module/export_file.ts"
 import Hydrogen from "../compiler/main.ts";
-import Export from "../module/export.ts"
 import Module from "../module/main.ts";
+
 
 import("../scss/tailwinds.scss");
 import("../scss/index.scss");
@@ -23,8 +26,8 @@ function Flow() {
   const initialEdges = [];
   const initialNodes = [];
 
-  const [nodes, setNodes] = useState(initialNodes);
-  const [edges, setEdges] = useState(initialEdges);
+  const [nodes, setNodes]: any = useState(initialNodes);
+  const [edges, setEdges]: any = useState(initialEdges);
 
   const [rightUniqueId, setRightUniqueId] = useState("");
   // const rightNode: TypeNode = getNodeById(rightUniqueId);
@@ -68,17 +71,17 @@ function Flow() {
   // }
 
   const onNodesChange = useCallback(
-    (changes) => setNodes((nds: any) => applyNodeChanges(changes, nds)),
+    (changes: any) => setNodes((nds: any) => applyNodeChanges(changes, nds)),
     [setNodes]
   );
 
   const onEdgesChange = useCallback(
-    (changes) => setEdges((eds) => applyEdgeChanges(changes, eds)),
+    (changes: any) => setEdges((eds) => applyEdgeChanges(changes, eds)),
     [setEdges]
   );
 
   const onConnect = useCallback(
-    (connection) => {
+    (connection: any) => {
       setEdges((eds) => addEdge(connection, eds));
     },
     [setEdges]
@@ -93,7 +96,7 @@ function Flow() {
     fetch(DiscordFile)
       .then(r => r.text())
       .then(text => {
-        const compiled = Export("hydrazine.zip",
+        const compiled = ExportZip("hydrazine.zip",
           [
             { content: JSON.stringify(output, null, 4), name: "./template/template.ts" },
             { content: text, name: "./src/index.ts" }
@@ -103,6 +106,14 @@ function Flow() {
         console.log(compiled)
       });
   }
+
+  function saveLocalCopy() {
+    ExportFile("hydrazine.hydro", JSON.stringify({
+      nodes: nodes,
+      edges: edges
+    }));
+  }
+
 
   const nodeColor = (node) => {
     switch (node.color) {
@@ -138,14 +149,17 @@ function Flow() {
                 // const node = getNodeById(rightUniqueId);
                 const newNodes: TypeNode[] = [...nodes];
                 const newNode: TypeNode = node;
-                const ids: string[] = [];
                 const unique: TypeNode[] = [];
+                const ids: string[] = [];
 
                 // newNode.data[field.$name] = e.target.value; // Set the node's innerText to label value
                 newNode.$cinfo.$fields[i].$value = e.target.value;
                 newNodes.push(newNode);
+                console.log(newNode)
 
-                for (let i = newNodes.length - 1; i >= 0; i--) {
+                console.log(nodes)
+
+                for (let i = 0; i < newNodes.length; i++) {
                   const node: TypeNode = newNodes[i];
                   if (!ids.includes(node.id)) {
                     unique.push(node);
@@ -157,7 +171,7 @@ function Flow() {
                 setNodes(unique);
               }}
               className={`p-3 opacity-90 bg-shark-400 border-dashed border-picton  shadow-sm border-2 rounded-lg w-full`}
-              value={field.$value}
+              // value={field.$value}
               placeholder={field.$placeholder}
             ></input>
           </div>
@@ -168,12 +182,27 @@ function Flow() {
     setFields(final);
   }
 
-  const onNodesClick = (node: TypeNode) => {
+  const fileInput: any = useRef();
+  function localFileChange(event) {
+    var file = event.target.files[0];
+    var reader = new FileReader();
+    reader.onload = function (event: any) {
+      const data = JSON.parse(event.target.result) || {};
+      setNodes(data.nodes);
+      setEdges(data.edges);
+    };
 
-    let data = getNodeById(node.target.dataset.id);
-    console.log(data.id)
-    setRightUniqueId(data?.id);
+    reader.readAsText(file);
+  }
 
+  const localClick = () => {
+    try {
+      fileInput?.current?.click();
+    } catch { }
+  }
+
+  const onNodeClick = (node: NodeElement) => {
+    setRightUniqueId(node.target.dataset.id);
   };
 
   useEffect(() => {
@@ -402,13 +431,13 @@ function Flow() {
               nodes={nodes}
               edges={edges}
               onConnect={onConnect}
-              onNodeClick={onNodesClick}
+              onNodeClick={onNodeClick}
               onNodesChange={onNodesChange}
               onEdgesChange={onEdgesChange}
               connectionLineComponent={ConnectionLine}
               fitView
             >
-              <Background variant="dots" gap={20} size={1} />
+              <Background variant={"dots"} gap={20} size={1} />
               <MiniMap
                 maskColor="#2A2E31"
                 nodeStrokeWidth={0}
@@ -429,14 +458,6 @@ function Flow() {
                     <h3 className="text-xs font-bold uppercase text-gray-400 tracking-wider">
                       BUILDER
                     </h3>
-                    <div className="space-y-2 mt-1">
-                      <button
-                        onClick={exportCode}
-                        className={`shadow shadow-picton bg-picton rounded-lg font-bold w-full p-3 text-white`}
-                      >
-                        Export
-                      </button>
-                    </div>
                   </section>
                   {rightUniqueId ? (
                     <div>
@@ -453,13 +474,40 @@ function Flow() {
                   {fields.map((item, index) => {
                     return <div key={index}>{item}</div>;
                   })}
+                  <div className="space-y-2 w-full mt-3">
+                    <button
+                      onClick={exportCode}
+                      className={`shadow shadow-picton bg-picton rounded-lg font-bold w-full p-3 text-white`}
+                    >
+                      Export
+                    </button>
+                    <button
+                      onClick={saveLocalCopy}
+                      className={`shadow shadow-shark-400 bg-shark-400 rounded-lg font-bold w-full p-3 text-white`}
+                    >
+                      Save Local Copy
+                    </button>
+                    <div className='mt-5' >
+                      <input type="file" onChange={localFileChange} style={{ "display": "none" }} ref={fileInput} />
+                      <button
+                        onClick={localClick}
+                        className={`shadow shadow-shark-400 bg-shark-400 rounded-lg font-bold w-full p-3 text-white`}
+                      >
+                        Load Local Copy
+                      </button>
+                    </div>
+                  </div>
                 </div>
+
               </div>
+
             </div>
+
           </div>
         ) : (
           false
         )}
+
       </div>
     </>
   );

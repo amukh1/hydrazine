@@ -21,7 +21,7 @@ for (let i = 0; i < config.$cinfo.$onInitListeners.length; i++) {
             console.warn(formatConsoleLog(action.$value))
         }
       }
-    case 'clieant_ready':
+    case 'on_client_ready':
       client.on('ready', () => {
         // Do Something
       })

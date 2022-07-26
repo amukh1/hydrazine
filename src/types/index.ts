@@ -1,4 +1,10 @@
-export interface NodeElement {}
+export interface NodeElement {
+  target: {
+    dataset: {
+      id: string
+    }
+  }
+}
 
 export interface TypeNode {
   id: string
