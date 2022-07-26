@@ -10,11 +10,11 @@ import ReactFlow, {
 import React, { useRef, useEffect, useCallback, useState } from "react";
 
 import ConnectionLine from "../components/ConnectionLine.tsx";
-import Block from "../components/Blocks.tsx";
 import Header from "../components/Header.tsx";
+import Block from "../components/Blocks.tsx";
 
-import ExportZip from "../module/export_zip.ts"
 import ExportFile from "../module/export_file.ts"
+import ExportZip from "../module/export_zip.ts"
 import Hydrogen from "../compiler/main.ts";
 import Module from "../module/main.ts";
 
@@ -69,6 +69,10 @@ function Flow() {
   //     }
   //   }
   // }
+
+  const onNodeClick = (node: NodeElement) => {
+    setRightUniqueId(node.target.dataset.id)
+  }
 
   const onNodesChange = useCallback(
     (changes: any) => setNodes((nds: any) => applyNodeChanges(changes, nds)),
@@ -201,9 +205,7 @@ function Flow() {
     } catch { }
   }
 
-  const onNodeClick = (node: NodeElement) => {
-    setRightUniqueId(node.target.dataset.id);
-  };
+
 
   useEffect(() => {
     updateFieldComponent();
@@ -437,7 +439,7 @@ function Flow() {
               connectionLineComponent={ConnectionLine}
               fitView
             >
-              <Background variant={"dots"} gap={20} size={1} />
+              <Background gap={20} size={1} />
               <MiniMap
                 maskColor="#2A2E31"
                 nodeStrokeWidth={0}
