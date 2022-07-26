@@ -1,7 +1,9 @@
 module.exports = {
   content: [
-    "./{src,public,coverage}/*.{html,js}",
-    "./{src,public,coverage}/*/*.{html,js}",
+    "./{src,public,coverage}/*.{html,js,tsx,ts}",
+    "./{src,public,coverage}/*/*.{html,js,tsx,ts}",
+    "./{src,public,coverage}/*/*.{html,js,tsx,ts}",
+    "./{src,public,coverage}/*/*/*.{html,js,tsx,ts}",
   ],
   theme: {
     extend: {

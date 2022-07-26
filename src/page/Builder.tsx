@@ -1,3 +1,4 @@
+import DiscordFile from "../resources/discordBotIndex.txt";
 import { TypeNode } from "../types/index"
 import ReactFlow, {
   MiniMap,
@@ -13,6 +14,7 @@ import Block from "../components/Blocks.tsx";
 import Header from "../components/Header";
 import Hydrogen from "../compiler/main.ts";
 import Module from "../module/main.ts";
+import Export from "../module/export.ts"
 
 import("../scss/tailwinds.scss");
 import("../scss/index.scss");
@@ -87,7 +89,19 @@ function Flow() {
       nodes: nodes,
       edges: edges,
     });
-    console.log(output);
+
+    fetch(DiscordFile)
+      .then(r => r.text())
+      .then(text => {
+        const compiled = Export(undefined,
+          [
+            { content: JSON.stringify(output, null, 4), name: "./template/template.ts" },
+            { content: text, name: "./src/index.ts" }
+          ]
+        );
+        console.log(output);
+        console.log(compiled)
+      });
   }
 
   const nodeColor = (node) => {
@@ -411,14 +425,12 @@ function Flow() {
           <div className="col-span-2 flex flex-wrap w-full">
             <div className="w-full flex flex-wrap">
               <div className="w-full grid-cols-1 grid p-3 border-l  flex-wrap border-scorpion">
-                <div className="space-y-3">
-                  <div>
+                <div className="">
+                  <section className="mb-3">
                     <h3 className="text-xs font-bold uppercase text-gray-400 tracking-wider">
                       BUILDER
                     </h3>
-                  </div>
-                  <section className="">
-                    <div className="space-y-2">
+                    <div className="space-y-2 mt-1">
                       <button
                         onClick={exportCode}
                         className={`shadow shadow-${rightNode.color || "shark-400"
