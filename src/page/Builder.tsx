@@ -8,10 +8,9 @@ import ReactFlow, {
 } from "react-flow-renderer";
 import React, { useEffect, useCallback, useState } from "react";
 
-import ConnectionLine from "../components/ConnectionLine";
+import ConnectionLine from "../components/ConnectionLine.tsx";
+import Block from "../components/Blocks.tsx";
 import Header from "../components/Header";
-import Block from "../components/Blocks";
-
 import Hydrogen from "../compiler/main.ts";
 import Module from "../module/main.ts";
 

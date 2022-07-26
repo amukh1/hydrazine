@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react'
 
 export default ({ sourceX, sourceY, targetX, targetY }) => {
   return (
@@ -19,5 +19,5 @@ export default ({ sourceX, sourceY, targetX, targetY }) => {
         strokeWidth={1.5}
       />
     </g>
-  );
-};
+  )
+}
