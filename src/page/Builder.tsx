@@ -19,10 +19,6 @@ import ExportZip from "../module/export_zip.ts"
 import Hydrogen from "../compiler/main.ts";
 import Module from "../module/main.ts";
 
-
-import("../scss/tailwinds.scss");
-import("../scss/index.scss");
-
 function Flow() {
   const initialEdges = [];
   const initialNodes = [];

@@ -53,11 +53,11 @@
       "csp": null
     },
     "updater": {
-      "active": true
+      "active": false
     },
     "windows": [
       {
-        "fullscreen": true,
+        "fullscreen": false,
         "height": 800,
         "resizable": true,
         "title": "Hydrazine",
