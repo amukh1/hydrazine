@@ -1,3 +1,4 @@
+import React from "react"
 import DiscordFile from "../resources/discordBotIndex.txt";
 import { NodeElement, TypeNode } from "../types/index"
 import ReactFlow, {
@@ -7,7 +8,7 @@ import ReactFlow, {
   applyEdgeChanges,
   applyNodeChanges,
 } from "react-flow-renderer";
-import React, { useRef, useEffect, useCallback, useState } from "react";
+import { useRef, useEffect, useCallback, useState } from "react";
 
 import ConnectionLine from "../components/ConnectionLine.tsx";
 import Header from "../components/Header.tsx";
@@ -150,8 +151,8 @@ function Flow() {
             <h3 className="font-semibold">{field.$name}</h3>
             <input
               onChange={(e) => {
-                // const node = getNodeById(rightUniqueId);
-                const newNodes: TypeNode[] = [...nodes];
+                const node = getNodeById(rightUniqueId);
+                const newNodes: TypeNode[] = nodes;
                 const newNode: TypeNode = node;
                 const unique: TypeNode[] = [];
                 const ids: string[] = [];
@@ -161,9 +162,7 @@ function Flow() {
                 newNodes.push(newNode);
                 console.log(newNode)
 
-                console.log(nodes)
-
-                for (let i = 0; i < newNodes.length; i++) {
+                for (i = newNodes.length - 1; i > 0; i--) {
                   const node: TypeNode = newNodes[i];
                   if (!ids.includes(node.id)) {
                     unique.push(node);
@@ -171,11 +170,11 @@ function Flow() {
                   }
                 }
 
-                console.log(e.target.value);
                 setNodes(unique);
+                console.log(unique)
               }}
               className={`p-3 opacity-90 bg-shark-400 border-dashed border-picton  shadow-sm border-2 rounded-lg w-full`}
-              // value={field.$value}
+              value={field.$value}
               placeholder={field.$placeholder}
             ></input>
           </div>
@@ -183,17 +182,23 @@ function Flow() {
       );
     }
 
+    setRightUniqueId(node.id)
     setFields(final);
   }
 
   const fileInput: any = useRef();
-  function localFileChange(event) {
-    var file = event.target.files[0];
-    var reader = new FileReader();
+  const reader = new FileReader();
+
+  function localFileChange(event: any) {
+    const file = event.target.files[0];
     reader.onload = function (event: any) {
-      const data = JSON.parse(event.target.result) || {};
-      setNodes(data.nodes);
-      setEdges(data.edges);
+      try {
+        const data = JSON.parse(event.target.result) || {};
+        setNodes(data.nodes);
+        setEdges(data.edges);
+      } catch {
+        console.log("Data is invalid or corrupted");
+      }
     };
 
     reader.readAsText(file);
@@ -419,11 +424,16 @@ function Flow() {
                       color: "amethyst",
                       $cinfo: {
                         $action: "run_sqlite_query",
-                        $fields: {
-                          query: "",
-                        },
+                        $fields: [
+                          {
+                            $type: "string",
+                            $name: "MySQL Query",
+                            $placeholder: "SELECT * FROM users",
+                            $value: "",
+                          },
+                        ],
                       },
-                      data: { label: "console.log()" },
+                      data: { label: "MySQL Query" },
                       position: { x: 250, y: 250 },
                     })
                   }
@@ -489,7 +499,8 @@ function Flow() {
                       className={`shadow shadow-shark-400 bg-shark-400 rounded-lg font-bold w-full p-3 text-white`}
                     >
                       Save Local Copy
-                    </button>                      <input type="file" onChange={localFileChange} style={{ "display": "none" }} ref={fileInput} />
+                    </button>
+                    <input type="file" onChange={localFileChange} style={{ "display": "none" }} ref={fileInput} />
                     <button
                       onClick={localClick}
                       className={`shadow shadow-shark-400 bg-shark-400 rounded-lg font-bold w-full p-3 text-white`}

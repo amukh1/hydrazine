@@ -1,5 +1,8 @@
+import React from 'react'
+import GarbageCollector from './garbageCollector.ts'
 import { Field } from '../types'
 
+const GC = new GarbageCollector({})
 class Hydrogen {
   options: any
 
@@ -83,13 +86,16 @@ class Hydrogen {
                 }
               }),
             },
-            $actions: Array.isArray(target.$cinfo.$fields)
-              ? ((target.$cinfo || {}).$fields || []).map((field: Field) => {
-                  return {
-                    $type: target.$cinfo.$action,
-                    $value: field.$value,
-                  }
-                })
+            $actions: target.$cinfo?.$fields
+              ? Array.isArray(target.$cinfo.$fields)
+                ? ((target.$cinfo || {}).$fields || []).map((field: Field) => {
+                    return {
+                      $type: target.$cinfo.$action,
+                      $value: field.$value,
+                      $query: field?.$query,
+                    }
+                  })
+                : []
               : [],
           })
         }
@@ -135,8 +141,11 @@ class Hydrogen {
       )
     }
 
-    console.log(final)
     return final
+  }
+
+  clean(content: any) {
+    return GC.clean(content)
   }
 }
 

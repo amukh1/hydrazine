@@ -37,6 +37,7 @@ export interface Checkpoints {
 export interface Field {
   $type: string
   $name: string
-  $placeholder?: string
+  $query?: string
   $value?: string
+  $placeholder?: string
 }
