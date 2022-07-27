@@ -1,6 +1,7 @@
 import React from 'react'
 import GarbageCollector from './garbageCollector.ts'
-import { Field } from '../types'
+import { Field, TypeNode } from '../types'
+import { Edge, EdgeRemoveChange } from 'react-flow-renderer'
 
 const GC = new GarbageCollector({})
 class Hydrogen {
@@ -27,10 +28,44 @@ class Hydrogen {
     const nodes = data?.nodes
     const edges = data?.edges
 
-    console.log(nodes)
-    console.log(edges)
+    function edgesToTree() {
+      const tree: any = {}
+      edges.forEach((edge: Edge) => {
+        const { source, target }: Edge = edge
+        if (getNodeById(target) && getNodeById(source)) {
+          const sourceNode = getNodeById(source)
+          const targetNode = getNodeById(target)
+          const sourceId = sourceNode.id
+          const targetId = targetNode.id
+          if (!tree[sourceId]) {
+            tree[sourceId] = {
+              id: sourceId,
+              children: [],
+            }
+          }
+          if (!tree[targetId]) {
+            tree[targetId] = {
+              id: targetId,
+              children: [],
+            }
+          }
+          tree[sourceId].children.push(getNodeById(tree[targetId].id))
+        }
+      })
+      return tree
+    }
+
+    function ancestorTree(edges: any) {
+      for (let i = 0; i < edges.length; i++) {
+        const edge = edges[i]
+      }
+    }
+
+    const EdgeTree = edgesToTree()
+    const Tree = ancestorTree(EdgeTree)
 
     function getNodeById(id: string) {
+      let tree = {}
       for (let i = 0; i < nodes.length; i++) {
         const node = nodes[i]
         if (node.id === id) {
@@ -39,65 +74,98 @@ class Hydrogen {
       }
     }
 
+    function getEdgesByNodeId(id: string) {
+      const final: Edge[] = []
+      for (let i = 0; i < edges.length; i++) {
+        const edge: Edge = edges[i]
+        if (edge.source == id || edge.target == id) {
+          final.push(edge)
+        }
+      }
+
+      return edges
+    }
+
+    function buildConditions() {
+      return {
+        $equals: edges.map((edge: Edge) => {
+          const tinySource = getNodeById(edge.target)
+          switch ((tinySource?.$cinfo || {}).$action || null) {
+            case 'if_statement': {
+              return {
+                $match: tinySource.$cinfo.$fields[0].$match,
+                $with: tinySource.$cinfo.$fields[0].$with,
+                caseSensitive: false,
+              }
+            }
+          }
+        }),
+      }
+    }
+
+    function buildActions(target: TypeNode) {
+      const children = getEdgesByNodeId(target.id)
+      return target.$cinfo?.$fields
+        ? Array.isArray(target.$cinfo.$fields)
+          ? ((target.$cinfo || {}).$fields || []).map((field: Field) => {
+              return {
+                $type: target.$cinfo.$action,
+                $value: field.$value,
+                $query: field?.$query,
+                $callbacks: children.map((child: Edge) => {
+                  if (child.source == target.id) {
+                    if (child.target) {
+                      return getNodeById(child.target)
+                    }
+                  }
+                }),
+              }
+            })
+          : []
+        : []
+    }
+
     for (let i = 0; i < edges.length; i++) {
       const edge = edges[i]
       const source = getNodeById(edge.source)
       const target = getNodeById(edge.target)
-
-      console.log(target)
-      console.log(source)
-      console.log(edge)
 
       switch (source.$cinfo.$action) {
         case 'on_start': {
           if (target) {
             if (target.$cinfo) {
               if (Array.isArray(target.$cinfo.$fields)) {
-                console.log(target.$cinfo.$fields)
                 final.$cinfo.$onInitListeners.push({
                   $type: 'process',
-                  $actions: ((target.$cinfo || {}).$fields || []).map(
-                    (field: Field) => {
-                      return {
-                        $type: target.$cinfo.$action,
-                        $value: field.$value,
-                      }
-                    },
-                  ),
+                  $conditions: buildConditions(),
+                  $actions: buildActions(target),
                 })
               }
             }
           }
+          break
+        }
+        case 'run_sqlite_query': {
+          if (target) {
+            if (target.$cinfo) {
+              if (Array.isArray(target.$cinfo.$fields)) {
+                final.$cinfo.$listeners.push({
+                  $type: 'process',
+                  $conditions: buildConditions(),
+                  $actions: buildActions(target),
+                })
+              }
+            }
+          }
+          break
         }
         case 'on_message': {
           final.$cinfo.$listeners.push({
             $type: 'text_command',
-            $conditions: {
-              $equals: edges.map((edge) => {
-                const tinySource = getNodeById(edge.target)
-                switch ((tinySource?.$cinfo || {}).$action || null) {
-                  case 'if_statement': {
-                    return {
-                      $match: tinySource.$cinfo.$fields[0].$match,
-                      $with: tinySource.$cinfo.$fields[0].$with,
-                      caseSensitive: false,
-                    }
-                  }
-                }
-              }),
-            },
-            $actions: target.$cinfo?.$fields
-              ? Array.isArray(target.$cinfo.$fields)
-                ? ((target.$cinfo || {}).$fields || []).map((field: Field) => {
-                    return {
-                      $type: target.$cinfo.$action,
-                      $value: field.$value,
-                      $query: field?.$query,
-                    }
-                  })
-                : []
-              : [],
+            $conditions: buildConditions(),
+            $actions: buildActions(target),
           })
+          break
         }
       }
     }
@@ -133,6 +201,7 @@ class Hydrogen {
       }
     }
 
+    const cleanCode = GC.clean(final)
     if (options?.verbose) {
       console.log(
         `Compiled Within ${(performance.now() - start).toFixed(
@@ -140,8 +209,7 @@ class Hydrogen {
         )} MilliSeconds(s)`,
       )
     }
-
-    return final
+    return cleanCode
   }
 
   clean(content: any) {

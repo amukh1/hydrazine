@@ -7,6 +7,7 @@ import ReactFlow, {
   Background,
   applyEdgeChanges,
   applyNodeChanges,
+  Edge,
 } from "react-flow-renderer";
 import { useRef, useEffect, useCallback, useState } from "react";
 
@@ -51,6 +52,7 @@ function Flow() {
     return false
   }
 
+
   function hexToRGBA(hex: string, alpha: number) {
     const r = parseInt(hex.slice(1, 3), 16);
     const g = parseInt(hex.slice(3, 5), 16);
@@ -83,7 +85,7 @@ function Flow() {
 
   const onConnect = useCallback(
     (connection: any) => {
-      setEdges((eds) => addEdge(connection, eds));
+      setEdges((eds: any) => addEdge(connection, eds));
     },
     [setEdges]
   );
@@ -97,14 +99,13 @@ function Flow() {
     fetch(DiscordFile)
       .then(r => r.text())
       .then(text => {
-        const compiled = ExportZip("hydrazine.zip",
+        console.log(output);
+        ExportZip("hydrazine.zip",
           [
             { content: JSON.stringify(output, null, 4), name: "./template/template.ts" },
             { content: text, name: "./src/index.ts" }
           ]
         );
-        console.log(output);
-        console.log(compiled)
       });
   }
 
@@ -154,10 +155,16 @@ function Flow() {
                 const ids: string[] = [];
 
                 // newNode.data[field.$name] = e.target.value; // Set the node's innerText to label value
-                newNode.$cinfo.$fields[i].$value = e.target.value;
-                newNodes.push(newNode);
-                console.log(newNode)
+                try {
+                  if (newNode.$cinfo.$fields) {
+                    console.log(e.target.value)
+                    newNode.$cinfo.$fields[i].$value = e.target.value;
+                  }
+                } catch {
+                  console.error(`Unable to change value forn ${field.$name}`);
+                }
 
+                newNodes.push(newNode);
                 for (i = newNodes.length - 1; i > 0; i--) {
                   const node: TypeNode = newNodes[i];
                   if (!ids.includes(node.id)) {
@@ -167,7 +174,6 @@ function Flow() {
                 }
 
                 setNodes(unique);
-                console.log(unique)
               }}
               className={`p-3 opacity-90 bg-shark-400 border-dashed border-picton  shadow-sm border-2 rounded-lg w-full`}
               value={field.$value}

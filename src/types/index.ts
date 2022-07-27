@@ -13,8 +13,9 @@ export interface TypeNode {
 }
 
 export interface CompilerInfo {
-  $fields: Field[]
-  $listeners: Listeners[]
+  $fields?: Field[]
+  $action?: Action[]
+  $listeners?: Listeners[]
 }
 
 export interface Listeners {
@@ -40,4 +41,10 @@ export interface Field {
   $query?: string
   $value?: string
   $placeholder?: string
+}
+
+export interface Action {
+  $type: string
+  $value: string
+  $query?: string
 }
