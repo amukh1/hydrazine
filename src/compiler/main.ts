@@ -1,7 +1,7 @@
 import React from 'react'
-import GarbageCollector from './garbageCollector.ts'
 import { Field, TypeNode } from '../types'
-import { Edge, EdgeRemoveChange } from 'react-flow-renderer'
+import { Edge } from 'react-flow-renderer'
+import GarbageCollector from './garbageCollector.ts'
 
 const GC = new GarbageCollector({})
 class Hydrogen {
@@ -173,32 +173,6 @@ class Hydrogen {
     for (let i = 0; i < nodes.length; i++) {
       const node = nodes[i]
       const action = node.$cinfo?.$action
-
-      switch (action) {
-        case 'on_slash_command': {
-          const data: any = {
-            $type: 'slash_command',
-            $checkpoints: [
-              {
-                $unique_id: node.id,
-                $name: 'help',
-                $params: {},
-                $conditions: {
-                  $equals: [
-                    {
-                      $match: '$MSGCONTENT',
-                      $with: 'help',
-                      caseSensitive: false,
-                    },
-                  ],
-                },
-                $actions: [],
-              },
-            ],
-          }
-          final.$cinfo.$listeners.push(data)
-        }
-      }
     }
 
     const cleanCode = GC.clean(final)
