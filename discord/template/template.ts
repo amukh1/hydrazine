@@ -17,9 +17,6 @@ export default {
     },
   },
   $cinfo: {
-    /**
-     * @param {$MSGCONTENT} - Contents of the message sent by a user.
-     **/
     $onInitListeners: [
       {
         $type: 'process',

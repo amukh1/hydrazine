@@ -22,6 +22,23 @@ class Hydrogen {
   compile(data: any, options: any) {
     const start = performance.now()
     const final: any = {
+      $CONFIGS: {
+        $verbose: options?.verbose ?? false,
+        $logs: {
+          err: '../logs/err.log',
+          warn: '../logs/warn.log',
+        },
+      },
+      $ENV: {
+        key: 'value',
+      },
+      $GLOBAL: {
+        $PREFIX: 'h!',
+        $PRESENCE: {
+          name: 'Created With Hydrazine.',
+          type: 'WATCHING',
+        },
+      },
       $cinfo: {
         $onInitListeners: [],
         $listeners: [],

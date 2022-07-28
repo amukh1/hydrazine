@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "./src/index.js",
-  "scripts": {},
+  "scripts": {
+    "dev": "tsc --watch"
+  },
   "keywords": [],
   "author": {
     "name": "Jareer Abdullah",

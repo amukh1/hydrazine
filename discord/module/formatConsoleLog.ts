@@ -1,3 +1,4 @@
+
 export default function main(str: string) {
   const date = new Date()
 

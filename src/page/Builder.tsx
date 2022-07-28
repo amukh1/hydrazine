@@ -238,20 +238,6 @@ function Flow() {
                         label: "onStart",
                       },
                       $cinfo: {
-                        $fields: [
-                          {
-                            $type: "string",
-                            $name: "value",
-                            $placeholder: "Some Random Value",
-                            $value: "",
-                          },
-                          {
-                            $type: "string",
-                            $name: "Print",
-                            $placeholder: "Print on Start",
-                            $value: "$BOTNAME has started",
-                          },
-                        ],
                         $action: "on_start",
                       },
                       position: { x: 250, y: 250 },
@@ -328,6 +314,17 @@ function Flow() {
                       color: "picton",
                       type: "output",
                       data: { label: "React" },
+                      $cinfo: {
+                        $action: "message_react",
+                        $fields: [
+                          {
+                            $type: "string",
+                            $name: "Content",
+                            $placeholder: ":joy:",
+                            $value: "",
+                          },
+                        ],
+                      },
                       position: { x: 250, y: 250 },
                     })
                   }
@@ -340,8 +337,47 @@ function Flow() {
                     addNode({
                       color: "picton",
                       type: "output",
+                      $cinfo: {
+                        $action: "message_reply",
+                        $fields: [
+                          {
+                            $type: "string",
+                            $name: "Content",
+                            $placeholder: "Hello, $AUTHOR_TAG. I'm $CLIENT_NAME",
+                            $value: "",
+                          },
+                        ],
+                      },
                       data: { label: "Reply" },
                       position: { x: 250, y: 250 },
+                    })
+                  }
+                />
+                <Block
+                  text="Set Presence"
+                  color="picton"
+                  desc="Set bot presence."
+                  onClick={() =>
+                    addNode({
+                      color: "picton",
+                      type: "output",
+                      $cinfo: {
+                        $action: "set_presence",
+                        $fields: [
+                          {
+                            $type: "string",
+                            $name: "name",
+                            $placeholder: "Created With Hydrazine.",
+                          },
+                          {
+                            $type: "string",
+                            $name: "type",
+                            $placeholder: "PLAYING",
+                          },
+                        ],
+                      },
+                      data: { label: "setPresence" },
+                      position: { x: Math.floor(Math.random() * 100), y: Math.floor(Math.random() * 100) },
                     })
                   }
                 />
@@ -406,6 +442,17 @@ function Flow() {
                     addNode({
                       type: "output",
                       color: "emerald",
+                      $cinfo: {
+                        $action: "console_warn",
+                        $fields: [
+                          {
+                            $type: "string",
+                            $name: "Message",
+                            $placeholder: "Process Started with Process Id $PROCESS_ID at $DATE_LOCASETIMESTRING",
+                            $value: "",
+                          },
+                        ],
+                      },
                       data: { label: "console.log()" },
                       position: { x: 250, y: 250 },
                     })
