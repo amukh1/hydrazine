@@ -1,8 +1,8 @@
-import formatMessage from '../module/formatMessage'
-import formatConsoleLog from '../module/formatConsoleLog'
-
-import { ActivityOptions, Client, GatewayIntentBits } from 'discord.js'
 import config from '../template/template'
+import formatMessage from '../module/formatMessage'
+import actBaseActions from '../module/actBaseActions'
+
+import { Client, GatewayIntentBits } from 'discord.js'
 
 const envs = Object.keys(config?.$ENV || {})
 const client = new Client({ intents: [GatewayIntentBits.Guilds] })
@@ -14,16 +14,13 @@ for (let i = 0; i < config.$cinfo.$onInitListeners.length; i++) {
     case 'process':
       for (let j = 0; j < actions.length; j++) {
         const action = actions[j]
-        switch (action.$type) {
-          case 'console_log':
-            console.log(formatConsoleLog(action.$value))
-          case 'console_warn':
-            console.warn(formatConsoleLog(action.$value))
-        }
+        actBaseActions(action)
       }
     case 'on_client_ready':
       client.on('ready', () => {
-        // Do Something
+        actions.forEach((action) => {
+          actBaseActions(action)
+        })
       })
   }
 }
@@ -48,6 +45,13 @@ for (let i = 0; i < config.$cinfo.$listeners.length; i++) {
           const equals = Object.keys(conditions.$equals)
           const cleanMsg = formatMessage(message.content, {
             $MSGCONTENT: message.content,
+            $MSGID: message.id,
+            $MESSAGEAUTHOR: message.author.username,
+            $MSGUSERID: message.author.id,
+            $MSGUSERDISCRIM: message.author.discriminator,
+            $MSGUSERAVATAR: message.author.avatarURL,
+            $MSGUSERMENTION: message.author.toString(),
+            $MSGUSERMENTIONID: message.author.id,
           })
 
           console.log(cleanMsg)

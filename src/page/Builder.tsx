@@ -29,6 +29,10 @@ function Flow() {
   const [rightUniqueId, setRightUniqueId] = useState("");
   // const rightNode: TypeNode = getNodeById(rightUniqueId);
 
+  function randomPosition() {
+    return Math.floor(Math.random() * 250)
+  }
+
   function addNode(options) {
     let randId = Module.randomString(16);
     options["id"] = randId;
@@ -156,7 +160,6 @@ function Flow() {
                 // newNode.data[field.$name] = e.target.value; // Set the node's innerText to label value
                 try {
                   if (newNode.$cinfo.$fields) {
-                    console.log(e.target.value)
                     newNode.$cinfo.$fields[i].$value = e.target.value;
                   }
                 } catch {
@@ -198,7 +201,7 @@ function Flow() {
         setNodes(data.nodes);
         setEdges(data.edges);
       } catch {
-        console.log("Data is invalid or corrupted");
+        console.error("Local file is not a valid JSON file");
       }
     };
 
@@ -240,7 +243,7 @@ function Flow() {
                       $cinfo: {
                         $action: "on_start",
                       },
-                      position: { x: 250, y: 250 },
+                      position: { x: randomPosition(), y: randomPosition() },
                     })
                   }
                 />
@@ -258,7 +261,7 @@ function Flow() {
                       $cinfo: {
                         $action: "on_client_ready",
                       },
-                      position: { x: 250, y: 250 },
+                      position: { x: randomPosition(), y: randomPosition() },
                     })
                   }
                 />
@@ -276,7 +279,7 @@ function Flow() {
                       $cinfo: {
                         $action: "on_message",
                       },
-                      position: { x: 250, y: 250 },
+                      position: { x: randomPosition(), y: randomPosition() },
                     })
                   }
                 />
@@ -296,7 +299,7 @@ function Flow() {
                         $action: "on_slash_command",
                         $value: "help",
                       },
-                      position: { x: 250, y: 250 },
+                      position: { x: randomPosition(), y: randomPosition() },
                     })
                   }
                 />
@@ -325,7 +328,7 @@ function Flow() {
                           },
                         ],
                       },
-                      position: { x: 250, y: 250 },
+                      position: { x: randomPosition(), y: randomPosition() },
                     })
                   }
                 />
@@ -349,7 +352,7 @@ function Flow() {
                         ],
                       },
                       data: { label: "Reply" },
-                      position: { x: 250, y: 250 },
+                      position: { x: randomPosition(), y: randomPosition() },
                     })
                   }
                 />
@@ -377,7 +380,7 @@ function Flow() {
                         ],
                       },
                       data: { label: "setPresence" },
-                      position: { x: Math.floor(Math.random() * 100), y: Math.floor(Math.random() * 100) },
+                      position: { x: randomPosition(), y: randomPosition() },
                     })
                   }
                 />
@@ -401,7 +404,7 @@ function Flow() {
                           $with: ""
                         }]
                       },
-                      position: { x: 250, y: 250 },
+                      position: { x: randomPosition(), y: randomPosition() },
                     })
                   }
                 />
@@ -430,7 +433,7 @@ function Flow() {
                         ],
                       },
                       data: { label: "console.log()" },
-                      position: { x: 250, y: 250 },
+                      position: { x: randomPosition(), y: randomPosition() },
                     })
                   }
                 />
@@ -454,7 +457,7 @@ function Flow() {
                         ],
                       },
                       data: { label: "console.log()" },
-                      position: { x: 250, y: 250 },
+                      position: { x: randomPosition(), y: randomPosition() },
                     })
                   }
                 />
@@ -482,7 +485,7 @@ function Flow() {
                         ],
                       },
                       data: { label: "MySQL Query" },
-                      position: { x: 250, y: 250 },
+                      position: { x: randomPosition(), y: randomPosition() },
                     })
                   }
                 />
@@ -493,7 +496,7 @@ function Flow() {
         <div
           className={`w-full ${rightUniqueId ? `col-span-8` : `col-span-10`}`}
         >
-          <div style={{ height: "100%" }}>
+          <div style={{ height: "100vh" }}>
             <ReactFlow
               nodes={nodes}
               edges={edges}

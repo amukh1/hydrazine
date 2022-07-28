@@ -196,11 +196,8 @@ class Hydrogen {
       const action = node.$cinfo?.$action
     }
 
-    console.log(final)
     const CleanCode = GC.clean(final)
-    console.log(CleanCode)
     const CompiledCode = AB.build(CleanCode, nodes || [], edges || [])
-    console.log(CompiledCode)
 
     if (options?.verbose) {
       console.log(
