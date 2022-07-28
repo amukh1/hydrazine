@@ -506,12 +506,12 @@ function Flow() {
             >
               <Background gap={20} size={1} />
               <MiniMap
-                maskColor="#2A2E31"
+                maskColor="transparent"
                 nodeStrokeWidth={0}
                 nodeBorderRadius={10}
                 nodeColor={nodeColor}
                 nodeStrokeColor={nodeColor}
-                className={`bg-shark-500 rounded-lg shadow-lg  border-shark-400 border-2 shadow-shark-600`}
+                className={`bg-shark-500 rounded-lg shadow-lg border-shark-400 border-2 shadow-shark-600`}
               />
             </ReactFlow>
           </div>

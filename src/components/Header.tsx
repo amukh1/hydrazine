@@ -10,15 +10,17 @@ const Block = (props) => {
         <a href="https://github.com/jareer12/hydrazine" target={"_blank"}>
           Github
         </a>
-        <a>Discord</a>
+        <a href="https://github.com/jareer12/hydrazine/releases" target={"_blank"}>
+          Releases
+        </a>
       </div>
       <div className="text-white flex items-center justify-center text-center font-medium col-span-2 px-2">
-        <a
+        {/* <a
           href="https://github.com/jareer12/hydrazine/releases"
           target={"_blank"}
         >
           Source Code - Github
-        </a>
+        </a> */}
       </div>
     </div>
   );
