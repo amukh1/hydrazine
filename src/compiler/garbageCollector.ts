@@ -16,7 +16,6 @@ class HydroGarbageCollector {
       if (typeof obj[key] === 'object') {
         this.removeNull(obj[key])
       }
-      console.log(obj[key])
     }
     return obj
   }

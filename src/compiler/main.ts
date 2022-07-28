@@ -1,9 +1,13 @@
 import React from 'react'
 import { Field, TypeNode } from '../types'
 import { Edge } from 'react-flow-renderer'
+
 import GarbageCollector from './garbageCollector.ts'
+import ActionBuilder from './buildActions.ts'
 
 const GC = new GarbageCollector({})
+const AB = new ActionBuilder({})
+
 class Hydrogen {
   options: any
 
@@ -175,7 +179,12 @@ class Hydrogen {
       const action = node.$cinfo?.$action
     }
 
-    const cleanCode = GC.clean(final)
+    console.log(final)
+    const CleanCode = GC.clean(final)
+    console.log(CleanCode)
+    const CompiledCode = AB.build(CleanCode, nodes || [], edges || [])
+    console.log(CompiledCode)
+
     if (options?.verbose) {
       console.log(
         `Compiled Within ${(performance.now() - start).toFixed(
@@ -183,7 +192,8 @@ class Hydrogen {
         )} MilliSeconds(s)`,
       )
     }
-    return cleanCode
+
+    return CompiledCode
   }
 
   clean(content: any) {
