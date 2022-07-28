@@ -7,7 +7,6 @@ import ReactFlow, {
   Background,
   applyEdgeChanges,
   applyNodeChanges,
-  Edge,
 } from "react-flow-renderer";
 import { useRef, useEffect, useCallback, useState } from "react";
 
@@ -69,7 +68,7 @@ function Flow() {
   //   }
   // }
 
-  const onNodeClick = (node: NodeElement) => {
+  const onNodeClick: any = (node: NodeElement) => {
     setRightUniqueId(node.target.dataset.id)
   }
 
