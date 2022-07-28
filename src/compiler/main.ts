@@ -1,4 +1,3 @@
-import React from 'react'
 import { Field, TypeNode } from '../types'
 import { Edge } from 'react-flow-renderer'
 
@@ -81,9 +80,6 @@ class Hydrogen {
         const edge = edges[i]
       }
     }
-
-    const EdgeTree = edgesToTree()
-    const Tree = ancestorTree(EdgeTree)
 
     function getNodeById(id: string) {
       let tree = {}

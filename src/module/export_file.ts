@@ -1,4 +1,7 @@
-export default (filename: string = 'hydrazine.hydro', contents: string) => {
+export default function main(
+  filename: string = 'hydrazine.hydro',
+  contents: string,
+) {
   const file = new Blob([contents], {
     type: 'text/plain',
   })
