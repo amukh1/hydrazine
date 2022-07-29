@@ -3,8 +3,12 @@
     windows_subsystem = "windows"
 )]
 
+mod presence;
+
 fn main() {
+    let discord = presence::set_presence();
+    println!("{:?}", discord);
     tauri::Builder::default()
         .run(tauri::generate_context!())
-        .expect("Unknown Error Occured While Running Hydrazine!");
+        .expect("Unknown Error Occurred While Running Application!");
 }
