@@ -127,7 +127,7 @@ class Hydrogen {
           ? ((target.$cinfo || {}).$fields || []).map((field: Field) => {
               return {
                 $type: target.$cinfo.$action,
-                $value: field.$value,
+                $value: field?.$value,
                 $query: field?.$query,
                 $callbacks: children.map((child: Edge) => {
                   if (child.source == target.id) {
@@ -149,6 +149,20 @@ class Hydrogen {
 
       switch (source?.$cinfo.$action) {
         case 'on_start': {
+          if (target) {
+            if (target.$cinfo) {
+              if (Array.isArray(target.$cinfo.$fields)) {
+                final.$cinfo.$onInitListeners.push({
+                  $type: 'process',
+                  $conditions: buildConditions(),
+                  $actions: buildActions(target),
+                })
+              }
+            }
+          }
+          break
+        }
+        case 'on_client_ready': {
           if (target) {
             if (target.$cinfo) {
               if (Array.isArray(target.$cinfo.$fields)) {

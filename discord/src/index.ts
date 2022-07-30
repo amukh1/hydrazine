@@ -1,5 +1,5 @@
 import 'dotenv/config'
-import { Client, GatewayIntentBits } from 'discord.js'
+import client from './client'
 
 import formatMessage from '../module/formatMessage'
 import actBaseActions from '../module/actBaseActions'
@@ -11,7 +11,6 @@ const config: any = JSON.parse(
 )
 
 const envs = Object.keys(config?.$ENV || {})
-const client = new Client({ intents: [GatewayIntentBits.Guilds] })
 
 if (config.$cinfo) {
   for (let i = 0; i < config.$cinfo.$onInitListeners.length; i++) {
@@ -23,9 +22,7 @@ if (config.$cinfo) {
           const action = actions[j]
           console.log(action)
           actBaseActions(action)
-          discordClientActions(action, {
-            client: client,
-          })
+          discordClientActions(action)
         }
         break
       }
@@ -33,6 +30,7 @@ if (config.$cinfo) {
         client.on('ready', () => {
           actions.forEach((action: any) => {
             actBaseActions(action)
+            discordClientActions(action)
           })
         })
         break

@@ -17,7 +17,26 @@
     }
   },
   "$cinfo": {
-    "$onInitListeners": [],
+    "$onInitListeners": [
+      {
+        "$type": "process",
+        "$conditions": {
+          "$equals": []
+        },
+        "$actions": [
+          {
+            "$type": "set_presence",
+            "$value": "fwef",
+            "$callbacks": []
+          },
+          {
+            "$type": "set_presence",
+            "$value": "fwe",
+            "$callbacks": []
+          }
+        ]
+      }
+    ],
     "$listeners": [],
     "$actions": []
   }
