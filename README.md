@@ -11,6 +11,8 @@
 
 - Easy to host on your own web-based server.
 - Open Source.
-- Full code access.
 - Beginner Friendly
 - Free to use.
+- Portable
+- Works Offline
+- Full discord bot code access.

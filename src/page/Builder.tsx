@@ -27,6 +27,7 @@ function Flow() {
   const [edges, setEdges]: any = useState(initialEdges);
 
   const [rightUniqueId, setRightUniqueId] = useState("");
+  const [clientPrefix, setClientPrefix] = useState("");
   // const rightNode: TypeNode = getNodeById(rightUniqueId);
 
   function randomPosition() {
@@ -170,18 +171,15 @@ function Flow() {
                 }
 
                 newNodes.push(newNode);
-                console.log(newNodes);
                 // loop backwards
                 for (i = newNodes.length - 1; i >= 0; i--) {
                   const node: TypeNode = newNodes[i];
-                  console.log(node)
                   if (!ids.includes(node.id)) {
                     unique.push(node);
                     ids.push(node.id);
                   }
                 }
 
-                console.log(unique)
                 setNodes(unique);
                 updateFieldComponent();
               }}
@@ -531,12 +529,21 @@ function Flow() {
           <div className="col-span-2 flex flex-wrap w-full">
             <div className="w-full flex flex-wrap">
               <div className="w-full grid-cols-1 grid p-3 border-l  flex-wrap border-shark-400">
-                <div className="">
+                <div className="space-y-2">
                   <section className="mb-3">
                     <h3 className="text-xs font-bold uppercase text-gray-400 tracking-wider">
                       BUILDER
                     </h3>
                   </section>
+                  <div className="">
+                    <h3 className="font-semibold">Prefix</h3>
+                    <input
+
+                      className={`p-3 opacity-90 bg-shark-400 border-dashed border-picton shadow-sm border-2 rounded-lg w-full`}
+                      value={clientPrefix}
+                      onChange={(e) => setClientPrefix(e.target.value)}
+                    ></input>
+                  </div>
                   {rightUniqueId ? (
                     <div>
                       <h3 className="font-semibold">Unique Key</h3>

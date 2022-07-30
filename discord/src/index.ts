@@ -57,8 +57,6 @@ for (let i = 0; i < config.$cinfo.$listeners.length; i++) {
             $MSGUSERMENTION: message.author.toString(),
             $MSGUSERMENTIONID: message.author.id,
           })
-
-          console.log(cleanMsg)
         }
       })
   }
