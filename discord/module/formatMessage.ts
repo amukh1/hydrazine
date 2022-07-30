@@ -1,6 +1,6 @@
 const start = new Date().getTime()
 
-export default function main(str: string, extendedLibrary: any = {}) {
+export default function main(str: string = '', extendedLibrary: any = {}) {
   const date = new Date()
   const library = {
     $DATE_LOCASETIMESTRING: date.toLocaleTimeString(),
@@ -22,7 +22,9 @@ export default function main(str: string, extendedLibrary: any = {}) {
   for (let i = 0; i < m.length; i++) {
     const key = m[i]
     const val = library[key]
-    final += final.replace(`$${key}`, val)
+    if (val && key) {
+      final = final.replace(`$${key}`, val)
+    }
   }
 
   return final

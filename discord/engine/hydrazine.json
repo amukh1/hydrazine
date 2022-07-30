@@ -1,0 +1,24 @@
+{
+  "$CONFIGS": {
+    "$verbose": true,
+    "$logs": {
+      "err": "../logs/err.log",
+      "warn": "../logs/warn.log"
+    }
+  },
+  "$ENV": {
+    "key": "value"
+  },
+  "$GLOBAL": {
+    "$PREFIX": "h!",
+    "$PRESENCE": {
+      "name": "Created With Hydrazine.",
+      "type": "WATCHING"
+    }
+  },
+  "$cinfo": {
+    "$onInitListeners": [],
+    "$listeners": [],
+    "$actions": []
+  }
+}

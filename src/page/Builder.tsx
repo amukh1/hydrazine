@@ -374,12 +374,14 @@ function Flow() {
                         $action: "set_presence",
                         $fields: [
                           {
+                            $value: "",
                             $type: "string",
                             $name: "name",
                             $placeholder: "Created With Hydrazine.",
                           },
                           {
                             $type: "string",
+                            $value: "",
                             $name: "type",
                             $placeholder: "PLAYING",
                           },

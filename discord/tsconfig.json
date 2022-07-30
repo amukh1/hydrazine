@@ -2,12 +2,13 @@
     "compilerOptions": {
         "target": "ES6",
         "module": "Node16",
+        "sourceMap": false,
         "esModuleInterop": true,
         "moduleResolution": "node",
-        "sourceMap": false,
-        "outDir": "output"
+        "outDir": "./dist",
+        "lib": [
+            "es5",
+            "es6",
+        ],
     },
-    "lib": [
-        "es2015"
-    ]
 }

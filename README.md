@@ -1,5 +1,7 @@
 # **Hydrazine** [In Development]
 
+![License](https://img.shields.io/badge/License-CC%20BY_NC_SA%204.0-brightgreen)
+
 - [Documentations](./docs/README.MD)
 - [Downloads](https://github.com/jareer12/hydrazine/releases)
 
