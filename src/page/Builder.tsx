@@ -33,7 +33,7 @@ function Flow() {
     return Math.floor(Math.random() * 250)
   }
 
-  function addNode(options) {
+  function addNode(options: any) {
     let randId = Module.randomString(16);
     options["id"] = randId;
     options["color"] = options.color || "picton";
@@ -43,6 +43,9 @@ function Flow() {
     setNodes((nodes: any) => {
       return [...nodes, options];
     });
+
+    // focus on node
+    setRightUniqueId(randId);
   }
 
   function getNodeById(id: string): TypeNode | any {
@@ -144,7 +147,7 @@ function Flow() {
     const final: any = [];
 
     for (let i = 0; i < nodeFields.length; i++) {
-      const field = nodeFields[i];
+      var field = nodeFields[i];
       final.push(
         <>
           <div className="mt-2">
@@ -167,15 +170,20 @@ function Flow() {
                 }
 
                 newNodes.push(newNode);
-                for (i = newNodes.length - 1; i > 0; i--) {
+                console.log(newNodes);
+                // loop backwards
+                for (i = newNodes.length - 1; i >= 0; i--) {
                   const node: TypeNode = newNodes[i];
+                  console.log(node)
                   if (!ids.includes(node.id)) {
                     unique.push(node);
                     ids.push(node.id);
                   }
                 }
 
+                console.log(unique)
                 setNodes(unique);
+                updateFieldComponent();
               }}
               className={`p-3 opacity-90 bg-shark-400 border-dashed border-picton  shadow-sm border-2 rounded-lg w-full`}
               value={field.$value}

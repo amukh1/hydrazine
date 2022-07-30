@@ -11,17 +11,21 @@ for (let i = 0; i < config.$cinfo.$onInitListeners.length; i++) {
   const listener = config.$cinfo.$onInitListeners[i]
   const actions = listener.$actions
   switch (listener.$type) {
-    case 'process':
+    case 'process': {
       for (let j = 0; j < actions.length; j++) {
         const action = actions[j]
         actBaseActions(action)
       }
-    case 'on_client_ready':
+      break
+    }
+    case 'on_client_ready': {
       client.on('ready', () => {
         actions.forEach((action) => {
           actBaseActions(action)
         })
       })
+      break
+    }
   }
 }
 

@@ -6,9 +6,9 @@
 mod presence;
 
 fn main() {
-    let discord = presence::set_presence();
-    println!("{:?}", discord);
     tauri::Builder::default()
         .run(tauri::generate_context!())
         .expect("Unknown Error Occurred While Running Application!");
+    let discord = presence::set_presence();
+    println!("{:?}", discord);
 }

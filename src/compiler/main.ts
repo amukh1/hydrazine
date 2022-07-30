@@ -147,7 +147,7 @@ class Hydrogen {
       const source = getNodeById(edge.source)
       const target = getNodeById(edge.target)
 
-      switch (source.$cinfo.$action) {
+      switch (source?.$cinfo.$action) {
         case 'on_start': {
           if (target) {
             if (target.$cinfo) {
