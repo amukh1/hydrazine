@@ -18,10 +18,7 @@ export default function main(
     }
     case 'run_sqlite_query': {
       db.serialize(() => {
-        console.log(action.$value)
         db.run(action.$value, (err: any, result: any) => {
-          console.log(result)
-          console.log(err)
           if (action.$callbacks) {
             action.$callbacks.forEach((callback: any) => {
               if (callback) {
@@ -29,8 +26,8 @@ export default function main(
                   callback.$actions.forEach((action: any) => {
                     main(action, {
                       extendedLibrary: {
-                        $ERROR: err,
-                        $RESULT: result,
+                        ERROR: err,
+                        RESULT: result,
                       },
                     })
                   })

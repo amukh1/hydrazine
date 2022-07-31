@@ -20,7 +20,6 @@ if (config.$cinfo) {
       case 'process': {
         for (let j = 0; j < actions.length; j++) {
           const action = actions[j]
-          console.log(action)
           actBaseActions(action)
           discordClientActions(action)
         }
@@ -48,31 +47,50 @@ if (config.$cinfo) {
 }
 
 if (config.$cinfo) {
-  for (let i = 0; i < config.$cinfo.$listeners.length; i++) {
-    const event = config.$cinfo.$listeners[i]
-    const checkpoints = event.$checkpoints
+  for (let i = 0; i < config.$cinfo.$onInitListeners.length; i++) {
+    const event = config.$cinfo.$onInitListeners[i]
+    const callbacks = event.$actions || []
 
     switch (event.$type) {
-      case 'text_command':
-        client.on('messageCreate', async (message) => {
-          if (message.author.bot) return
-          for (let i = 0; i < checkpoints.length; i++) {
-            const checkpoint = checkpoints[i]
-            const conditions = checkpoint.$conditions
+      case 'text_command': {
+        client.on('ready', () => {
+          client.on('messageCreate', async (message) => {
+            if (message.author.bot) return
+            for (let i = 0; i < callbacks.length; i++) {
+              const callback = callbacks[i]
+              const conditions = callback.$conditions
 
-            const equals = Object.keys(conditions.$equals)
-            const cleanMsg = formatMessage(message.content, {
-              $MSGCONTENT: message.content,
-              $MSGID: message.id,
-              $MESSAGEAUTHOR: message.author.username,
-              $MSGUSERID: message.author.id,
-              $MSGUSERDISCRIM: message.author.discriminator,
-              $MSGUSERAVATAR: message.author.avatarURL,
-              $MSGUSERMENTION: message.author.toString(),
-              $MSGUSERMENTIONID: message.author.id,
-            })
-          }
+              const equals = Object.keys(conditions?.$equals || {}) || []
+              const cleanMsg = formatMessage(callback.$value, {
+                MSGCONTENT: message.content,
+                MSGID: message.id,
+                MSGAUTHOR: message.author.tag,
+                MESSAGEAUTHOR: message.author.username,
+                MSGUSERID: message.author.id,
+                MSGUSERDISCRIM: message.author.discriminator,
+                MSGUSERAVATAR: message.author.avatarURL,
+                MSGUSERMENTION: message.author.toString(),
+                MSGUSERMENTIONID: message.author.id,
+              })
+
+              console.log(callback.$value)
+              switch (callback.$type) {
+                case 'message_reply': {
+                  message.reply(cleanMsg)
+                }
+                case 'message_react': {
+                  try {
+                    message.react(callback.$value)
+                  } catch {
+                    // do nothing
+                  }
+                }
+              }
+            }
+          })
         })
+        break
+      }
     }
   }
 }
@@ -81,6 +99,6 @@ client.login(process.env.TOKEN).then((token) => {
   const PRESENCE: any = config.$GLOBAL?.$PRESENCE
   client.user.setActivity(PRESENCE)
   client.user.setPresence({
-    status: 'online',
+    status: 'idle',
   })
 })

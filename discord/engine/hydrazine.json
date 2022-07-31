@@ -19,20 +19,440 @@
   "$cinfo": {
     "$onInitListeners": [
       {
+        "$type": "on_client_ready",
+        "$conditions": {
+          "$equals": []
+        },
+        "$actions": [
+          {
+            "$value": "Created Using Hydrazine",
+            "$callbacks": [],
+            "$type": "set_presence",
+            "$name": "name",
+            "$placeholder": "Created With Hydrazine.",
+            "type_$value": "PLAYING",
+            "type_$name": "type",
+            "type_$placeholder": "PLAYING"
+          },
+          {
+            "$type": "console_log",
+            "$name": "Message",
+            "$callbacks": [],
+            "$placeholder": "$BOTNAME has started",
+            "$value": "Changing Presence For $BOTNAME"
+          },
+          {
+            "$type": "run_sqlite_query",
+            "$name": "MySQL Query",
+            "$callbacks": [
+              {
+                "$type": "console_log",
+                "$fields": [
+                  {
+                    "$type": "string",
+                    "$name": "Message",
+                    "$placeholder": "$BOTNAME has started",
+                    "$value": "$RESULT"
+                  }
+                ],
+                "$actions": [
+                  {
+                    "$type": "string",
+                    "$name": "Message",
+                    "$placeholder": "$BOTNAME has started",
+                    "$value": "$RESULT"
+                  }
+                ]
+              }
+            ],
+            "$placeholder": "SELECT * FROM users",
+            "$value": "INSERT INTO users(id) VALUES(1000)"
+          },
+          {
+            "$type": "console_log",
+            "$name": "Message",
+            "$callbacks": [],
+            "$placeholder": "$BOTNAME has started",
+            "$value": "$RESULT"
+          },
+          {
+            "$type": "message_reply",
+            "$name": "Content",
+            "$callbacks": [],
+            "$placeholder": "Hello, $AUTHOR_TAG. I'm $CLIENT_NAME",
+            "$value": "How can I help you **$MSGAUTHOR**?"
+          },
+          {
+            "$type": "message_react",
+            "$name": "Content",
+            "$callbacks": [],
+            "$placeholder": ":joy:",
+            "$value": ":thumbsup:"
+          }
+        ]
+      },
+      {
+        "$type": "on_client_ready",
+        "$conditions": {
+          "$equals": []
+        },
+        "$actions": [
+          {
+            "$value": "Created Using Hydrazine",
+            "$callbacks": [],
+            "$type": "set_presence",
+            "$name": "name",
+            "$placeholder": "Created With Hydrazine.",
+            "type_$value": "PLAYING",
+            "type_$name": "type",
+            "type_$placeholder": "PLAYING"
+          },
+          {
+            "$type": "console_log",
+            "$name": "Message",
+            "$callbacks": [],
+            "$placeholder": "$BOTNAME has started",
+            "$value": "Changing Presence For $BOTNAME"
+          },
+          {
+            "$type": "run_sqlite_query",
+            "$name": "MySQL Query",
+            "$callbacks": [
+              {
+                "$type": "console_log",
+                "$fields": [
+                  {
+                    "$type": "string",
+                    "$name": "Message",
+                    "$placeholder": "$BOTNAME has started",
+                    "$value": "$RESULT"
+                  }
+                ],
+                "$actions": [
+                  {
+                    "$type": "string",
+                    "$name": "Message",
+                    "$placeholder": "$BOTNAME has started",
+                    "$value": "$RESULT"
+                  }
+                ]
+              }
+            ],
+            "$placeholder": "SELECT * FROM users",
+            "$value": "INSERT INTO users(id) VALUES(1000)"
+          },
+          {
+            "$type": "console_log",
+            "$name": "Message",
+            "$callbacks": [],
+            "$placeholder": "$BOTNAME has started",
+            "$value": "$RESULT"
+          },
+          {
+            "$type": "message_reply",
+            "$name": "Content",
+            "$callbacks": [],
+            "$placeholder": "Hello, $AUTHOR_TAG. I'm $CLIENT_NAME",
+            "$value": "How can I help you **$MSGAUTHOR**?"
+          },
+          {
+            "$type": "message_react",
+            "$name": "Content",
+            "$callbacks": [],
+            "$placeholder": ":joy:",
+            "$value": ":thumbsup:"
+          }
+        ]
+      },
+      {
+        "$type": "on_client_ready",
+        "$conditions": {
+          "$equals": []
+        },
+        "$actions": [
+          {
+            "$value": "Created Using Hydrazine",
+            "$callbacks": [],
+            "$type": "set_presence",
+            "$name": "name",
+            "$placeholder": "Created With Hydrazine.",
+            "type_$value": "PLAYING",
+            "type_$name": "type",
+            "type_$placeholder": "PLAYING"
+          },
+          {
+            "$type": "console_log",
+            "$name": "Message",
+            "$callbacks": [],
+            "$placeholder": "$BOTNAME has started",
+            "$value": "Changing Presence For $BOTNAME"
+          },
+          {
+            "$type": "run_sqlite_query",
+            "$name": "MySQL Query",
+            "$callbacks": [
+              {
+                "$type": "console_log",
+                "$fields": [
+                  {
+                    "$type": "string",
+                    "$name": "Message",
+                    "$placeholder": "$BOTNAME has started",
+                    "$value": "$RESULT"
+                  }
+                ],
+                "$actions": [
+                  {
+                    "$type": "string",
+                    "$name": "Message",
+                    "$placeholder": "$BOTNAME has started",
+                    "$value": "$RESULT"
+                  }
+                ]
+              }
+            ],
+            "$placeholder": "SELECT * FROM users",
+            "$value": "INSERT INTO users(id) VALUES(1000)"
+          },
+          {
+            "$type": "console_log",
+            "$name": "Message",
+            "$callbacks": [],
+            "$placeholder": "$BOTNAME has started",
+            "$value": "$RESULT"
+          },
+          {
+            "$type": "message_reply",
+            "$name": "Content",
+            "$callbacks": [],
+            "$placeholder": "Hello, $AUTHOR_TAG. I'm $CLIENT_NAME",
+            "$value": "How can I help you **$MSGAUTHOR**?"
+          },
+          {
+            "$type": "message_react",
+            "$name": "Content",
+            "$callbacks": [],
+            "$placeholder": ":joy:",
+            "$value": ":thumbsup:"
+          }
+        ]
+      },
+      {
         "$type": "process",
         "$conditions": {
           "$equals": []
         },
         "$actions": [
           {
+            "$value": "Created Using Hydrazine",
+            "$callbacks": [],
             "$type": "set_presence",
-            "$value": "fwef",
-            "$callbacks": []
+            "$name": "name",
+            "$placeholder": "Created With Hydrazine.",
+            "type_$value": "PLAYING",
+            "type_$name": "type",
+            "type_$placeholder": "PLAYING"
           },
           {
+            "$type": "console_log",
+            "$name": "Message",
+            "$callbacks": [],
+            "$placeholder": "$BOTNAME has started",
+            "$value": "Changing Presence For $BOTNAME"
+          },
+          {
+            "$type": "run_sqlite_query",
+            "$name": "MySQL Query",
+            "$callbacks": [
+              {
+                "$type": "console_log",
+                "$fields": [
+                  {
+                    "$type": "string",
+                    "$name": "Message",
+                    "$placeholder": "$BOTNAME has started",
+                    "$value": "$RESULT"
+                  }
+                ],
+                "$actions": [
+                  {
+                    "$type": "string",
+                    "$name": "Message",
+                    "$placeholder": "$BOTNAME has started",
+                    "$value": "$RESULT"
+                  }
+                ]
+              }
+            ],
+            "$placeholder": "SELECT * FROM users",
+            "$value": "INSERT INTO users(id) VALUES(1000)"
+          },
+          {
+            "$type": "console_log",
+            "$name": "Message",
+            "$callbacks": [],
+            "$placeholder": "$BOTNAME has started",
+            "$value": "$RESULT"
+          },
+          {
+            "$type": "message_reply",
+            "$name": "Content",
+            "$callbacks": [],
+            "$placeholder": "Hello, $AUTHOR_TAG. I'm $CLIENT_NAME",
+            "$value": "How can I help you **$MSGAUTHOR**?"
+          },
+          {
+            "$type": "message_react",
+            "$name": "Content",
+            "$callbacks": [],
+            "$placeholder": ":joy:",
+            "$value": ":thumbsup:"
+          }
+        ]
+      },
+      {
+        "$type": "text_command",
+        "$conditions": {
+          "$equals": []
+        },
+        "$actions": [
+          {
+            "$value": "Created Using Hydrazine",
+            "$callbacks": [],
             "$type": "set_presence",
-            "$value": "fwe",
-            "$callbacks": []
+            "$name": "name",
+            "$placeholder": "Created With Hydrazine.",
+            "type_$value": "PLAYING",
+            "type_$name": "type",
+            "type_$placeholder": "PLAYING"
+          },
+          {
+            "$type": "console_log",
+            "$name": "Message",
+            "$callbacks": [],
+            "$placeholder": "$BOTNAME has started",
+            "$value": "Changing Presence For $BOTNAME"
+          },
+          {
+            "$type": "run_sqlite_query",
+            "$name": "MySQL Query",
+            "$callbacks": [
+              {
+                "$type": "console_log",
+                "$fields": [
+                  {
+                    "$type": "string",
+                    "$name": "Message",
+                    "$placeholder": "$BOTNAME has started",
+                    "$value": "$RESULT"
+                  }
+                ],
+                "$actions": [
+                  {
+                    "$type": "string",
+                    "$name": "Message",
+                    "$placeholder": "$BOTNAME has started",
+                    "$value": "$RESULT"
+                  }
+                ]
+              }
+            ],
+            "$placeholder": "SELECT * FROM users",
+            "$value": "INSERT INTO users(id) VALUES(1000)"
+          },
+          {
+            "$type": "console_log",
+            "$name": "Message",
+            "$callbacks": [],
+            "$placeholder": "$BOTNAME has started",
+            "$value": "$RESULT"
+          },
+          {
+            "$type": "message_reply",
+            "$name": "Content",
+            "$callbacks": [],
+            "$placeholder": "Hello, $AUTHOR_TAG. I'm $CLIENT_NAME",
+            "$value": "How can I help you **$MSGAUTHOR**?"
+          },
+          {
+            "$type": "message_react",
+            "$name": "Content",
+            "$callbacks": [],
+            "$placeholder": ":joy:",
+            "$value": ":thumbsup:"
+          }
+        ]
+      },
+      {
+        "$type": "text_command",
+        "$conditions": {
+          "$equals": []
+        },
+        "$actions": [
+          {
+            "$value": "Created Using Hydrazine",
+            "$callbacks": [],
+            "$type": "set_presence",
+            "$name": "name",
+            "$placeholder": "Created With Hydrazine.",
+            "type_$value": "PLAYING",
+            "type_$name": "type",
+            "type_$placeholder": "PLAYING"
+          },
+          {
+            "$type": "console_log",
+            "$name": "Message",
+            "$callbacks": [],
+            "$placeholder": "$BOTNAME has started",
+            "$value": "Changing Presence For $BOTNAME"
+          },
+          {
+            "$type": "run_sqlite_query",
+            "$name": "MySQL Query",
+            "$callbacks": [
+              {
+                "$type": "console_log",
+                "$fields": [
+                  {
+                    "$type": "string",
+                    "$name": "Message",
+                    "$placeholder": "$BOTNAME has started",
+                    "$value": "$RESULT"
+                  }
+                ],
+                "$actions": [
+                  {
+                    "$type": "string",
+                    "$name": "Message",
+                    "$placeholder": "$BOTNAME has started",
+                    "$value": "$RESULT"
+                  }
+                ]
+              }
+            ],
+            "$placeholder": "SELECT * FROM users",
+            "$value": "INSERT INTO users(id) VALUES(1000)"
+          },
+          {
+            "$type": "console_log",
+            "$name": "Message",
+            "$callbacks": [],
+            "$placeholder": "$BOTNAME has started",
+            "$value": "$RESULT"
+          },
+          {
+            "$type": "message_reply",
+            "$name": "Content",
+            "$callbacks": [],
+            "$placeholder": "Hello, $AUTHOR_TAG. I'm $CLIENT_NAME",
+            "$value": "How can I help you **$MSGAUTHOR**?"
+          },
+          {
+            "$type": "message_react",
+            "$name": "Content",
+            "$callbacks": [],
+            "$placeholder": "🙂",
+            "$value": "🙂"
           }
         ]
       }

@@ -122,24 +122,52 @@ class Hydrogen {
 
     function buildActions(target: TypeNode) {
       const children = getEdgesByNodeId(target.id)
-      return target.$cinfo?.$fields
-        ? Array.isArray(target.$cinfo.$fields)
-          ? ((target.$cinfo || {}).$fields || []).map((field: Field) => {
-              return {
-                $type: target.$cinfo.$action,
-                $value: field?.$value,
-                $query: field?.$query,
-                $callbacks: children.map((child: Edge) => {
+      const actions: any = []
+      children.forEach((child: Edge) => {
+        let action = {}
+        let target = getNodeById(child.target)
+        let fields = target.$cinfo.$fields
+        fields.forEach((field: any) => {
+          Object.keys(field).forEach((key: string) => {
+            if (key !== '$match' && key !== '$with') {
+              if (key === '$type') {
+                action[key] = target.$cinfo.$action
+              } else {
+                action[
+                  `${field.$name !== 'type' ? '' : `${field.$name}_`}${key}`
+                ] = field[key]
+                action['$callbacks'] = children.map((child: Edge) => {
                   if (child.source == target.id) {
                     if (child.target) {
                       return getNodeById(child.target)
                     }
                   }
-                }),
+                })
               }
-            })
-          : []
-        : []
+            }
+          })
+        })
+        actions.push(action)
+      })
+      return actions
+      // return target.$cinfo?.$fields
+      //   ? Array.isArray(target.$cinfo.$fields)
+      //     ? ((target.$cinfo || {}).$fields || []).map((field: Field) => {
+      //         return {
+      //           $type: target.$cinfo.$action,
+      //           $value: field?.$value,
+      //           $query: field?.$query,
+      //           $callbacks: children.map((child: Edge) => {
+      //             if (child.source == target.id) {
+      //               if (child.target) {
+      //                 return getNodeById(child.target)
+      //               }
+      //             }
+      //           }),
+      //         }
+      //       })
+      //     : []
+      //   : []
     }
 
     for (let i = 0; i < edges.length; i++) {
@@ -167,7 +195,7 @@ class Hydrogen {
             if (target.$cinfo) {
               if (Array.isArray(target.$cinfo.$fields)) {
                 final.$cinfo.$onInitListeners.push({
-                  $type: 'process',
+                  $type: 'on_client_ready',
                   $conditions: buildConditions(),
                   $actions: buildActions(target),
                 })
@@ -180,7 +208,7 @@ class Hydrogen {
           if (target) {
             if (target.$cinfo) {
               if (Array.isArray(target.$cinfo.$fields)) {
-                final.$cinfo.$listeners.push({
+                final.$cinfo.$onInitListeners.push({
                   $type: 'process',
                   $conditions: buildConditions(),
                   $actions: buildActions(target),
@@ -191,7 +219,7 @@ class Hydrogen {
           break
         }
         case 'on_message': {
-          final.$cinfo.$listeners.push({
+          final.$cinfo.$onInitListeners.push({
             $type: 'text_command',
             $conditions: buildConditions(),
             $actions: buildActions(target),

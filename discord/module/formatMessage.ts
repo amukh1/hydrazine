@@ -1,14 +1,16 @@
-const start = new Date().getTime()
-
+import client from '../src/client'
 export default function main(str: string = '', extendedLibrary: any = {}) {
+  const start = new Date().getTime()
+
   const date = new Date()
   const library = {
-    $DATE_LOCASETIMESTRING: date.toLocaleTimeString(),
-    $DATE_TIMESTRING: date.toTimeString(),
-    $DATE_LOCALEDATESTRING: date.toLocaleDateString(),
-    $DATE_DATESTRING: date.toDateString(),
-    $PROCESS_UPTIME: start - date.getTime(),
-    $PROCESS_ID: process.pid,
+    DATE_LOCASETIMESTRING: date.toLocaleTimeString(),
+    DATE_TIMESTRING: date.toTimeString(),
+    DATE_LOCALEDATESTRING: date.toLocaleDateString(),
+    DATE_DATESTRING: date.toDateString(),
+    PROCESS_UPTIME: start - date.getTime(),
+    BOTNAME: client?.user?.tag,
+    PROCESS_ID: process.pid,
   }
 
   Object.keys(extendedLibrary).forEach((key) => {

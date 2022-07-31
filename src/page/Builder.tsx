@@ -329,7 +329,7 @@ function Flow() {
                           {
                             $type: "string",
                             $name: "Content",
-                            $placeholder: ":joy:",
+                            $placeholder: "🙂",
                             $value: "",
                           },
                         ],
