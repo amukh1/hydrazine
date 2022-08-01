@@ -232,7 +232,10 @@ function Flow() {
         <div className="col-span-2 overflow-auto">
           <div className="space-y-3 h-screen overflow-auto  p-3 border-r border-shark-400">
             <section className="">
-              <div className="bg-picton p-3 w-full mb-3 rounded">
+              <h3 className="text-xs font-bold uppercase text-gray-400 tracking-wider">
+                BLOCKS
+              </h3>
+              <div className="bg-picton mt-2 p-3 w-full mb-3 rounded">
                 <h2 className="text-white  font-bold">Programming</h2>
               </div>
               <h3 className="mb-1">Event Listeners</h3>
@@ -435,9 +438,9 @@ function Flow() {
                   onClick={() =>
                     addNode({
                       color: "royal",
-                      data: { label: "If <condition>" },
+                      data: { label: "Loop" },
                       $cinfo: {
-                        $action: "if_statement",
+                        $action: "loop",
                         $fields: [
                           {
                             $type: "string",
@@ -481,7 +484,7 @@ function Flow() {
                           },
                         ],
                       },
-                      data: { label: "console.log()" },
+                      data: { label: "Console Log" },
                       position: { x: randomPosition(), y: randomPosition() },
                     })
                   }
@@ -505,7 +508,7 @@ function Flow() {
                           },
                         ],
                       },
-                      data: { label: "console.log()" },
+                      data: { label: "Console Warn" },
                       position: { x: randomPosition(), y: randomPosition() },
                     })
                   }
@@ -533,7 +536,7 @@ function Flow() {
                           },
                         ],
                       },
-                      data: { label: "MySQL Query" },
+                      data: { label: "MySQL Run Query" },
                       position: { x: randomPosition(), y: randomPosition() },
                     })
                   }
@@ -550,7 +553,7 @@ function Flow() {
                         $fields: [
                           {
                             $type: "string",
-                            $name: "MySQL Query",
+                            $name: "MySQL Get Query",
                             $placeholder: "SELECT * FROM users",
                             $value: "",
                           },
@@ -565,7 +568,7 @@ function Flow() {
               <div className="bg-picton p-3 w-full mt-3 mb-3 rounded">
                 <h2 className="text-white  font-bold">Beginner Friendly</h2>
               </div>
-              <section>
+              <section className="space-y-2">
                 <h3 className="mb-1">Economy</h3>
                 <Block
                   text="Increase Balance"
@@ -580,12 +583,47 @@ function Flow() {
                           {
                             $type: "string",
                             $name: "UserId",
-                            $placeholder: "$AUTHORID",
+                            $placeholder: "$AUTHOR_ID",
+                            $value: "",
+                          },
+                          {
+                            $type: "string",
+                            $name: "Amount",
+                            $placeholder: "1000",
                             $value: "",
                           },
                         ],
                       },
-                      data: { label: "MySQL Query" },
+                      data: { label: "Increase Balance" },
+                      position: { x: randomPosition(), y: randomPosition() },
+                    })
+                  }
+                />
+                <Block
+                  text="Decrease Balance"
+                  desc="Decrease user's balance in the global economy."
+                  color="cinna"
+                  onClick={() =>
+                    addNode({
+                      color: "cinna",
+                      $cinfo: {
+                        $action: "decrease_increase_balance",
+                        $fields: [
+                          {
+                            $type: "string",
+                            $name: "UserId",
+                            $placeholder: "$AUTHOR_ID",
+                            $value: "",
+                          },
+                          {
+                            $type: "string",
+                            $name: "Amount",
+                            $placeholder: "1000",
+                            $value: "",
+                          },
+                        ],
+                      },
+                      data: { label: "Decrease Balance" },
                       position: { x: randomPosition(), y: randomPosition() },
                     })
                   }
@@ -625,7 +663,7 @@ function Flow() {
             <div className="w-full flex flex-wrap">
               <div className="w-full grid-cols-1 grid p-3 border-l  flex-wrap border-shark-400">
                 <div className="space-y-2">
-                  <section className="mb-3">
+                  <section className="">
                     <h3 className="text-xs font-bold uppercase text-gray-400 tracking-wider">
                       BUILDER
                     </h3>
@@ -642,7 +680,7 @@ function Flow() {
                   ) : (
                     false
                   )}
-                  <div className="border border-dashed border-shark-300"></div>
+                  {/* <div className="border border-dashed border-shark-300"></div> */}
                   <button
                     onClick={exportCode}
                     className={`shadow shadow-picton bg-picton rounded-lg font-bold w-full p-3 text-white`}
