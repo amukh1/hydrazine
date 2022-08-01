@@ -316,10 +316,10 @@ function Flow() {
                 <Block
                   text="React"
                   desc="React to a message with an emoji."
-                  color="picton"
+                  color="awesome"
                   onClick={() =>
                     addNode({
-                      color: "picton",
+                      color: "awesome",
                       type: "output",
                       data: { label: "React" },
                       $cinfo: {
@@ -339,11 +339,11 @@ function Flow() {
                 />
                 <Block
                   text="Reply"
-                  color="picton"
+                  color="awesome"
                   desc="Reply to the sent message."
                   onClick={() =>
                     addNode({
-                      color: "picton",
+                      color: "awesome",
                       type: "output",
                       $cinfo: {
                         $action: "message_reply",
@@ -363,11 +363,11 @@ function Flow() {
                 />
                 <Block
                   text="Set Presence"
-                  color="picton"
+                  color="awesome"
                   desc="Set bot presence."
                   onClick={() =>
                     addNode({
-                      color: "picton",
+                      color: "awesome",
                       type: "output",
                       $cinfo: {
                         $action: "set_presence",
@@ -399,6 +399,35 @@ function Flow() {
                 <Block
                   text="If"
                   desc="Check whether a condition is true"
+                  color="royal"
+                  onClick={() =>
+                    addNode({
+                      color: "royal",
+                      data: { label: "If <condition>" },
+                      $cinfo: {
+                        $action: "if_statement",
+                        $fields: [
+                          {
+                            $type: "string",
+                            $name: "Match",
+                            $placeholder: "$AUTHOR_TAG",
+                            $value: "",
+                          },
+                          {
+                            $type: "string",
+                            $name: "With",
+                            $placeholder: "$BOTNAME has started",
+                            $value: "",
+                          },
+                        ],
+                      },
+                      position: { x: randomPosition(), y: randomPosition() },
+                    })
+                  }
+                />
+                <Block
+                  text="Loop"
+                  desc="Loop through an iterable object, eg an array."
                   color="royal"
                   onClick={() =>
                     addNode({
