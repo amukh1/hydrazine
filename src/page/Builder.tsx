@@ -406,10 +406,20 @@ function Flow() {
                       data: { label: "If <condition>" },
                       $cinfo: {
                         $action: "if_statement",
-                        $fields: [{
-                          $match: "",
-                          $with: ""
-                        }]
+                        $fields: [
+                          {
+                            $type: "string",
+                            $name: "Match",
+                            $placeholder: "$AUTHOR_TAG",
+                            $value: "",
+                          },
+                          {
+                            $type: "string",
+                            $name: "With",
+                            $placeholder: "$BOTNAME has started",
+                            $value: "",
+                          },
+                        ],
                       },
                       position: { x: randomPosition(), y: randomPosition() },
                     })
@@ -475,13 +485,36 @@ function Flow() {
               <div className="space-y-2">
                 <Block
                   text="Run Query"
-                  desc="Run a MySQL Query."
+                  desc="Run a MySQL Query. Using the .run() method."
                   color="amethyst"
                   onClick={() =>
                     addNode({
                       color: "amethyst",
                       $cinfo: {
                         $action: "run_sqlite_query",
+                        $fields: [
+                          {
+                            $type: "string",
+                            $name: "MySQL Query",
+                            $placeholder: "CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY)",
+                            $value: "",
+                          },
+                        ],
+                      },
+                      data: { label: "MySQL Query" },
+                      position: { x: randomPosition(), y: randomPosition() },
+                    })
+                  }
+                />
+                <Block
+                  text="Get Query"
+                  desc="Run a MySQL Query. Using the .get() method."
+                  color="amethyst"
+                  onClick={() =>
+                    addNode({
+                      color: "amethyst",
+                      $cinfo: {
+                        $action: "get_sqlite_query",
                         $fields: [
                           {
                             $type: "string",

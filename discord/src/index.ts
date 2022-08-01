@@ -1,10 +1,10 @@
+import fs from 'fs'
 import 'dotenv/config'
 import client from './client'
 
 import formatMessage from '../module/formatMessage'
 import actBaseActions from '../module/actBaseActions'
 import discordClientActions from '../module/discordClientActions'
-import fs from 'fs'
 
 const config: any = JSON.parse(
   fs.readFileSync(`../engine/${fs.readdirSync('./engine')[0]}`, 'utf-8'),
@@ -73,7 +73,6 @@ if (config.$cinfo) {
                 MSGUSERMENTIONID: message.author.id,
               })
 
-              console.log(callback.$value)
               switch (callback.$type) {
                 case 'message_reply': {
                   message.reply(cleanMsg)

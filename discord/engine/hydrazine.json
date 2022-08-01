@@ -19,7 +19,7 @@
   "$cinfo": {
     "$onInitListeners": [
       {
-        "$type": "text_command",
+        "$type": "process",
         "$conditions": {
           "$equals": []
         },
@@ -42,13 +42,31 @@
                   {
                     "$type": "console_log",
                     "$value": "$RESULT",
-                    "$callbacks": [null]
+                    "$callbacks": [null, null]
+                  }
+                ]
+              },
+              {
+                "$type": "console_log",
+                "$fields": [
+                  {
+                    "$type": "string",
+                    "$name": "Message",
+                    "$placeholder": "$BOTNAME has started",
+                    "$value": "$ERROR"
+                  }
+                ],
+                "$actions": [
+                  {
+                    "$type": "console_log",
+                    "$value": "$ERROR",
+                    "$callbacks": [null, null]
                   }
                 ]
               }
             ],
             "$placeholder": "SELECT * FROM users",
-            "$value": ""
+            "$value": "SELECT * FROM users"
           }
         ]
       },
@@ -58,6 +76,13 @@
           "$equals": []
         },
         "$actions": [
+          {
+            "$type": "console_log",
+            "$name": "Message",
+            "$callbacks": [],
+            "$placeholder": "$BOTNAME has started",
+            "$value": "$RESULT"
+          },
           {
             "$type": "console_log",
             "$name": "Message",
@@ -78,7 +103,66 @@
             "$name": "Message",
             "$callbacks": [],
             "$placeholder": "$BOTNAME has started",
-            "$value": "$BOTNAME is Online!"
+            "$value": "$ERROR"
+          },
+          {
+            "$type": "console_log",
+            "$name": "Message",
+            "$callbacks": [],
+            "$placeholder": "$BOTNAME has started",
+            "$value": "$ERROR"
+          }
+        ]
+      },
+      {
+        "$type": "process",
+        "$conditions": {
+          "$equals": []
+        },
+        "$actions": [
+          {
+            "$type": "get_sqlite_query",
+            "$name": "MySQL Query",
+            "$callbacks": [
+              {
+                "$type": "console_log",
+                "$fields": [
+                  {
+                    "$type": "string",
+                    "$name": "Message",
+                    "$placeholder": "$BOTNAME has started",
+                    "$value": "$RESULT"
+                  }
+                ],
+                "$actions": [
+                  {
+                    "$type": "console_log",
+                    "$value": "$RESULT",
+                    "$callbacks": [null, null]
+                  }
+                ]
+              },
+              {
+                "$type": "console_log",
+                "$fields": [
+                  {
+                    "$type": "string",
+                    "$name": "Message",
+                    "$placeholder": "$BOTNAME has started",
+                    "$value": "$ERROR"
+                  }
+                ],
+                "$actions": [
+                  {
+                    "$type": "console_log",
+                    "$value": "$ERROR",
+                    "$callbacks": [null, null]
+                  }
+                ]
+              }
+            ],
+            "$placeholder": "SELECT * FROM users",
+            "$value": "SELECT * FROM users"
           }
         ]
       }

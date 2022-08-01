@@ -27,7 +27,30 @@ export default function main(
                     main(action, {
                       extendedLibrary: {
                         ERROR: err,
-                        RESULT: result,
+                        RESULT: JSON.stringify(result),
+                      },
+                    })
+                  })
+                }
+              }
+            })
+          }
+        })
+      })
+      break
+    }
+    case 'get_sqlite_query': {
+      db.serialize(() => {
+        db.get(action.$value, (err: any, result: any) => {
+          if (action.$callbacks) {
+            action.$callbacks.forEach((callback: any) => {
+              if (callback) {
+                if (callback.$actions) {
+                  callback.$actions.forEach((action: any) => {
+                    main(action, {
+                      extendedLibrary: {
+                        ERROR: err,
+                        RESULT: JSON.stringify(result),
                       },
                     })
                   })
