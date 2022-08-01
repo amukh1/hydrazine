@@ -62,15 +62,10 @@ if (config.$cinfo) {
 
               const equals = Object.keys(conditions?.$equals || {}) || []
               const cleanMsg = formatMessage(callback.$value, {
-                MSGCONTENT: message.content,
-                MSGID: message.id,
-                MSGAUTHOR: message.author.tag,
-                MESSAGEAUTHOR: message.author.username,
-                MSGUSERID: message.author.id,
-                MSGUSERDISCRIM: message.author.discriminator,
-                MSGUSERAVATAR: message.author.avatarURL,
-                MSGUSERMENTION: message.author.toString(),
-                MSGUSERMENTIONID: message.author.id,
+                MESSAGE_ID: message.id,
+                AUTHOR_ID: message.author.id,
+                AUTHOR_TAG: message.author.tag,
+                AUTHOR_USERNAME: message.author.username,
               })
 
               switch (callback.$type) {

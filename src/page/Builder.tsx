@@ -40,7 +40,7 @@ function Flow() {
     options["color"] = options.color || "picton";
     options[
       "className"
-    ] = `bg-gradient-to-r bg-shark-600 border-${options.color} border border-dashed text-gray-200 font-bold text-xs`;
+    ] = `bg-gradient-to-r bg-shark-500 border-${options.color} border border-dashed text-gray-200 font-bold text-xs`;
     setNodes((nodes: any) => {
       return [...nodes, options];
     });
@@ -232,6 +232,9 @@ function Flow() {
         <div className="col-span-2 overflow-auto">
           <div className="space-y-3 h-screen overflow-auto  p-3 border-r border-shark-400">
             <section className="">
+              <div className="bg-picton p-3 w-full mb-3 rounded">
+                <h2 className="text-white  font-bold">Programming</h2>
+              </div>
               <h3 className="mb-1">Event Listeners</h3>
               <div className="space-y-2 ">
                 <Block
@@ -559,6 +562,35 @@ function Flow() {
                   }
                 />
               </div>
+              <div className="bg-picton p-3 w-full mt-3 mb-3 rounded">
+                <h2 className="text-white  font-bold">Beginner Friendly</h2>
+              </div>
+              <section>
+                <h3 className="mb-1">Economy</h3>
+                <Block
+                  text="Increase Balance"
+                  desc="Increase user's balance in the global economy."
+                  color="cinna"
+                  onClick={() =>
+                    addNode({
+                      color: "cinna",
+                      $cinfo: {
+                        $action: "economy_increase_balance",
+                        $fields: [
+                          {
+                            $type: "string",
+                            $name: "UserId",
+                            $placeholder: "$AUTHORID",
+                            $value: "",
+                          },
+                        ],
+                      },
+                      data: { label: "MySQL Query" },
+                      position: { x: randomPosition(), y: randomPosition() },
+                    })
+                  }
+                />
+              </section>
             </section>
           </div>
         </div>

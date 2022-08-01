@@ -17,12 +17,7 @@ Client variables are temporary and only work under conditions.
 
 ### onMessage Variables
 
-- `$MSGID` - Message ID
-- `$MESSAGEAUTHOR` - The author of the message
-- `$MSGCONTENT`- The content of the message
-- `$MSGCONTENT`- The content of the message
-- `$MSGUSERID`- The user id of the message
-- `$MSGUSERDISCRIM` - The discriminator of the message
-- `$MSGUSERAVATAR`- The avatar of the message
-- `$MSGUSERMENTION`- The mention of the message
-- `$MSGUSERMENTIONID`- The id of the mention of the message
+- `$MESSAGE_ID` - Message ID
+- `$AUTHOR_TAG` - Message sender's tag.
+- `$AUTHOR_ID` - Message sender's userId.
+- `$AUTHOR_USERNAME` - Message sender's username.
