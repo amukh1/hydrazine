@@ -81,7 +81,7 @@ if (config.$cinfo) {
                 case 'message_react': {
                   try {
                     message.react(callback.$value)
-                  } catch {
+                  } catch (err) {
                     // do nothing
                   }
                 }

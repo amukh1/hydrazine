@@ -123,31 +123,34 @@ class Hydrogen {
     function buildActions(target: TypeNode) {
       const children = getEdgesByNodeId(target.id)
       const actions: any = []
+
       children.forEach((child: Edge) => {
+        let node = getNodeById(child.target)
+        let fields = node.$cinfo.$fields
         let action = {}
-        let target = getNodeById(child.target)
-        let fields = target.$cinfo.$fields
-        fields.forEach((field: any) => {
-          Object.keys(field).forEach((key: string) => {
-            if (key !== '$match' && key !== '$with') {
-              if (key === '$type') {
-                action[key] = target.$cinfo.$action
-              } else {
-                action[
-                  `${field.$name !== 'type' ? '' : `${field.$name}_`}${key}`
-                ] = field[key]
-                action['$callbacks'] = children.map((child: Edge) => {
-                  if (child.source == target.id) {
-                    if (child.target) {
-                      return getNodeById(child.target)
+        if (node.id === target.id) {
+          fields.forEach((field: any) => {
+            Object.keys(field).forEach((key: string) => {
+              if (key !== '$match' && key !== '$with') {
+                if (key === '$type') {
+                  action[key] = node.$cinfo.$action
+                } else {
+                  action[
+                    `${field.$name !== 'type' ? '' : `${field.$name}_`}${key}`
+                  ] = field[key]
+                  action['$callbacks'] = children.map((child: Edge) => {
+                    if (child.source == target.id) {
+                      if (child.target) {
+                        return getNodeById(child.target)
+                      }
                     }
-                  }
-                })
+                  })
+                }
               }
-            }
+            })
           })
-        })
-        actions.push(action)
+          actions.push(action)
+        }
       })
       return actions
       // return target.$cinfo?.$fields

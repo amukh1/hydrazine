@@ -1,5 +1,5 @@
 import React from "react"
-import DiscordFile from "../resources/discordBotIndex.txt";
+import DiscordFile from "../resources/src-index.js.txt";
 import { NodeElement, TypeNode } from "../types/index"
 import ReactFlow, {
   MiniMap,
@@ -109,8 +109,9 @@ function Flow() {
         console.log(output);
         ExportZip("hydrazine.zip",
           [
+            { content: JSON.stringify(output, null, 4), name: "./engine/main.hydro" },
             { content: JSON.stringify(output, null, 4), name: "./template/template.ts" },
-            { content: text, name: "./src/index.ts" }
+            { content: text, name: "./src/index.js" }
           ]
         );
       });
@@ -219,8 +220,6 @@ function Flow() {
       fileInput?.current?.click();
     } catch { }
   }
-
-
 
   useEffect(() => {
     updateFieldComponent();
@@ -537,16 +536,7 @@ function Flow() {
                       BUILDER
                     </h3>
                   </section>
-                  <div className="">
-                    <h3 className="font-semibold">Prefix</h3>
-                    <input
-
-                      className={`p-3 opacity-90 bg-shark-400 border-dashed border-picton shadow-sm border-2 rounded-lg w-full`}
-                      value={clientPrefix}
-                      onChange={(e) => setClientPrefix(e.target.value)}
-                    ></input>
-                  </div>
-                  {rightUniqueId ? (
+                  {false ? (
                     <div>
                       <h3 className="font-semibold">Unique Key</h3>
                       <input
@@ -558,9 +548,13 @@ function Flow() {
                   ) : (
                     false
                   )}
-                  {fields.map((item, index) => {
-                    return <div key={index}>{item}</div>;
-                  })}
+                  <div className="border border-dashed border-shark-300"></div>
+                  <button
+                    onClick={exportCode}
+                    className={`shadow shadow-picton bg-picton rounded-lg font-bold w-full p-3 text-white`}
+                  >
+                    Export
+                  </button>
                   <div className="space-y-2 w-full mt-3">
                     <button
                       onClick={saveLocalCopy}
@@ -577,10 +571,16 @@ function Flow() {
                     </button>
                     <button
                       onClick={exportCode}
-                      className={`shadow shadow-picton bg-picton rounded-lg font-bold w-full p-3 text-white`}
+                      className={`shadow shadow-shark-400 bg-shark-400 rounded-lg font-bold w-full p-3 text-white`}
                     >
-                      Export
+                      Global Settings
                     </button>
+                    {
+                      fields.length > 0 ? <div className="border border-dashed border-shark-300 mb-1 mt-1"></div> : false
+                    }
+                    {fields.map((item, index) => {
+                      return <div key={index}>{item}</div>;
+                    })}
                   </div>
                 </div>
               </div>

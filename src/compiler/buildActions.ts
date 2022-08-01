@@ -48,16 +48,8 @@ class HydroActionBuilder {
   }
 
   buildActions(target: TypeNode, nodes: TypeNode[], edges: Edge[]) {
-    console.log(`Building actions for ${target.id}`)
     const children = this.getEdgesByNodeId(target.id, edges)
-    const action: any = {}
-    target?.$cinfo?.$fields?.forEach((element) => {
-      Object.keys(element).forEach((key) => {
-        action[key] = element[key]
-      })
-    })
-    console.log(action)
-    return [action]
+
     return target.$cinfo?.$fields
       ? Array.isArray(target.$cinfo.$fields)
         ? ((target.$cinfo || {}).$fields || []).map((field: Field) => {
@@ -95,7 +87,6 @@ class HydroActionBuilder {
               }
             }
           })
-          console.log(newCallbacks)
           object.$callbacks = newCallbacks
         }
       }
