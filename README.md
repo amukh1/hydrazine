@@ -1,4 +1,4 @@
-# **Hydrazine** [In Development]
+# **Hydrazine** - Alpha
 
 ![License](https://img.shields.io/badge/License-CC%20BY_NC_SA%204.0-brightgreen)
 
