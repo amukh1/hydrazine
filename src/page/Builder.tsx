@@ -230,13 +230,77 @@ function Flow() {
       <Header />
       <div className="grid grid-cols-12">
         <div className="col-span-2 overflow-auto">
-          <div className="space-y-3 h-screen overflow-auto  p-3 border-r border-shark-400">
+          <div className="space-y-3 h-screen overflow-auto p-3 border-r border-shark-400">
             <section className="">
-              <h3 className="text-xs font-bold uppercase text-gray-400 tracking-wider">
+              {/* <h3 className="text-xs font-bold uppercase text-gray-400 tracking-wider">
                 BLOCKS
-              </h3>
-              <div className="bg-picton mt-2 p-3 w-full mb-3 rounded">
-                <h2 className="text-white  font-bold">Programming</h2>
+              </h3> */}
+              <div className="bg-picton p-3 w-full  rounded">
+                <h2 className="text-white font-bold">Beginner Friendly</h2>
+              </div>
+              <section className="space-y-2 mt-3">
+                <h3 className="mb-1">Economy</h3>
+                <Block
+                  text="Increase Balance"
+                  desc="Increase user's balance in the global economy."
+                  color="cinna"
+                  onClick={() =>
+                    addNode({
+                      color: "cinna",
+                      $cinfo: {
+                        $action: "economy_increase_balance",
+                        $fields: [
+                          {
+                            $type: "string",
+                            $name: "UserId",
+                            $placeholder: "$AUTHOR_ID",
+                            $value: "",
+                          },
+                          {
+                            $type: "string",
+                            $name: "Amount",
+                            $placeholder: "1000",
+                            $value: "",
+                          },
+                        ],
+                      },
+                      data: { label: "Increase Balance" },
+                      position: { x: randomPosition(), y: randomPosition() },
+                    })
+                  }
+                />
+                <Block
+                  text="Decrease Balance"
+                  desc="Decrease user's balance in the global economy."
+                  color="cinna"
+                  onClick={() =>
+                    addNode({
+                      color: "cinna",
+                      $cinfo: {
+                        $action: "decrease_increase_balance",
+                        $fields: [
+                          {
+                            $type: "string",
+                            $name: "UserId",
+                            $placeholder: "$AUTHOR_ID",
+                            $value: "",
+                          },
+                          {
+                            $type: "string",
+                            $name: "Amount",
+                            $placeholder: "1000",
+                            $value: "",
+                          },
+                        ],
+                      },
+                      data: { label: "Decrease Balance" },
+                      position: { x: randomPosition(), y: randomPosition() },
+                    })
+                  }
+                />
+              </section>
+              <div className="bg-picton mt-3 p-3 w-full mb-3 rounded">
+                <h2 className="text-white font-bold">Programming</h2>
               </div>
               <h3 className="mb-1">Event Listeners</h3>
               <div className="space-y-2 ">
@@ -565,70 +629,7 @@ function Flow() {
                   }
                 />
               </div>
-              <div className="bg-picton p-3 w-full mt-3 mb-3 rounded">
-                <h2 className="text-white  font-bold">Beginner Friendly</h2>
-              </div>
-              <section className="space-y-2">
-                <h3 className="mb-1">Economy</h3>
-                <Block
-                  text="Increase Balance"
-                  desc="Increase user's balance in the global economy."
-                  color="cinna"
-                  onClick={() =>
-                    addNode({
-                      color: "cinna",
-                      $cinfo: {
-                        $action: "economy_increase_balance",
-                        $fields: [
-                          {
-                            $type: "string",
-                            $name: "UserId",
-                            $placeholder: "$AUTHOR_ID",
-                            $value: "",
-                          },
-                          {
-                            $type: "string",
-                            $name: "Amount",
-                            $placeholder: "1000",
-                            $value: "",
-                          },
-                        ],
-                      },
-                      data: { label: "Increase Balance" },
-                      position: { x: randomPosition(), y: randomPosition() },
-                    })
-                  }
-                />
-                <Block
-                  text="Decrease Balance"
-                  desc="Decrease user's balance in the global economy."
-                  color="cinna"
-                  onClick={() =>
-                    addNode({
-                      color: "cinna",
-                      $cinfo: {
-                        $action: "decrease_increase_balance",
-                        $fields: [
-                          {
-                            $type: "string",
-                            $name: "UserId",
-                            $placeholder: "$AUTHOR_ID",
-                            $value: "",
-                          },
-                          {
-                            $type: "string",
-                            $name: "Amount",
-                            $placeholder: "1000",
-                            $value: "",
-                          },
-                        ],
-                      },
-                      data: { label: "Decrease Balance" },
-                      position: { x: randomPosition(), y: randomPosition() },
-                    })
-                  }
-                />
-              </section>
+
             </section>
           </div>
         </div>
