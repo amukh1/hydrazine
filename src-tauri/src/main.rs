@@ -4,7 +4,6 @@
 )]
 
 mod presence;
-
 fn main() {
     presence::set_presence();
     tauri::Builder::default()

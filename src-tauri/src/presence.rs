@@ -15,9 +15,9 @@ pub fn set_presence() {
 
     if let Err(why) = drpc.set_activity(|a| {
         a.state("Running examples").assets(|ass| {
-            ass.large_image("1024x1024")
+            ass.small_image("512x512")
+                .large_image("1024x1024")
                 .large_text("Building a Discord Bot")
-                .small_image("512x512")
                 .small_text("With Hydrazine")
         })
     }) {
