@@ -19,32 +19,20 @@
   "$cinfo": {
     "$onInitListeners": [
       {
-        "$type": "text_command",
+        "$type": "on_client_ready",
         "$conditions": {
           "$equals": []
         },
         "$actions": [
           {
-            "$type": "message_delete",
-            "$name": "Timeout(Milliseconds)",
+            "$value": "games lol",
             "$callbacks": [],
-            "$placeholder": "1000",
-            "$value": ""
-          }
-        ]
-      },
-      {
-        "$type": "text_command",
-        "$conditions": {
-          "$equals": []
-        },
-        "$actions": [
-          {
-            "$type": "message_reply",
-            "$name": "Content",
-            "$callbacks": [],
-            "$placeholder": "Hello, $AUTHOR_TAG. I'm $CLIENT_NAME",
-            "$value": "Deleting Mesage..."
+            "$type": "set_presence",
+            "$name": "name",
+            "$placeholder": "Created With Hydrazine.",
+            "type_$value": "PLAYING",
+            "type_$name": "type",
+            "type_$placeholder": "PLAYING"
           }
         ]
       }

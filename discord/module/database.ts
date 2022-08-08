@@ -16,9 +16,17 @@ class Database {
       const query = fs.readFileSync(`../sql/${sql}`, 'utf-8')
       db.all(query, function (this, err) {
         if (err) {
-          console.log(colors.red(`Failed to Initialize Query ${sql}: ${err}`))
+          console.log(
+            colors.red(
+              `[${new Date().getTime()}] Failed to Initialize Query ${sql}: ${err}`,
+            ),
+          )
         } else {
-          console.log(colors.green(`Successfuly Initialized Query ${sql}`))
+          console.log(
+            colors.green(
+              `[${new Date().getTime()}] Successfuly Initialized Query ${sql}`,
+            ),
+          )
         }
       })
     })
