@@ -319,7 +319,7 @@ function Flow() {
                           },
                         ],
                       },
-                      data: { label: "Increase Balance" },
+                      data: { label: "Send Meme" },
                       position: { x: randomPosition(), y: randomPosition() },
                     })
                   }
@@ -454,6 +454,30 @@ function Flow() {
                         ],
                       },
                       data: { label: "Reply" },
+                      position: { x: randomPosition(), y: randomPosition() },
+                    })
+                  }
+                />
+                <Block
+                  text="Delete Message"
+                  color="awesome"
+                  desc="Delete a sent message."
+                  onClick={() =>
+                    addNode({
+                      color: "awesome",
+                      type: "output",
+                      $cinfo: {
+                        $action: "message_delete",
+                        $fields: [
+                          {
+                            $type: "number",
+                            $name: "Timeout(Milliseconds)",
+                            $placeholder: "1000",
+                            $value: "",
+                          },
+                        ],
+                      },
+                      data: { label: "Delete" },
                       position: { x: randomPosition(), y: randomPosition() },
                     })
                   }

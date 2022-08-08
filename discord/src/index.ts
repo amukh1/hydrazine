@@ -4,6 +4,7 @@ import 'dotenv/config'
 import client from './client'
 import Database from '../module/database'
 import formatMessage from '../module/formatMessage'
+import handleMessage from '../module/handleMessage'
 import actBaseActions from '../module/actBaseActions'
 import discordClientActions from '../module/discordClientActions'
 
@@ -70,18 +71,7 @@ if (config.$cinfo) {
                 AUTHOR_USERNAME: message.author.username,
               })
 
-              switch (callback.$type) {
-                case 'message_reply': {
-                  message.reply(cleanMsg)
-                }
-                case 'message_react': {
-                  try {
-                    message.react(callback.$value)
-                  } catch (err) {
-                    // do nothing
-                  }
-                }
-              }
+              handleMessage(message, callback, { cleanMsg })
             }
           })
         })
