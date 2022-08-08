@@ -1,7 +1,8 @@
 import fs from 'fs'
 import 'dotenv/config'
-import client from './client'
 
+import client from './client'
+import Database from '../module/database'
 import formatMessage from '../module/formatMessage'
 import actBaseActions from '../module/actBaseActions'
 import discordClientActions from '../module/discordClientActions'
@@ -10,6 +11,7 @@ const config: any = JSON.parse(
   fs.readFileSync(`../engine/${fs.readdirSync('./engine')[0]}`, 'utf-8'),
 )
 
+const DB = new Database()
 const envs = Object.keys(config?.$ENV || {})
 
 if (config.$cinfo) {

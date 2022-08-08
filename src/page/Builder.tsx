@@ -299,6 +299,33 @@ function Flow() {
                   }
                 />
               </section>
+              <section className="space-y-2 mt-3">
+                <h3 className="mb-1">Fun</h3>
+                <Block
+                  text="Send meme"
+                  desc="Send a random meme from the internet."
+                  color="picton"
+                  onClick={() =>
+                    addNode({
+                      color: "picton",
+                      $cinfo: {
+                        $action: "send_meme_embed",
+                        $fields: [
+                          {
+                            $type: "string",
+                            $name: "UserId",
+                            $placeholder: "$AUTHOR_ID",
+                            $value: "",
+                          },
+                        ],
+                      },
+                      data: { label: "Increase Balance" },
+                      position: { x: randomPosition(), y: randomPosition() },
+                    })
+                  }
+                />
+
+              </section>
               <div className="bg-picton mt-3 p-3 w-full mb-3 rounded">
                 <h2 className="text-white font-bold">Programming</h2>
               </div>

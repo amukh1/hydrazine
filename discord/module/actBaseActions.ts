@@ -1,7 +1,9 @@
 import sqlite3 from 'sqlite3'
 import formatMessage from '../module/formatMessage'
 
-const db = new sqlite3.Database('../database/main.db')
+const db = new sqlite3.Database(
+  process.env.DATABASE_PATH || `../database/main.db`,
+)
 
 export default function main(
   action: any,
