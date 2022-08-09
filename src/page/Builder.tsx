@@ -230,23 +230,20 @@ function Flow() {
       <Header />
       <div className="grid grid-cols-12">
         <div className="col-span-2 overflow-auto">
-          <div className="space-y-3 h-screen overflow-auto p-3 border-r border-shark-400">
-            <section className="">
-              {/* <h3 className="text-xs font-bold uppercase text-gray-400 tracking-wider">
-                BLOCKS
-              </h3> */}
-              <div className="bg-picton p-3 w-full  rounded">
-                <h2 className="text-white font-bold">Beginner Friendly</h2>
-              </div>
-              <section className="space-y-2 mt-3">
+          <div className=" h-screen overflow-auto border-r-2 border-shark-400">
+            <div className="bg-picton w-full p-3">
+              <h2 className="text-white font-bold">General</h2>
+            </div>
+            <div className="px-3 space-y-3">
+              <div className="space-y-2 mt-3">
                 <h3 className="mb-1">Economy</h3>
                 <Block
                   text="Increase Balance"
                   desc="Increase user's balance in the global economy."
-                  color="cinna"
+                  color="gold"
                   onClick={() =>
                     addNode({
-                      color: "cinna",
+                      color: "gold",
                       $cinfo: {
                         $action: "economy_increase_balance",
                         $fields: [
@@ -272,10 +269,10 @@ function Flow() {
                 <Block
                   text="Decrease Balance"
                   desc="Decrease user's balance in the global economy."
-                  color="cinna"
+                  color="gold"
                   onClick={() =>
                     addNode({
-                      color: "cinna",
+                      color: "gold",
                       $cinfo: {
                         $action: "decrease_increase_balance",
                         $fields: [
@@ -298,16 +295,16 @@ function Flow() {
                     })
                   }
                 />
-              </section>
-              <section className="space-y-2 mt-3">
+              </div>
+              <div className="space-y-2 mt-3">
                 <h3 className="mb-1">Fun</h3>
                 <Block
                   text="Send meme"
                   desc="Send a random meme from the internet."
-                  color="picton"
+                  color="shamrock"
                   onClick={() =>
                     addNode({
-                      color: "picton",
+                      color: "shamrock",
                       $cinfo: {
                         $action: "send_meme_embed",
                         $fields: [
@@ -324,364 +321,369 @@ function Flow() {
                     })
                   }
                 />
+              </div>
+            </div>
+            <div className="mt-3 bg-picton w-full p-3">
+              <h2 className="text-white font-bold">Advanced</h2>
+            </div>
+            <div className="px-3 py-3 space-y-3">
+              <div className="">
+                <h3 className="mb-1">Event Listeners</h3>
+                <div className="space-y-2 ">
+                  <Block
+                    text="On Start"
+                    desc="Run this in the very beginning of the script."
+                    color="cinna"
+                    onClick={() =>
+                      addNode({
+                        type: "input",
+                        color: "cinna",
+                        data: {
+                          label: "onStart",
+                        },
+                        $cinfo: {
+                          $action: "on_start",
+                        },
+                        position: { x: randomPosition(), y: randomPosition() },
+                      })
+                    }
+                  />
+                  <Block
+                    text="On Client Ready"
+                    desc="Fire an event when the Discord bot has started."
+                    color="cinna"
+                    onClick={() =>
+                      addNode({
+                        type: "input",
+                        color: "cinna",
+                        data: {
+                          label: "onClientReady",
+                        },
+                        $cinfo: {
+                          $action: "on_client_ready",
+                        },
+                        position: { x: randomPosition(), y: randomPosition() },
+                      })
+                    }
+                  />
+                  <Block
+                    text="On Message"
+                    desc="Fire an event when a message is sent."
+                    color="cinna"
+                    onClick={() =>
+                      addNode({
+                        type: "input",
+                        color: "cinna",
+                        data: {
+                          label: "onMessage",
+                        },
+                        $cinfo: {
+                          $action: "on_message",
+                        },
+                        position: { x: randomPosition(), y: randomPosition() },
+                      })
+                    }
+                  />
 
-              </section>
-              <div className="bg-picton mt-3 p-3 w-full mb-3 rounded">
-                <h2 className="text-white font-bold">Programming</h2>
+                  <Block
+                    text="On Slash Command"
+                    desc="Listen for slash(/) commands."
+                    color="cinna"
+                    onClick={() =>
+                      addNode({
+                        type: "input",
+                        color: "cinna",
+                        data: {
+                          label: "onSlashCommand",
+                        },
+                        $cinfo: {
+                          $action: "on_slash_command",
+                          $value: "help",
+                        },
+                        position: { x: randomPosition(), y: randomPosition() },
+                      })
+                    }
+                  />
+                </div>
               </div>
-              <h3 className="mb-1">Event Listeners</h3>
-              <div className="space-y-2 ">
-                <Block
-                  text="On Start"
-                  desc="Run this in the very beginning of the script."
-                  color="cinna"
-                  onClick={() =>
-                    addNode({
-                      type: "input",
-                      color: "cinna",
-                      data: {
-                        label: "onStart",
-                      },
-                      $cinfo: {
-                        $action: "on_start",
-                      },
-                      position: { x: randomPosition(), y: randomPosition() },
-                    })
-                  }
-                />
-                <Block
-                  text="On Client Ready"
-                  desc="Fire an event when the Discord bot has started."
-                  color="cinna"
-                  onClick={() =>
-                    addNode({
-                      type: "input",
-                      color: "cinna",
-                      data: {
-                        label: "onClientReady",
-                      },
-                      $cinfo: {
-                        $action: "on_client_ready",
-                      },
-                      position: { x: randomPosition(), y: randomPosition() },
-                    })
-                  }
-                />
-                <Block
-                  text="On Message"
-                  desc="Fire an event when a message is sent."
-                  color="cinna"
-                  onClick={() =>
-                    addNode({
-                      type: "input",
-                      color: "cinna",
-                      data: {
-                        label: "onMessage",
-                      },
-                      $cinfo: {
-                        $action: "on_message",
-                      },
-                      position: { x: randomPosition(), y: randomPosition() },
-                    })
-                  }
-                />
-
-                <Block
-                  text="On Slash Command"
-                  desc="Listen for slash(/) commands."
-                  color="cinna"
-                  onClick={() =>
-                    addNode({
-                      type: "input",
-                      color: "cinna",
-                      data: {
-                        label: "onSlashCommand",
-                      },
-                      $cinfo: {
-                        $action: "on_slash_command",
-                        $value: "help",
-                      },
-                      position: { x: randomPosition(), y: randomPosition() },
-                    })
-                  }
-                />
-              </div>
-            </section>
-            <section>
-              <h3 className="mb-1">Actions</h3>
-              <div className="space-y-2">
-                <Block
-                  text="React"
-                  desc="React to a message with an emoji."
-                  color="awesome"
-                  onClick={() =>
-                    addNode({
-                      color: "awesome",
-                      type: "output",
-                      data: { label: "React" },
-                      $cinfo: {
-                        $action: "message_react",
-                        $fields: [
-                          {
-                            $type: "string",
-                            $name: "Content",
-                            $placeholder: "🙂",
-                            $value: "",
-                          },
-                        ],
-                      },
-                      position: { x: randomPosition(), y: randomPosition() },
-                    })
-                  }
-                />
-                <Block
-                  text="Reply"
-                  color="awesome"
-                  desc="Reply to the sent message."
-                  onClick={() =>
-                    addNode({
-                      color: "awesome",
-                      type: "output",
-                      $cinfo: {
-                        $action: "message_reply",
-                        $fields: [
-                          {
-                            $type: "string",
-                            $name: "Content",
-                            $placeholder: "Hello, $AUTHOR_TAG. I'm $CLIENT_NAME",
-                            $value: "",
-                          },
-                        ],
-                      },
-                      data: { label: "Reply" },
-                      position: { x: randomPosition(), y: randomPosition() },
-                    })
-                  }
-                />
-                <Block
-                  text="Delete Message"
-                  color="awesome"
-                  desc="Delete a sent message."
-                  onClick={() =>
-                    addNode({
-                      color: "awesome",
-                      type: "output",
-                      $cinfo: {
-                        $action: "message_delete",
-                        $fields: [
-                          {
-                            $type: "number",
-                            $name: "Timeout(Milliseconds)",
-                            $placeholder: "1000",
-                            $value: "",
-                          },
-                        ],
-                      },
-                      data: { label: "Delete" },
-                      position: { x: randomPosition(), y: randomPosition() },
-                    })
-                  }
-                />
-                <Block
-                  text="Set Presence"
-                  color="awesome"
-                  desc="Set bot presence."
-                  onClick={() =>
-                    addNode({
-                      color: "awesome",
-                      type: "output",
-                      $cinfo: {
-                        $action: "set_presence",
-                        $fields: [
-                          {
-                            $value: "",
-                            $type: "string",
-                            $name: "name",
-                            $placeholder: "Created With Hydrazine.",
-                          },
-                          {
-                            $type: "string",
-                            $value: "",
-                            $name: "type",
-                            $placeholder: "PLAYING",
-                          },
-                        ],
-                      },
-                      data: { label: "setPresence" },
-                      position: { x: randomPosition(), y: randomPosition() },
-                    })
-                  }
-                />
-              </div>
-            </section>
-            <section>
-              <h3 className="mb-1">Logic</h3>
-              <div className="space-y-2">
-                <Block
-                  text="If"
-                  desc="Check whether a condition is true"
-                  color="royal"
-                  onClick={() =>
-                    addNode({
-                      color: "royal",
-                      data: { label: "If <condition>" },
-                      $cinfo: {
-                        $action: "if_statement",
-                        $fields: [
-                          {
-                            $type: "string",
-                            $name: "Match",
-                            $placeholder: "$AUTHOR_TAG",
-                            $value: "",
-                          },
-                          {
-                            $type: "string",
-                            $name: "With",
-                            $placeholder: "$BOTNAME has started",
-                            $value: "",
-                          },
-                        ],
-                      },
-                      position: { x: randomPosition(), y: randomPosition() },
-                    })
-                  }
-                />
-                <Block
-                  text="Loop"
-                  desc="Loop through an iterable object, eg an array."
-                  color="royal"
-                  onClick={() =>
-                    addNode({
-                      color: "royal",
-                      data: { label: "Loop" },
-                      $cinfo: {
-                        $action: "loop",
-                        $fields: [
-                          {
-                            $type: "string",
-                            $name: "Match",
-                            $placeholder: "$AUTHOR_TAG",
-                            $value: "",
-                          },
-                          {
-                            $type: "string",
-                            $name: "With",
-                            $placeholder: "$BOTNAME has started",
-                            $value: "",
-                          },
-                        ],
-                      },
-                      position: { x: randomPosition(), y: randomPosition() },
-                    })
-                  }
-                />
-              </div>
-            </section>
-            <section>
-              <h3 className="mb-1">Process</h3>
-              <div className="space-y-2">
-                <Block
-                  text="Console Log"
-                  desc="Log something to the node console."
-                  color="emerald"
-                  onClick={() =>
-                    addNode({
-                      type: "output",
-                      color: "emerald",
-                      $cinfo: {
-                        $action: "console_log",
-                        $fields: [
-                          {
-                            $type: "string",
-                            $name: "Message",
-                            $placeholder: "$BOTNAME has started",
-                            $value: "",
-                          },
-                        ],
-                      },
-                      data: { label: "Console Log" },
-                      position: { x: randomPosition(), y: randomPosition() },
-                    })
-                  }
-                />
-                <Block
-                  text="Console Warn"
-                  desc="Log a warning into the node console."
-                  color="emerald"
-                  onClick={() =>
-                    addNode({
-                      type: "output",
-                      color: "emerald",
-                      $cinfo: {
-                        $action: "console_warn",
-                        $fields: [
-                          {
-                            $type: "string",
-                            $name: "Message",
-                            $placeholder: "Process Started with Process Id $PROCESS_ID at $DATE_LOCASETIMESTRING",
-                            $value: "",
-                          },
-                        ],
-                      },
-                      data: { label: "Console Warn" },
-                      position: { x: randomPosition(), y: randomPosition() },
-                    })
-                  }
-                />
-              </div>
-            </section>
-            <section>
-              <h3 className="mb-1">Database - SQLite3</h3>
-              <div className="space-y-2">
-                <Block
-                  text="Run Query"
-                  desc="Run a MySQL Query. Using the .run() method."
-                  color="amethyst"
-                  onClick={() =>
-                    addNode({
-                      color: "amethyst",
-                      $cinfo: {
-                        $action: "run_sqlite_query",
-                        $fields: [
-                          {
-                            $type: "string",
-                            $name: "MySQL Query",
-                            $placeholder: "CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY)",
-                            $value: "",
-                          },
-                        ],
-                      },
-                      data: { label: "MySQL Run Query" },
-                      position: { x: randomPosition(), y: randomPosition() },
-                    })
-                  }
-                />
-                <Block
-                  text="Get Query"
-                  desc="Run a MySQL Query. Using the .get() method."
-                  color="amethyst"
-                  onClick={() =>
-                    addNode({
-                      color: "amethyst",
-                      $cinfo: {
-                        $action: "get_sqlite_query",
-                        $fields: [
-                          {
-                            $type: "string",
-                            $name: "MySQL Get Query",
-                            $placeholder: "SELECT * FROM users",
-                            $value: "",
-                          },
-                        ],
-                      },
-                      data: { label: "MySQL Query" },
-                      position: { x: randomPosition(), y: randomPosition() },
-                    })
-                  }
-                />
+              <div>
+                <h3 className="mb-1">Actions</h3>
+                <div className="space-y-2">
+                  <Block
+                    text="React"
+                    desc="React to a message with an emoji."
+                    color="awesome"
+                    onClick={() =>
+                      addNode({
+                        color: "awesome",
+                        type: "output",
+                        data: { label: "React" },
+                        $cinfo: {
+                          $action: "message_react",
+                          $fields: [
+                            {
+                              $type: "string",
+                              $name: "Content",
+                              $placeholder: "🙂",
+                              $value: "",
+                            },
+                          ],
+                        },
+                        position: { x: randomPosition(), y: randomPosition() },
+                      })
+                    }
+                  />
+                  <Block
+                    text="Reply"
+                    color="awesome"
+                    desc="Reply to the sent message."
+                    onClick={() =>
+                      addNode({
+                        color: "awesome",
+                        type: "output",
+                        $cinfo: {
+                          $action: "message_reply",
+                          $fields: [
+                            {
+                              $type: "string",
+                              $name: "Content",
+                              $placeholder: "Hello, $AUTHOR_TAG. I'm $CLIENT_NAME",
+                              $value: "",
+                            },
+                          ],
+                        },
+                        data: { label: "Reply" },
+                        position: { x: randomPosition(), y: randomPosition() },
+                      })
+                    }
+                  />
+                  <Block
+                    text="Delete Message"
+                    color="awesome"
+                    desc="Delete a sent message."
+                    onClick={() =>
+                      addNode({
+                        color: "awesome",
+                        type: "output",
+                        $cinfo: {
+                          $action: "message_delete",
+                          $fields: [
+                            {
+                              $type: "number",
+                              $name: "Timeout(Milliseconds)",
+                              $placeholder: "1000",
+                              $value: "",
+                            },
+                          ],
+                        },
+                        data: { label: "Delete" },
+                        position: { x: randomPosition(), y: randomPosition() },
+                      })
+                    }
+                  />
+                  <Block
+                    text="Set Presence"
+                    color="awesome"
+                    desc="Set bot presence."
+                    onClick={() =>
+                      addNode({
+                        color: "awesome",
+                        type: "output",
+                        $cinfo: {
+                          $action: "set_presence",
+                          $fields: [
+                            {
+                              $value: "",
+                              $type: "string",
+                              $name: "name",
+                              $placeholder: "Created With Hydrazine.",
+                            },
+                            {
+                              $type: "string",
+                              $value: "",
+                              $name: "type",
+                              $placeholder: "PLAYING",
+                            },
+                          ],
+                        },
+                        data: { label: "setPresence" },
+                        position: { x: randomPosition(), y: randomPosition() },
+                      })
+                    }
+                  />
+                </div>
               </div>
 
-            </section>
+              <div>
+                <h3 className="mb-1">Logic</h3>
+                <div className="space-y-2">
+                  <Block
+                    text="If"
+                    desc="Check whether a condition is true"
+                    color="royal"
+                    onClick={() =>
+                      addNode({
+                        color: "royal",
+                        data: { label: "If <condition>" },
+                        $cinfo: {
+                          $action: "if_statement",
+                          $fields: [
+                            {
+                              $type: "string",
+                              $name: "Match",
+                              $placeholder: "$AUTHOR_TAG",
+                              $value: "",
+                            },
+                            {
+                              $type: "string",
+                              $name: "With",
+                              $placeholder: "$BOTNAME has started",
+                              $value: "",
+                            },
+                          ],
+                        },
+                        position: { x: randomPosition(), y: randomPosition() },
+                      })
+                    }
+                  />
+                  <Block
+                    text="Loop"
+                    desc="Loop through an iterable object, eg an array."
+                    color="royal"
+                    onClick={() =>
+                      addNode({
+                        color: "royal",
+                        data: { label: "Loop" },
+                        $cinfo: {
+                          $action: "loop",
+                          $fields: [
+                            {
+                              $type: "string",
+                              $name: "Match",
+                              $placeholder: "$AUTHOR_TAG",
+                              $value: "",
+                            },
+                            {
+                              $type: "string",
+                              $name: "With",
+                              $placeholder: "$BOTNAME has started",
+                              $value: "",
+                            },
+                          ],
+                        },
+                        position: { x: randomPosition(), y: randomPosition() },
+                      })
+                    }
+                  />
+                </div>
+              </div>
+              <div>
+                <h3 className="mb-1">Process</h3>
+                <div className="space-y-2">
+                  <Block
+                    text="Console Log"
+                    desc="Log something to the node console."
+                    color="emerald"
+                    onClick={() =>
+                      addNode({
+                        type: "output",
+                        color: "emerald",
+                        $cinfo: {
+                          $action: "console_log",
+                          $fields: [
+                            {
+                              $type: "string",
+                              $name: "Message",
+                              $placeholder: "$BOTNAME has started",
+                              $value: "",
+                            },
+                          ],
+                        },
+                        data: { label: "Console Log" },
+                        position: { x: randomPosition(), y: randomPosition() },
+                      })
+                    }
+                  />
+                  <Block
+                    text="Console Warn"
+                    desc="Log a warning into the node console."
+                    color="emerald"
+                    onClick={() =>
+                      addNode({
+                        type: "output",
+                        color: "emerald",
+                        $cinfo: {
+                          $action: "console_warn",
+                          $fields: [
+                            {
+                              $type: "string",
+                              $name: "Message",
+                              $placeholder: "Process Started with Process Id $PROCESS_ID at $DATE_LOCASETIMESTRING",
+                              $value: "",
+                            },
+                          ],
+                        },
+                        data: { label: "Console Warn" },
+                        position: { x: randomPosition(), y: randomPosition() },
+                      })
+                    }
+                  />
+                </div>
+              </div>
+
+              <div>
+                <h3 className="mb-1">Database - SQLite3</h3>
+                <div className="space-y-2">
+                  <Block
+                    text="Run Query"
+                    desc="Run a MySQL Query. Using the .run() method."
+                    color="amethyst"
+                    onClick={() =>
+                      addNode({
+                        color: "amethyst",
+                        $cinfo: {
+                          $action: "run_sqlite_query",
+                          $fields: [
+                            {
+                              $type: "string",
+                              $name: "MySQL Query",
+                              $placeholder: "CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY)",
+                              $value: "",
+                            },
+                          ],
+                        },
+                        data: { label: "MySQL Run Query" },
+                        position: { x: randomPosition(), y: randomPosition() },
+                      })
+                    }
+                  />
+                  <Block
+                    text="Get Query"
+                    desc="Run a MySQL Query. Using the .get() method."
+                    color="amethyst"
+                    onClick={() =>
+                      addNode({
+                        color: "amethyst",
+                        $cinfo: {
+                          $action: "get_sqlite_query",
+                          $fields: [
+                            {
+                              $type: "string",
+                              $name: "MySQL Get Query",
+                              $placeholder: "SELECT * FROM users",
+                              $value: "",
+                            },
+                          ],
+                        },
+                        data: { label: "MySQL Query" },
+                        position: { x: randomPosition(), y: randomPosition() },
+                      })
+                    }
+                  />
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
         <div
@@ -715,11 +717,11 @@ function Flow() {
             <div className="w-full flex flex-wrap">
               <div className="w-full grid-cols-1 grid p-3 border-l  flex-wrap border-shark-400">
                 <div className="space-y-2">
-                  <section className="">
+                  <div className="">
                     <h3 className="text-xs font-bold uppercase text-gray-400 tracking-wider">
                       BUILDER
                     </h3>
-                  </section>
+                  </div>
                   {false ? (
                     <div>
                       <h3 className="font-semibold">Unique Key</h3>
